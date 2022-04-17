@@ -29,9 +29,9 @@ class IsLoggedIn
 
         if ($firstTime === 1){
             //traitement en ammont
-            $islogged = 0;
+            $islogged = session('islogged');
 
-            if ($islogged === 0){
+            if (!isset($islogged)){
                 return redirect('login');
             }
             return $next($request);

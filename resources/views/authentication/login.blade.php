@@ -14,6 +14,8 @@
     <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
+    </script>
     <link rel="manifest" href="__manifest.json">
 </head>
 
@@ -46,14 +48,49 @@
         <h4>Fill the form to log in</h4>
     </div>
     <div class="section mb-5 p-2">
+        @php
+        $get_error = session()->get('error');
+            @endphp
+        <script>
+            $(document).ready(function(){
+                <?= isset($get_error) ? "toastbox('toast-1')" : ''?>
+            });
+        </script>
 
-        <form action="index.html">
+        @error('password')
+        <script>
+            $(document).ready(function(){
+                <?= !isset($get_error) ? "toastbox('toast-1')" : ''?>
+            });
+        </script>
+        <div id="toast-1" class="toast-box toast-top bg-danger">
+            <div class="in">
+                <div class="text">
+                    {{ $get_error }}
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+        </div>
+        @enderror
+
+        <div id="toast-1" class="toast-box toast-top bg-danger">
+            <div class="in">
+                <div class="text">
+                    @if(isset($get_error))
+                        {{ $get_error}}
+                    @endif
+                </div>
+            </div>
+            <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+        </div>
+        <form action="{{ route('login') }}" method="post">
+            @csrf
             <div class="card">
                 <div class="card-body pb-1">
                     <div class="form-group basic">
                         <div class="input-wrapper">
                             <label class="label" for="email1">E-mail</label>
-                            <input type="email" class="form-control" id="email1" placeholder="Your e-mail">
+                            <input type="email" class="form-control" id="email1" placeholder="Your e-mail" name="email" value="{{ old('email') }}">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -63,7 +100,7 @@
                     <div class="form-group basic">
                         <div class="input-wrapper">
                             <label class="label" for="password1">Password</label>
-                            <input type="password" class="form-control" id="password1" autocomplete="off"
+                            <input type="password" class="form-control" name="password" id="password1" autocomplete="off"
                                    placeholder="Your password">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>

@@ -1788,8 +1788,9 @@ a.badge-dark {
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
-  background: #4e1dff !important;
-  border-color: #4e1dff !important;
+  background: #fff !important;
+  border-color: #fff !important;
+    color: black !important;
 }
 
 .btn-primary.disabled, .btn-primary:disabled {

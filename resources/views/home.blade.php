@@ -310,11 +310,11 @@
         <!-- * Exchange Action Sheet -->
 
 
-        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 15%;">2,562.50<small style="color: #11a44c; font-size: .575em;">Pts</small> </h1>
-        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 20%; font-size: 24px">15<small style="color: #11a44c; font-size: .675em;">Tickets</small></h1>
+        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 47px">{{ $islogged['balance_points'] }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
+        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 24px; color: #3a87ad">{{ $islogged['balance_tickets'] }}<small style="color: #3a87ad; font-size: .675em;">Tickets</small></h1>
 
         <!-- Stats -->
-        <div class="section" style="margin-top: 40%; padding: 0; height: -webkit-fill-available; box-shadow: 0px 5px rgb(17 164 76 / 10%), 0px -10px 12px rgb(17 164 76 / 10%);height: -webkit-fill-available;border-radius: 30px 30px;">
+        <div class="section" style="margin-top: 9rem; padding: 0; height: -webkit-fill-available; box-shadow: 0px 5px rgb(17 164 76 / 10%), 0px -10px 12px rgb(17 164 76 / 10%);height: -webkit-fill-available;border-radius: 30px 30px;">
             <div class="row mt-2" style="height: 100%">
                 <div class="col-12">
                     <div class="card" style="height: 100%; border-radius: 30px">
@@ -323,9 +323,9 @@
                                 <!-- item -->
                                 <a href="parie.html" class="item">
                                     <div class="detail">
-                                        <ion-icon name="card-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
+                                        <ion-icon name="cash-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
                                         <div>
-                                            <strong>Your Bank Account</strong>
+                                            <strong>Recharger le compte</strong>
                                             <p>when you get direct deposit</p>
                                         </div>
                                     </div>
@@ -334,9 +334,9 @@
                                 <!-- item -->
                                 <a href="parie.html" class="item">
                                     <div class="detail">
-                                        <ion-icon name="card-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
+                                        <ion-icon name="dice-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
                                         <div>
-                                            <strong>Your Bank Account</strong>
+                                            <strong>Pronostiquer</strong>
                                             <p>when you get direct deposit</p>
                                         </div>
                                     </div>
@@ -345,9 +345,9 @@
                                 <!-- item -->
                                 <a href="parie.html" class="item">
                                     <div class="detail">
-                                        <ion-icon name="card-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
+                                        <ion-icon name="gift-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
                                         <div>
-                                            <strong>Your Bank Account</strong>
+                                            <strong>Les lots</strong>
                                             <p>when you get direct deposit</p>
                                         </div>
                                     </div>
@@ -356,9 +356,9 @@
                                 <!-- item -->
                                 <a href="parie.html" class="item">
                                     <div class="detail">
-                                        <ion-icon name="card-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
+                                        <ion-icon name="file-tray-full-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
                                         <div>
-                                            <strong>Your Bank Account</strong>
+                                            <strong>Historiques Pronostics</strong>
                                             <p>when you get direct deposit</p>
                                         </div>
                                     </div>
@@ -428,25 +428,25 @@
                         <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="imaged  w36">
                     </div>
                     <div class="in">
-                        <strong>Sebastian Doe</strong>
-                        <div class="text-muted">4029209</div>
+                        <strong>{{ $islogged['nom'] }} {{ $islogged['prenom'] }}</strong>
+                        <div class="text-muted">{{ $islogged['reference'] }}</div>
                     </div>
                     <a href="#" class="btn btn-link btn-icon sidebar-close" data-bs-dismiss="modal">
-                        <ion-icon name="close-outline"></ion-icon>
+                        <ion-icoFn name="close-outline"></ion-icoFn>
                     </a>
                 </div>
                 <!-- * profile box -->
                 <!-- balance -->
-                <div class="sidebar-balance">
-                    <div class="listview-title">Balance</div>
+                {{-----<div class="sidebar-balance">
+                    <div class="listview-title">Points</div>
                     <div class="in">
-                        <h1 class="amount">$ 2,562.50</h1>
+                        <h1 class="amount">{{ $islogged['balance_points'] }}</h1>
                     </div>
-                </div>
+                </div>-----}}
                 <!-- * balance -->
 
                 <!-- action group -->
-                <div class="action-group">
+                {{----<div class="action-group">
                     <a href="index.html" class="action-button">
                         <div class="in">
                             <div class="iconbox">
@@ -479,7 +479,7 @@
                             My Cards
                         </div>
                     </a>
-                </div>
+                </div>-----}}
                 <!-- * action group -->
 
                 <!-- menu -->
@@ -488,41 +488,61 @@
                     <li>
                         <a href="index.html" class="item">
                             <div class="icon-box bg-primary">
-                                <ion-icon name="pie-chart-outline"></ion-icon>
+                                <ion-icon name="dice-outline"></ion-icon>
                             </div>
                             <div class="in">
-                                Overview
+                                Pronostiques
                                 <span class="badge badge-primary">10</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="app-pages.html" class="item">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="document-text-outline"></ion-icon>
-                            </div>
-                            <div class="in">
-                                Pages
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="app-components.html" class="item">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="apps-outline"></ion-icon>
-                            </div>
-                            <div class="in">
-                                Components
                             </div>
                         </a>
                     </li>
                     <li>
                         <a href="app-cards.html" class="item">
                             <div class="icon-box bg-primary">
-                                <ion-icon name="card-outline"></ion-icon>
+                                <ion-icon name="dice-outline"></ion-icon>
                             </div>
                             <div class="in">
-                                My Cards
+                                Pronostics multiples
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="app-pages.html" class="item">
+                            <div class="icon-box bg-primary">
+                                <ion-icon name="trophy-outline"></ion-icon>
+                            </div>
+                            <div class="in">
+                                Competition
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="app-components.html" class="item">
+                            <div class="icon-box bg-primary">
+                                <ion-icon name="checkbox-outline"></ion-icon>
+                            </div>
+                            <div class="in">
+                                Resultats
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="app-cards.html" class="item">
+                            <div class="icon-box bg-primary">
+                                <ion-icon name="ticket-outline"></ion-icon>
+                            </div>
+                            <div class="in">
+                                Acheter des tiquets
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="app-cards.html" class="item">
+                            <div class="icon-box bg-primary">
+                                <ion-icon name="gift-outline"></ion-icon>
+                            </div>
+                            <div class="in">
+                                Lots
                             </div>
                         </a>
                     </li>
@@ -553,7 +573,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="app-login.html" class="item">
+                        <a href="{{ route('logout') }}" class="item">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="log-out-outline"></ion-icon>
                             </div>
@@ -568,7 +588,7 @@
                 <!-- * others -->
 
                 <!-- send money -->
-                <div class="listview-title mt-1">Send Money</div>
+                {{----<div class="listview-title mt-1">Send Money</div>
                 <ul class="listview image-listview flush transparent no-line">
                     <li>
                         <a href="#" class="item">
@@ -594,7 +614,7 @@
                             </div>
                         </a>
                     </li>
-                </ul>
+                </ul>-----}}
                 <!-- * send money -->
 
             </div>

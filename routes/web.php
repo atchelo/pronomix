@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,16 @@ Route::get('login', function (){
     return view('authentication.login');
 })->name('login');
 
+Route::get('logout', function (){
+    session()->forget([
+        'islogged',
+        'current_user'
+    ]);
+    return redirect()->route('login');
+})->name('logout');
+
+Route::post('login', [LoginController::class, 'index']);
+
 Route::get('register', function (){
     return view('authentication.register');
 })->name('register');
@@ -24,8 +35,10 @@ Route::get('register', function (){
 
 Route::middleware(['authLog'])->group(function () {
     Route::get('/', function () {
-        return view('home');
-    });
+        $islogged = session('current_user');
+        //dd($islogged);
+        return view('home', compact('islogged'));
+    })->name('home');
 });
 
 Route::get('/welcome', function () {
