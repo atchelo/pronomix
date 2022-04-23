@@ -28,10 +28,13 @@ class LoginController extends Controller
 
        $rep = json_decode($response->body(), true);
 
+       //dd($rep);
+
        if ($rep['success'] === true){
            session([
                'islogged' => 1,
                'current_user' => $rep['user'],
+               'token' => $rep['token'],
            ]);
            return redirect()->route('home');
        }else{
