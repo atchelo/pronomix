@@ -23,7 +23,7 @@
 
 <!-- loader -->
 <div id="loader">
-    <img src="assets/img/loading-icon.png" alt="icon" class="loading-icon">
+    <div class="spinner-border text-light" role="status"></div>
 </div>
 <!-- * loader -->
 

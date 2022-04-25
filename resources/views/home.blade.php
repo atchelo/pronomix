@@ -12,6 +12,9 @@
     <meta name="description" content="Finapp HTML Mobile Template">
     <meta name="keywords"
           content="bootstrap, wallet, banking, fintech mobile template, cordova, phonegap, mobile, html, responsive" />
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
+    </script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -309,7 +312,6 @@
         </div>
         <!-- * Exchange Action Sheet -->
 
-
         <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 47px">{{ $islogged['balance_points'] }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
         <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 24px; color: #3a87ad">{{ $islogged['balance_tickets'] }}<small style="color: #3a87ad; font-size: .675em;">Tickets</small></h1>
 
@@ -332,7 +334,7 @@
                                 </a>
                                 <!-- * item -->
                                 <!-- item -->
-                                <a href="parie.html" class="item">
+                                <a href="javascript:void(0);" class="item" id="allmatch">
                                     <div class="detail">
                                         <ion-icon name="dice-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
                                         <div>
@@ -704,6 +706,50 @@
 <script>
     // Add to Home with 2 seconds delay.
     AddtoHome("2000", "once");
+</script>
+
+<script>
+    $('#allmatch').click(function() {
+        var token = "{{$token}}";
+        //var loader =  document.getElementById('loader');
+        //loader.show();
+
+        $("#loader").show();
+
+        $.ajax({
+            url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
+            method: "GET",
+            success: function (data) {
+                if (data.success === true){
+                    //$("#loader").hide();
+                    var url = "{{ route('store_match') }}";
+                    var new_token = data.new_token;
+                    var match_data = data.data;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["match_data"] = match_data;
+                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            window.location = data;
+                        }
+                    });
+
+                }
+            }
+        });
+
+    });
 </script>
 
 </body>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Match_listController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +22,9 @@ Route::get('login', function (){
 Route::get('logout', function (){
     session()->forget([
         'islogged',
-        'current_user'
+        'current_user',
+        'list_match',
+        'token'
     ]);
     return redirect()->route('login');
 })->name('logout');
@@ -35,10 +38,15 @@ Route::get('register', function (){
 
 Route::middleware(['authLog'])->group(function () {
     Route::get('/', function () {
+
         $islogged = session('current_user');
-        //dd($islogged);
-        return view('home', compact('islogged'));
+        $token = session('token');
+
+        return view('home', compact('islogged', 'token'));
     })->name('home');
+    Route::get('match_list', [Match_listController::class, 'getAll'])->name('allmatch');
+
+    Route::post('store_match', [Match_listController::class, 'storeAll'])->name('store_match');
 });
 
 Route::get('/welcome', function () {
