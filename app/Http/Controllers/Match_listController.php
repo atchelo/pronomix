@@ -11,7 +11,6 @@ class Match_listController extends Controller
     public function getAll(Request $request){
 
        $get_match = session('list_match');
-       //dd($get_match);
        $new_token = session('token');
         return view('match_list', compact('get_match', 'new_token'));
     }

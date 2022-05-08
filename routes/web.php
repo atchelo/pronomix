@@ -40,6 +40,7 @@ Route::middleware(['authLog'])->group(function () {
     Route::get('/', function () {
 
         $islogged = session('current_user');
+
         $token = session('token');
 
         return view('home', compact('islogged', 'token'));

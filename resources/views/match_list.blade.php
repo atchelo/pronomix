@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="__manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
+    </script>
     <style>
         .user-card div:before {
             content: "";
@@ -122,13 +124,13 @@
         <div class="section mt-2">
 
             <!-- card block -->
-            @foreach($get_match as $match)
+            @foreach($get_match as $index => $match)
 
                 @php
                    $date =  Carbon\Carbon::parse($match['date'])->locale('fr');
                 @endphp
 
-                <div class="card-block mb-2" style="height: 135px; background-color: white">
+                <div class="card-block mb-2" id="detmatch{{$index}}" style="height: 135px; background-color: white" data-matchid="{{$match['id_']}}">
                     <div class="section full" style="position: relative; text-align: center">
                         <div class="in" style="padding: 0px">
                             <div class="titleCard__textWrapper" style="justify-content: space-between;color: #1e1e1e;">
@@ -350,6 +352,45 @@
         //console.log(team_name);
         //var result = team_name.substring(0, 10);
         //document.getElementsByClassName("team_name").innerHTML = result;
+    });
+</script>
+
+<script>
+    $('[id^="detmatch"]').click(function(e) {
+       console.log($(this).data('matchid'))
+
+        /*$.ajax({
+            url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
+            method: "GET",
+            success: function (data) {
+                if (data.success === true){
+                    //$("#loader").hide();
+                    var new_token = data.new_token;
+                    var match_data = data.data;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["match_data"] = match_data;
+                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            window.location = data;
+                        }
+                    });
+
+                }
+            }
+        });*/
+
     });
 </script>
 

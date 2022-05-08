@@ -312,7 +312,12 @@
         </div>
         <!-- * Exchange Action Sheet -->
 
-        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 47px">{{ $islogged['balance_points'] }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
+        @php
+            $number = $islogged['balance_points'];
+
+        $numb =  number_format((float)$number, 2, '.', '');
+        @endphp
+        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 47px">{{ $numb }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
         <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 24px; color: #3a87ad">{{ $islogged['balance_tickets'] }}<small style="color: #3a87ad; font-size: .675em;">Tickets</small></h1>
 
         <!-- Stats -->
