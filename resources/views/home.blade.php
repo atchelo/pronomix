@@ -514,7 +514,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="app-pages.html" class="item">
+                        <a href="javascript:void(0);" class="item" id="allcompet">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="trophy-outline"></ion-icon>
                             </div>
@@ -746,6 +746,43 @@
                         url: url,
                         data: o,
                         success: function(data) {
+                            window.location = data;
+                        }
+                    });
+
+                }
+            }
+        });
+
+    });
+    $('#allcompet').click(function() {
+        //var loader =  document.getElementById('loader');
+        //loader.show();
+
+        $("#loader").show();
+
+        $.ajax({
+            url: `https://demo.pronomix.net/api/competition/liste/search=all_`,
+            method: "GET",
+            success: function (data) {
+                if (data.success === true){
+                    var url = "{{ route('store_compet') }}";
+                    var compet_data = data.data;
+                    var o = new Object();
+                    o["compet_data"] = compet_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            console.log(data)
                             window.location = data;
                         }
                     });

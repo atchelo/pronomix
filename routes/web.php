@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompetListController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Match_listController;
 use Illuminate\Support\Facades\Route;
@@ -48,6 +49,9 @@ Route::middleware(['authLog'])->group(function () {
     Route::get('match_list', [Match_listController::class, 'getAll'])->name('allmatch');
 
     Route::post('store_match', [Match_listController::class, 'storeAll'])->name('store_match');
+
+    Route::get('compet_list', [CompetListController::class, 'getAll'])->name('allcompet');
+    Route::post('compet_list', [CompetListController::class, 'storeAll'])->name('store_compet');
 });
 
 Route::get('/welcome', function () {

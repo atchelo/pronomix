@@ -3307,7 +3307,7 @@ a.text-dark {
 }
 
 .alert-outline-danger {
-  background: transparent;
+  background: white;
   color: #FF396F;
   border: 2px solid #FF396F;
 }
