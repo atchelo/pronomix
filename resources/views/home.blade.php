@@ -350,7 +350,7 @@
                                 </a>
                                 <!-- * item -->
                                 <!-- item -->
-                                <a href="parie.html" class="item">
+                                <a href="javascript:void(0);" class="item" id="all_lot">
                                     <div class="detail">
                                         <ion-icon name="gift-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
                                         <div>
@@ -770,6 +770,46 @@
                     var compet_data = data.data;
                     var o = new Object();
                     o["compet_data"] = compet_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            console.log(data)
+                            window.location = data;
+                        }
+                    });
+
+                }
+            }
+        });
+
+    });
+
+    $('#all_lot').click(function() {
+        //var loader =  document.getElementById('loader');
+        //loader.show();
+
+        $("#loader").show();
+
+        $.ajax({
+            url: `https://demo.pronomix.net/api/lots/liste/search=all_&type_lot=all_&value_min=none&value_max=none`,
+            method: "GET",
+            success: function (data) {
+                if (data.success === true){
+                    //$("#loader").hide();
+                    console.log(data.response)
+                    var url = "{{ route('store_lots') }}";
+                    var lot_data = data.response;
+                    var o = new Object();
+                    o["lot_data"] = lot_data;
 
                     $.ajaxSetup({
                         headers: {

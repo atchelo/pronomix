@@ -21,6 +21,11 @@
     <link rel="stylesheet" type="text/css" href="assets/country/niceCountryInput.css">
     <script src="assets/country/niceCountryInput.js"></script>
     <link rel="manifest" href="__manifest.json">
+    <style>
+        input:focus, textarea:focus {
+
+        }
+    </style>
 </head>
 
 <body>
@@ -55,14 +60,52 @@
         <h4>Create an account</h4>
     </div>
     <div class="section mb-5 p-2">
-        <form action="">
+
+        @if($errors->any())
+            <script>
+                $(document).ready(function(){
+                    <?= isset($errors) ? "toastbox('toast-1')" : ''?>
+                });
+            </script>
+                <div id="toast-1" class="toast-box toast-top bg-danger">
+                    <div class="in">
+                        <div class="text">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+                </div>
+        @endif
+
+            @php
+                $get_error = session()->get('error');
+            @endphp
+            <script>
+                $(document).ready(function(){
+                    <?= isset($get_error) ? "toastbox('toast-2')" : ''?>
+                });
+            </script>
+
+            <div id="toast-2" class="toast-box toast-top bg-danger">
+                <div class="in">
+                    <div class="text">
+                        {{ $get_error }}
+                    </div>
+                </div>
+                <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
+            </div>
+
+        <form action="{{ route('register') }}" method="POST">
+            @csrf
             <div class="card">
                 <div class="card-body">
 
                     <div class="form-group basic">
                         <div class="input-wrapper">
                             <label class="label" for="name">Nom</label>
-                            <input type="text" class="form-control" id="name" placeholder="Votre nom">
+                            <input type="text" class="form-control" name="name" id="name" required placeholder="Votre nom">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -72,7 +115,7 @@
                     <div class="form-group basic">
                         <div class="input-wrapper">
                             <label class="label" for="surname">Prenom</label>
-                            <input type="text" class="form-control" id="surname" placeholder="Votre prenom">
+                            <input type="text" class="form-control" id="surname" name="surname" required placeholder="Votre prenom">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -85,6 +128,7 @@
                             <div id="testinput" style="width: 100%" data-selectedcountry="CI" data-showspecial="false"
                                  data-showflags="true" data-i18nall="All selected" data-i18nnofilter="No selection"
                                  data-i18nfilter="Filter" data-onchangecallback="onChangeCallback" />
+                            <input type="hidden" name="country" id="country">
                         </div>
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
@@ -95,7 +139,7 @@
                     <div class="form-group basic">
                         <div class="input-wrapper">
                             <label class="label" for="email1">E-mail</label>
-                            <input type="email" class="form-control" id="email1" placeholder="Your e-mail">
+                            <input type="email" class="form-control" id="email1" name="email" required placeholder="Your e-mail">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -105,7 +149,7 @@
                     <div class="form-group basic">
                         <div class="input-wrapper">
                             <label class="label" for="password1">Password</label>
-                            <input type="password" class="form-control" id="password1" autocomplete="off"
+                            <input type="password" class="form-control" id="password1" required name="password" autocomplete="off"
                                    placeholder="Your password">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
@@ -116,7 +160,7 @@
                     <div class="form-group basic">
                         <div class="input-wrapper">
                             <label class="label" for="password2">Password Again</label>
-                            <input type="password" class="form-control" id="password2" autocomplete="off"
+                            <input type="password" class="form-control" id="password2" required name="password_confirmation" autocomplete="off"
                                    placeholder="Type password again">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
@@ -126,7 +170,10 @@
 
                     <div class="custom-control custom-checkbox mt-2 mb-1">
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="customCheckb1">
+                            <input required type="checkbox" class="form-check-input" id="customCheckb1" name="term" style="border: transparent; border: none;
+            background-color: transparent;
+            resize: none;
+            outline: none; display: flex; position: absolute; left: 2.8rem">
                             <label class="form-check-label" for="customCheckb1">
                                 I agree <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">terms and
                                     conditions</a>
@@ -139,7 +186,7 @@
 
 
 
-            <div class="form-button-group transparent">
+            <div class="form-button-group transparent" style="bottom: auto">
                 <button type="submit" class="btn btn-primary btn-block btn-lg">Register</button>
             </div>
 
@@ -201,9 +248,11 @@
 <script>
     function onChangeCallback(ctr){
         console.log("The country was changed: " + ctr);
+        $('#country').val(ctr);
     }
     $(document).ready(function () {
         new NiceCountryInput($("#testinput")).init();
+        $('#country').val('CI');
     });
 </script>
 

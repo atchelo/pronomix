@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\CompetListController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LotController;
 use App\Http\Controllers\Match_listController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +38,8 @@ Route::get('register', function (){
     return view('authentication.register');
 })->name('register');
 
+Route::post('register', [RegisterController::class, 'index']);
+
 
 Route::middleware(['authLog'])->group(function () {
     Route::get('/', function () {
@@ -48,10 +52,17 @@ Route::middleware(['authLog'])->group(function () {
     })->name('home');
     Route::get('match_list', [Match_listController::class, 'getAll'])->name('allmatch');
 
+    //Route::get('match_details', [Match_listController::class, 'getDetails'])->name('detmatch');
+    Route::post('match_details', [Match_listController::class, 'storegetDetails'])->name('detmatch');
+
     Route::post('store_match', [Match_listController::class, 'storeAll'])->name('store_match');
 
     Route::get('compet_list', [CompetListController::class, 'getAll'])->name('allcompet');
     Route::post('compet_list', [CompetListController::class, 'storeAll'])->name('store_compet');
+
+    Route::get('lot_list', [LotController::class, 'getAll'])->name('all_lot');
+    Route::post('lot_list', [LotController::class, 'storeAll'])->name('store_lots');
+    Route::get('rollback_lot_list', [LotController::class, 'rollback'])->name('rollback');
 });
 
 Route::get('/welcome', function () {

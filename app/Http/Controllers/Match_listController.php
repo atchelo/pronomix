@@ -27,4 +27,14 @@ class Match_listController extends Controller
 
         return route('allmatch');
     }
+
+    public function storegetDetails(Request $request){
+        session()->forget([
+            'details_match',
+        ]);
+
+        session([
+            'details_match' => $request['match_data'],
+        ]);
+    }
 }

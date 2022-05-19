@@ -90,7 +90,7 @@
                     <div class="form-group basic">
                         <div class="input-wrapper">
                             <label class="label" for="email1">E-mail</label>
-                            <input type="email" class="form-control" id="email1" placeholder="Your e-mail" name="email" value="{{ old('email') }}">
+                            <input type="email" class="form-control" id="email1" placeholder="Your e-mail" name="email" value="{{ old('email') }}" required>
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -101,7 +101,7 @@
                         <div class="input-wrapper">
                             <label class="label" for="password1">Password</label>
                             <input type="password" class="form-control" name="password" id="password1" autocomplete="off"
-                                   placeholder="Your password">
+                                   placeholder="Your password" required>
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -117,8 +117,7 @@
                 </div>
                 <div><a href="app-forgot-password.html" class="text-muted">Forgot Password?</a></div>
             </div>
-
-            <div class="form-button-group  transparent">
+            <div class="form-button-group  transparent" style="bottom: auto">
                 <button type="submit" class="btn btn-primary btn-block btn-lg">Log in</button>
             </div>
 

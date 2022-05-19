@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" style="margin: 0; height: 100%; overflow: hidden;">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -87,7 +87,7 @@
     </style>
 </head>
 
-<body style="background-color: white">
+<body style="background-color: white; margin: 0; height: 100%; overflow: hidden; ">
 
 <!-- loader -->
 <div id="loader">
@@ -95,9 +95,9 @@
 </div>
 <!-- * loader -->
 
-<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px;">
+<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; overflow-y: auto; position: relative">
     <!-- App Header -->
-    <div class="appHeader" style="border-radius: 0 0 30px 30px; margin: 0 12px;">
+    <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
             <a href="{{ route('home') }}" class="headerButton">
                 <ion-icon name="chevron-back-outline"></ion-icon>
@@ -119,7 +119,7 @@
     </div>
     <!-- * App Header -->
     <!-- App Capsule -->
-    <div id="appCapsule">
+    <div id="appCapsule" style="padding: 0">
 
         <div class="section mt-2">
 
@@ -357,22 +357,21 @@
 
 <script>
     $('[id^="detmatch"]').click(function(e) {
-       console.log($(this).data('matchid'))
+        var match_id = $(this).data('matchid');
+       console.log(match_id)
 
-        /*$.ajax({
-            url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
+        $.ajax({
+            url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
             method: "GET",
             success: function (data) {
                 if (data.success === true){
-                    //$("#loader").hide();
-                    var new_token = data.new_token;
-                    var match_data = data.data;
+                    var detail_match_data = data.data;
                     var o = new Object();
-                    o["new_token"] = new_token;
-                    o["match_data"] = match_data;
+                    o["detail_match_data"] = detail_match_data;
+                    var url = "{{ route('detmatch') }}";
                     //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
 
-                    $.ajaxSetup({
+                   $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
@@ -389,7 +388,7 @@
 
                 }
             }
-        });*/
+        });
 
     });
 </script>
