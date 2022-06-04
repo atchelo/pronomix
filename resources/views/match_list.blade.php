@@ -9,6 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
     <title>Finapp</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Finapp HTML Mobile Template">
     <meta name="keywords" content="bootstrap, wallet, banking, fintech mobile template, cordova, phonegap, mobile, html, responsive" />
     <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
@@ -80,9 +81,6 @@
         .coupon{
             border: 1px solid #e4e4e4;
         }
-        .team_name{
-
-        }
 
     </style>
 </head>
@@ -135,8 +133,8 @@
                         <div class="in" style="padding: 0px">
                             <div class="titleCard__textWrapper" style="justify-content: space-between;color: #1e1e1e;">
                                     <span class="titleCard__text" style="font-size: 12px">
-                                       @if(isset($match['sport_icon'])) {!! $match['sport_icon'] !!} @endif  {{ $match['league_name'] }}
-                                        ~ <span style="font-weight: normal; color: #6f6c6c;">{{ $match['league_round'] }}</span><br>
+                                           @if(isset($match['sport_icon'])) {!! $match['sport_icon'] !!} @endif  {{ $match['league_name'] }}
+                                            ~ <span style="font-weight: normal; color: #6f6c6c;">{{ $match['league_round'] }}</span><br>
                                                                             </span>
                             </div>
 
@@ -358,6 +356,7 @@
 <script>
     $('[id^="detmatch"]').click(function(e) {
         var match_id = $(this).data('matchid');
+        $("#loader").show();
        console.log(match_id)
 
         $.ajax({

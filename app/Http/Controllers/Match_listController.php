@@ -28,13 +28,21 @@ class Match_listController extends Controller
         return route('allmatch');
     }
 
+    public function getDetails(){
+        $get_detmatch = session('details_match');
+
+        //dd($get_detmatch);
+        return view('detail_match', compact('get_detmatch'));
+    }
+
     public function storegetDetails(Request $request){
         session()->forget([
             'details_match',
         ]);
 
         session([
-            'details_match' => $request['match_data'],
+            'details_match' => $request['detail_match_data'],
         ]);
+        return route('detmatch');
     }
 }

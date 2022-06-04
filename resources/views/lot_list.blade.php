@@ -97,7 +97,7 @@
 </div>
 <!-- * loader -->
 
-<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; overflow-y: auto; position: relative">
+<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; position: relative">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">

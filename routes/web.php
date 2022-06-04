@@ -52,8 +52,8 @@ Route::middleware(['authLog'])->group(function () {
     })->name('home');
     Route::get('match_list', [Match_listController::class, 'getAll'])->name('allmatch');
 
-    //Route::get('match_details', [Match_listController::class, 'getDetails'])->name('detmatch');
-    Route::post('match_details', [Match_listController::class, 'storegetDetails'])->name('detmatch');
+    Route::get('match_details', [Match_listController::class, 'getDetails'])->name('detmatch');
+    Route::post('match_details', [Match_listController::class, 'storegetDetails']);
 
     Route::post('store_match', [Match_listController::class, 'storeAll'])->name('store_match');
 
