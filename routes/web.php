@@ -27,6 +27,7 @@ Route::get('logout', function (){
         'islogged',
         'current_user',
         'list_match',
+        'details_match',
         'token'
     ]);
     return redirect()->route('login');
@@ -59,6 +60,8 @@ Route::middleware(['authLog'])->group(function () {
 
     Route::get('compet_list', [CompetListController::class, 'getAll'])->name('allcompet');
     Route::post('compet_list', [CompetListController::class, 'storeAll'])->name('store_compet');
+
+    Route::post('pronostiquer', [Match_listController::class, 'pronostiquer'])->name('pronos');
 
     Route::get('lot_list', [LotController::class, 'getAll'])->name('all_lot');
     Route::post('lot_list', [LotController::class, 'storeAll'])->name('store_lots');

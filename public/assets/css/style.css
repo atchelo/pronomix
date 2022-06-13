@@ -4596,7 +4596,7 @@ textarea,
   min-height: 52px;
   margin-top: env(safe-area-inset-top);
   transition: 0.2s all;
-  background: rgba(0, 0, 0, 0.85);
+  background: #11a44c;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.75);
   padding: 10px 16px;
@@ -4650,7 +4650,7 @@ textarea,
 }
 
 .toast-box.toast-bottom.show {
-  bottom: 56px;
+  bottom: 0;
   top: auto;
   margin-bottom: env(safe-area-inset-bottom);
 }

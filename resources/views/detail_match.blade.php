@@ -108,7 +108,7 @@
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="app-notifications.html" class="headerButton">
+            <a href="#" class="headerButton" onclick="toastbox('toast-7')">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
@@ -443,46 +443,104 @@
                         <div class="tab-content mt-1" style="height: 93%">
                             <div class="tab-pane fade show active" id="odds_pronostic_match" role="tabpanel" style="height: 100%">
                                 <div class="accordion" style="height: 590px;overflow: auto">
-                                    @foreach($get_detmatch['odds_pronostic_match'] as $index => $pron_match)
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                                        data-bs-target="#accordion00{{$index}}" style="padding: 0px 50px 0px 16px">
-                                                    <ion-icon name="football-outline"></ion-icon>
-                                                    {{ $pron_match['pronostic_name'] }}
-                                                </button>
-                                            </h2>
-                                            <div id="accordion00{{$index}}" class="accordion-collapse collapse my-2" data-bs-parent="#accordionExample2">
-                                                <div class="accordion-body">
-                                                    <ul class="listview flush transparent image-listview text">
-                                                        <li style="min-height: 50px">
-                                                            <div class="container">
-                                                                <div class="row">
-                                                                    @foreach($pron_match['values'] as $index3 => $pron)
-                                                                        <div class="col-4" style="padding: 3px 3px">
-                                                                            <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match['pronostic_name'] }}" data-couponame="{{ $pron['value_name'] }}" data-couponvalue="{{ $pron['odd'] }}" style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron['value_name'] }}</span> <span class="badge-green"> {{ $pron['odd'] }} </span></div>
-                                                                        </div>
-                                                                    @endforeach
+                                    @if(isset($get_detmatch['odds_pronostic_match']))
+                                        @foreach($get_detmatch['odds_pronostic_match'] as $index => $pron_match)
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                            data-bs-target="#accordion00{{$index}}" style="padding: 0px 50px 0px 16px">
+                                                        <ion-icon name="football-outline"></ion-icon>
+                                                        {{ $pron_match['pronostic_name'] }}
+                                                    </button>
+                                                </h2>
+                                                <div id="accordion00{{$index}}" class="accordion-collapse collapse my-2" data-bs-parent="#accordionExample2">
+                                                    <div class="accordion-body">
+                                                        <ul class="listview flush transparent image-listview text">
+                                                            <li style="min-height: 50px">
+                                                                <div class="container">
+                                                                    <div class="row">
+                                                                        @foreach($pron_match['values'] as $index3 => $pron)
+                                                                            <div class="col-4" style="padding: 3px 3px">
+                                                                                <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match['pronostic_name'] }}" data-couponame="{{ $pron['value_name'] }}" data-couponvalue="{{ $pron['odd'] }}" data-leaguename="{{ $get_detmatch['league_name'] }}" data-team1="{{ $get_detmatch['team_name_home'] }}" data-team2="{{ $get_detmatch['team_name_away'] }}" data-bet_id="{{ $pron_match['id'] }}" data-value= "{{ $pron['value'] }}"  style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron['value_name'] }}</span> <span class="badge-green"> {{ $pron['odd'] }} </span></div>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    @endforeach
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="odds_pronostic_first_half" role="tabpanel" style="height: 100%">
                                 <div class="accordion" style="height: 590px;overflow: auto">
-                                    @foreach($get_detmatch['odds_pronostic_first_half'] as $index1 => $pron_match1)
-
-                                    @endforeach
+                                    @if(isset($get_detmatch['odds_pronostic_first_half']))
+                                        @foreach($get_detmatch['odds_pronostic_first_half'] as $index1 => $pron_match1)
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                            data-bs-target="#accordion00{{$index1}}" style="padding: 0px 50px 0px 16px">
+                                                        <ion-icon name="football-outline"></ion-icon>
+                                                        {{ $pron_match1['pronostic_name'] }}
+                                                    </button>
+                                                </h2>
+                                                <div id="accordion00{{$index1}}" class="accordion-collapse collapse my-2" data-bs-parent="#accordionExample2">
+                                                    <div class="accordion-body">
+                                                        <ul class="listview flush transparent image-listview text">
+                                                            <li style="min-height: 50px">
+                                                                <div class="container">
+                                                                    <div class="row">
+                                                                        @foreach($pron_match1['values'] as $index4 => $pron1)
+                                                                            <div class="col-4" style="padding: 3px 3px">
+                                                                                <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match1['pronostic_name'] }}" data-couponame="{{ $pron1['value_name'] }}" data-couponvalue="{{ $pron1['odd'] }}" data-leaguename="{{ $get_detmatch['league_name'] }}" data-team1="{{ $get_detmatch['team_name_home'] }}" data-team2="{{ $get_detmatch['team_name_away'] }}" style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron1['value_name'] }}</span> <span class="badge-green"> {{ $pron1['odd'] }} </span></div>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="odds_pronostic_second_half" role="tabpanel" style="height: 100%">
                                 <div class="accordion" style="height: 590px;overflow: auto">
-
+                                    @if(isset($get_detmatch['odds_pronostic_second_half']))
+                                        @foreach($get_detmatch['odds_pronostic_second_half'] as $index2 => $pron_match2)
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                            data-bs-target="#accordion00{{$index2}}" style="padding: 0px 50px 0px 16px">
+                                                        <ion-icon name="football-outline"></ion-icon>
+                                                        {{ $pron_match2['pronostic_name'] }}
+                                                    </button>
+                                                </h2>
+                                                <div id="accordion00{{$index2}}" class="accordion-collapse collapse my-2" data-bs-parent="#accordionExample2">
+                                                    <div class="accordion-body">
+                                                        <ul class="listview flush transparent image-listview text">
+                                                            <li style="min-height: 50px">
+                                                                <div class="container">
+                                                                    <div class="row">
+                                                                        @foreach($pron_match2['values'] as $index5 => $pron2)
+                                                                            <div class="col-4" style="padding: 3px 3px">
+                                                                                <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match2['pronostic_name'] }}" data-couponame="{{ $pron2['value_name'] }}" data-couponvalue="{{ $pron2['odd'] }}" data-leaguename="{{ $get_detmatch['league_name'] }}" data-team1="{{ $get_detmatch['team_name_home'] }}" data-team2="{{ $get_detmatch['team_name_away'] }}" style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron2['value_name'] }}</span> <span class="badge-green"> {{ $pron2['odd'] }} </span></div>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -1021,7 +1079,7 @@
             <div class="modal-body">
                 <ul class="action-button-list">
                     <li>
-                        <a href="#" class="btn btn-list" data-bs-dismiss="modal">
+                        <a href="#" class="btn btn-list" id="pron_simple"  data-bs-toggle="modal" data-bs-target="#actionSheetInset2">
                             <span>Pronostique rapide</span>
                         </a>
                     </li>
@@ -1071,17 +1129,103 @@
 <!-- * Android Add to Home Action Sheet -->
 
 <!-- toast bottom iconed -->
-<div id="toast-7" class="toast-box toast-bottom" style="bottom: 0">
+<div id="toast-7" class="toast-box toast-bottom">
     <div class="in">
-        <ion-icon name="card-outline" class="text-danger"></ion-icon>
-        <div class="text">
-            Your card has been removed.
-        </div>
+        <ion-icon name="document-outline" style="width: 24px"></ion-icon>
+        <ion-icon name="trash-outline" style="width: 24px"></ion-icon>
+        <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(0)</button>
     </div>
-    <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
-</div>
+    <div class="in" style="padding: 0">
+        <ion-icon class="close-button" name="close-circle-outline" style="width: 24px"></ion-icon>
+    </div>
+    </div>
 <!-- * toast bottom iconed -->
 
+
+
+<!-- Default Action Sheet Inset -->
+<div class="modal fade action-sheet inset" id="actionSheetInset2" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="simprontitle"></h5>
+            </div>
+            <div class="modal-body">
+                <ul class="action-button-list">
+                    <li>
+                        <a href="#" class="btn btn-list" data-bs-dismiss="modal">
+                            <span id="simple_league_name" style="margin-left: auto; margin-right: auto"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-list" data-bs-dismiss="modal" style="justify-content: space-around">
+                            <strong id="team1"></strong> - <strong id="team2"></strong>
+                        </a>
+                    </li>
+                </ul>
+                <div class="action-sheet-content">
+
+                    <form>
+                        <div class="form-group basic">
+                            <label class="label">Type Pronostic</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Enter an amount"
+                                       value="Simple" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <label class="label">Valeur Pronostic</label>
+                            <div class="input-group">
+                                <input id="pronval" type="text" class="form-control" placeholder="Enter an amount" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <label class="label">Pronostiquer avec combien de tickets ?</label>
+                            <div class="input-group">
+                                <input id="pronticketval" required type="number" min="1" max="{{ $ticket_numb }}" class="form-control" placeholder="Saisir le nombre de tickets à utiliser">
+                            </div>
+                            <small id="error_message" class="text-danger">Veuillez remplir svp</small>
+                            <div>Nombre de points : <span class="price text-danger" id="ipt_info"></span></div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <button id="pronostiquer" type="button" class="btn btn-primary btn-block btn-lg">Pronostiquer</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Default Action Sheet Inset -->
+
+
+<!-- DialogIconedSuccess -->
+<div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-success">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+            </div>
+            <div class="modal-body">
+                Your payment has been sent.
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a href="#" class="btn" data-bs-dismiss="modal">CLOSE</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedSuccess -->
 
 
 <!-- ========= JS Files =========  -->
@@ -1122,6 +1266,15 @@
         var pron = $(this).data('proname');
         var coup = $(this).data('couponame');
         var coupval = $(this).data('couponvalue');
+        var leaguename = $(this).data('leaguename');
+        var team1 = $(this).data('team1');
+        var team2 = $(this).data('team2');
+        var bet_id = $(this).data('bet_id');
+        var value = $(this).data('value');
+
+        $('#error_message').hide()
+
+        var sumvar = pron + ',' + coup + ',' + coupval;
 
         $('#action-title').empty(pron);
         $('#coupname').empty(coup);
@@ -1131,9 +1284,151 @@
         $('#coupname').append(coup);
         $('#coupval').append(coupval);
 
+        $('#pron_simple').on('click', function (e) {
+            $('#actionSheetInset').modal('hide');
+            $('#simprontitle').empty();
+            $('#simprontitle').append(pron);
+            $('#simple_league_name').empty();
+            $('#simple_league_name').append(leaguename);
+
+            $('#team1').empty();
+            $('#team1').append(team1);
+
+            $('#team2').empty();
+            $('#team2').append(team2);
+
+            $('#pronval').val(sumvar);
+
+        });
+
+        $('#pronticketval').on('keyup', function (e) {
+            var res = $(this).val()*47.23*coupval;
+            $('#ipt_info').empty();
+            $('#ipt_info').append(res.toFixed(2));
+        });
+
+        $('#pronostiquer').click(function(e) {
+            var nbre_ticket = $('#pronticketval').val();
+            $('#actionSheetInset2').modal('hide');
+            $("#loader").show();
+            var res = $('#pronticketval').val();
+            if (res !== ''){
+
+                var rencontre_id = "{{$get_detmatch['id_']}}";
+                var bet_id1 = bet_id;
+                var value1 = value;
+                var nbre_ticket1 = nbre_ticket;
+                var token = "{{$cur_token}}";
+
+                var o = new Object();
+                o["rencontre_id_"] = rencontre_id;
+                o["bet_id"] = bet_id1;
+                o["value"] = value1;
+                o["nbr_tickets"] = nbre_ticket1;
+                o["token"] = token;
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: `https://demo.pronomix.net/api/pronostic-simple`,
+                    data: o,
+                    success: function(data) {
+                        if (data.status === 'success'){
+
+                            var new_token = data.new_token;
+                            var message = data.message;
+                            var data_reg = data.data;
+                            var o = new Object();
+                            o["new_token"] = new_token;
+                            o["message"] = message;
+                            o["data_reg"] = data_reg;
+                            var url = "{{ route('pronos') }}";
+                            //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: o,
+                                success: function(data) {
+                                    $('#actionSheetInset2').modal('hide');
+                                    $("#loader").hide();
+                                    $('#DialogIconedSuccess').modal('show');
+                                    console.log(data)
+                                }
+                            });
+
+                        }else {
+                            console.log('error')
+                        }
+                    }
+                });
+
+            }else {
+                console.log('not submit')
+                $('#error_message').show()
+
+            }
+
+            //
+            /*$.ajax({
+                url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
+                method: "GET",
+                success: function (data) {
+                    if (data.success === true){
+                        var detail_match_data = data.data;
+                        var o = new Object();
+                        o["detail_match_data"] = detail_match_data;
+                        var url = "";
+                        //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                window.location = data;
+                            }
+                        });
+
+                    }
+                }
+            });*/
+
+        });
 
         //console.log(coup);
     });
+
+
+
+    $('#actionSheetInset2').on('hidden.bs.modal', function () {
+        $('#simprontitle').empty();
+        $('#simple_league_name').empty();
+
+        $('#team1').empty();
+
+        $('#team2').empty();
+
+        $('#ipt_info').empty();
+
+        $('#pronticketval').val('');
+    })
 
 
 </script>

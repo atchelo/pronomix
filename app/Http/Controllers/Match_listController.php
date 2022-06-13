@@ -11,6 +11,7 @@ class Match_listController extends Controller
     public function getAll(Request $request){
 
        $get_match = session('list_match');
+      //dd($get_match);
        $new_token = session('token');
         return view('match_list', compact('get_match', 'new_token'));
     }
@@ -31,8 +32,15 @@ class Match_listController extends Controller
     public function getDetails(){
         $get_detmatch = session('details_match');
 
+        $cur_token = session('token');
+
         //dd($get_detmatch);
-        return view('detail_match', compact('get_detmatch'));
+
+        $get_curuser = session('current_user');
+
+        $ticket_numb = intval($get_curuser['balance_tickets']);
+
+        return view('detail_match', compact('get_detmatch', 'ticket_numb', 'cur_token'));
     }
 
     public function storegetDetails(Request $request){
@@ -45,4 +53,15 @@ class Match_listController extends Controller
         ]);
         return route('detmatch');
     }
+
+    public function pronostiquer(Request $request){
+        session()->forget([
+            'token'
+        ]);
+
+        session([
+            'token' => $request['new_token'],
+        ]);
+    }
+
 }

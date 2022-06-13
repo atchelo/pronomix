@@ -131,7 +131,11 @@
                 <div class="card-block mb-2" id="detmatch{{$index}}" style="height: 135px; background-color: white" data-matchid="{{$match['id_']}}">
                     <div class="section full" style="position: relative; text-align: center">
                         <div class="in" style="padding: 0px">
-                            <div class="titleCard__textWrapper" style="justify-content: space-between;color: #1e1e1e;">
+                            <div class="titleCard__textWrapper" style="justify-content: space-between;color: #1e1e1e; overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 1;
+-webkit-box-orient: vertical;">
                                     <span class="titleCard__text" style="font-size: 12px">
                                            @if(isset($match['sport_icon'])) {!! $match['sport_icon'] !!} @endif  {{ $match['league_name'] }}
                                             ~ <span style="font-weight: normal; color: #6f6c6c;">{{ $match['league_round'] }}</span><br>
