@@ -9,6 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
     <title>Finapp</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Finapp HTML Mobile Template">
     <meta name="keywords"
           content="bootstrap, wallet, banking, fintech mobile template, cordova, phonegap, mobile, html, responsive" />
@@ -442,7 +443,7 @@
                         </div>
                         <div class="tab-content mt-1" style="height: 93%">
                             <div class="tab-pane fade show active" id="odds_pronostic_match" role="tabpanel" style="height: 100%">
-                                <div class="accordion" style="height: 590px;overflow: auto">
+                                <div class="accordion" style="height: 350px;overflow: auto">
                                     @if(isset($get_detmatch['odds_pronostic_match']))
                                         @foreach($get_detmatch['odds_pronostic_match'] as $index => $pron_match)
                                             <div class="accordion-item">
@@ -461,7 +462,7 @@
                                                                     <div class="row">
                                                                         @foreach($pron_match['values'] as $index3 => $pron)
                                                                             <div class="col-4" style="padding: 3px 3px">
-                                                                                <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match['pronostic_name'] }}" data-couponame="{{ $pron['value_name'] }}" data-couponvalue="{{ $pron['odd'] }}" data-leaguename="{{ $get_detmatch['league_name'] }}" data-team1="{{ $get_detmatch['team_name_home'] }}" data-team2="{{ $get_detmatch['team_name_away'] }}" data-bet_id="{{ $pron_match['id'] }}" data-value= "{{ $pron['value'] }}"  style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron['value_name'] }}</span> <span class="badge-green"> {{ $pron['odd'] }} </span></div>
+                                                                                <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match['pronostic_name'] }}" data-couponame="{{ $pron['value_name'] }}" data-couponvalue="{{ $pron['odd'] }}" data-leaguename="{{ $get_detmatch['league_name'] }}" data-team1="{{ $get_detmatch['team_name_home'] }}" data-team2="{{ $get_detmatch['team_name_away'] }}"  data-bet_id="{{ $pron_match['id'] }}" data-value= "{{ $pron['value'] }}"  style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron['value_name'] }}</span> <span class="badge-green"> {{ $pron['odd'] }} </span></div>
                                                                             </div>
                                                                         @endforeach
                                                                     </div>
@@ -476,7 +477,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="odds_pronostic_first_half" role="tabpanel" style="height: 100%">
-                                <div class="accordion" style="height: 590px;overflow: auto">
+                                <div class="accordion" style="height: 350px;overflow: auto">
                                     @if(isset($get_detmatch['odds_pronostic_first_half']))
                                         @foreach($get_detmatch['odds_pronostic_first_half'] as $index1 => $pron_match1)
                                             <div class="accordion-item">
@@ -495,7 +496,7 @@
                                                                     <div class="row">
                                                                         @foreach($pron_match1['values'] as $index4 => $pron1)
                                                                             <div class="col-4" style="padding: 3px 3px">
-                                                                                <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match1['pronostic_name'] }}" data-couponame="{{ $pron1['value_name'] }}" data-couponvalue="{{ $pron1['odd'] }}" data-leaguename="{{ $get_detmatch['league_name'] }}" data-team1="{{ $get_detmatch['team_name_home'] }}" data-team2="{{ $get_detmatch['team_name_away'] }}" style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron1['value_name'] }}</span> <span class="badge-green"> {{ $pron1['odd'] }} </span></div>
+                                                                                <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match1['pronostic_name'] }}" data-couponame="{{ $pron1['value_name'] }}" data-couponvalue="{{ $pron1['odd'] }}" data-leaguename="{{ $get_detmatch['league_name'] }}" data-team1="{{ $get_detmatch['team_name_home'] }}" data-team2="{{ $get_detmatch['team_name_away'] }}" data-bet_id="{{ $pron_match1['id'] }}" data-value= "{{ $pron1['value'] }}" style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron1['value_name'] }}</span> <span class="badge-green"> {{ $pron1['odd'] }} </span></div>
                                                                             </div>
                                                                         @endforeach
                                                                     </div>
@@ -510,7 +511,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="odds_pronostic_second_half" role="tabpanel" style="height: 100%">
-                                <div class="accordion" style="height: 590px;overflow: auto">
+                                <div class="accordion" style="height: 350px;overflow: auto">
                                     @if(isset($get_detmatch['odds_pronostic_second_half']))
                                         @foreach($get_detmatch['odds_pronostic_second_half'] as $index2 => $pron_match2)
                                             <div class="accordion-item">
@@ -529,7 +530,7 @@
                                                                     <div class="row">
                                                                         @foreach($pron_match2['values'] as $index5 => $pron2)
                                                                             <div class="col-4" style="padding: 3px 3px">
-                                                                                <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match2['pronostic_name'] }}" data-couponame="{{ $pron2['value_name'] }}" data-couponvalue="{{ $pron2['odd'] }}" data-leaguename="{{ $get_detmatch['league_name'] }}" data-team1="{{ $get_detmatch['team_name_home'] }}" data-team2="{{ $get_detmatch['team_name_away'] }}" style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron2['value_name'] }}</span> <span class="badge-green"> {{ $pron2['odd'] }} </span></div>
+                                                                                <div class="coupon" id="coupon" data-bs-toggle="modal" data-bs-target="#actionSheetInset" data-proname="{{ $pron_match2['pronostic_name'] }}" data-couponame="{{ $pron2['value_name'] }}" data-couponvalue="{{ $pron2['odd'] }}" data-leaguename="{{ $get_detmatch['league_name'] }}" data-team1="{{ $get_detmatch['team_name_home'] }}" data-team2="{{ $get_detmatch['team_name_away'] }}" data-bet_id="{{ $pron_match2['id'] }}" data-value= "{{ $pron2['value'] }}" style="color: black; text-align: center;  font-size: 10px; background-color: white"><span class="short_team_name">{{ $pron2['value_name'] }}</span> <span class="badge-green"> {{ $pron2['odd'] }} </span></div>
                                                                             </div>
                                                                         @endforeach
                                                                     </div>
@@ -1326,6 +1327,7 @@
                 o["value"] = value1;
                 o["nbr_tickets"] = nbre_ticket1;
                 o["token"] = token;
+                console.log(o)
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1367,7 +1369,8 @@
                                 }
                             });
 
-                        }else {
+                        }
+                        else {
                             console.log('error')
                         }
                     }
