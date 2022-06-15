@@ -1215,8 +1215,30 @@
             <div class="modal-header">
                 <h5 class="modal-title">Success</h5>
             </div>
-            <div class="modal-body">
-                Your payment has been sent.
+            <div class="modal-body" id="coup_success">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <button type="button" class="btn btn-success btn-block">Historiques Coupon<</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedSuccess -->
+
+<!-- DialogIconedDanger -->
+<div class="modal fade dialogbox" id="DialogIconedDanger" data-bs-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-danger">
+                <ion-icon name="close-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Error</h5>
+            </div>
+            <div class="modal-body" id="coup_error">
+
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
@@ -1226,7 +1248,7 @@
         </div>
     </div>
 </div>
-<!-- * DialogIconedSuccess -->
+<!-- * DialogIconedDanger -->
 
 
 <!-- ========= JS Files =========  -->
@@ -1244,6 +1266,27 @@
     AddtoHome("2000", "once");
 
     window.addEventListener("load", function() {
+
+        var p = new Object();
+
+        p['type_pronostic'] = "combine";
+        p['nbr_tickets'] = 1;
+        p['token'] = "{{$cur_token}}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: `https://demo.pronomix.net/api/pronostic-multiple`,
+            data: p,
+            success: function(data) {
+                //var mul_pron = data.pronostics.length();
+                console.log(data)
+            }
+        });
+
         var team_name_shrt = document.getElementsByClassName('short_team_name');
         var result_shrt;
         team_name_shrt.forEach(function(number_shrt) {
@@ -1260,6 +1303,8 @@
         });
 
         toastbox('toast-7');
+
+
 
     });
 
@@ -1340,7 +1385,7 @@
                     data: o,
                     success: function(data) {
                         if (data.status === 'success'){
-
+                            console.log(data)
                             var new_token = data.new_token;
                             var message = data.message;
                             var data_reg = data.data;
@@ -1362,16 +1407,22 @@
                                 url: url,
                                 data: o,
                                 success: function(data) {
-                                    $('#actionSheetInset2').modal('hide');
-                                    $("#loader").hide();
-                                    $('#DialogIconedSuccess').modal('show');
-                                    console.log(data)
+                                    if (data['status'] === 'success'){
+                                        $('#coup_success').append(data['message']);
+                                        $('#actionSheetInset2').modal('hide');
+                                        $("#loader").hide();
+                                        $('#DialogIconedSuccess').modal('show');
+                                    }
                                 }
                             });
 
                         }
                         else {
-                            console.log('error')
+
+                                $('#coup_error').append(data.message);
+                                $('#actionSheetInset2').modal('hide');
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
                         }
                     }
                 });

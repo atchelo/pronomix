@@ -34,7 +34,7 @@ class Match_listController extends Controller
 
         $cur_token = session('token');
 
-        //dd($get_detmatch);
+        //dd($cur_token);
 
         $get_curuser = session('current_user');
 
@@ -61,7 +61,17 @@ class Match_listController extends Controller
 
         session([
             'token' => $request['new_token'],
+            'user_pronos' => $request['data_reg'],
+            'current_user.balance_tickets' => $request['data_reg']['user_new_balance']
         ]);
+
+        $data = [
+            "status" => 'success',
+            "message" => 'Votre pronostic a bien été enregistré!'
+            ];
+
+        return $data;
+
     }
 
 }
