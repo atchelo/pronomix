@@ -321,6 +321,20 @@ display: -webkit-box;
 </div>
 <!-- * Add Card Action Sheet -->
 
+
+<!-- toast bottom iconed -->
+<div id="toast-7" class="toast-box toast-bottom" style="justify-content: center">
+    <div class="in">
+        <ion-icon name="document-outline" style="width: 24px"></ion-icon>
+        <ion-icon name="trash-outline" style="width: 24px"></ion-icon>
+        <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
+    </div>
+    <div class="in" style="padding: 0">
+        <ion-icon class="close-button" name="close-circle-outline" style="width: 24px"></ion-icon>
+    </div>
+</div>
+<!-- * toast bottom iconed -->
+
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
 <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
@@ -339,7 +353,7 @@ display: -webkit-box;
         var result;
         team_name.forEach(function(number) {
             result = number.innerText;
-            number.innerHTML = result.substring(0, 9);
+            number.innerHTML = result.substring(0, 6);
 
         });
 
@@ -349,6 +363,25 @@ display: -webkit-box;
         team_name_shrt.forEach(function(number_shrt) {
             result_shrt = number_shrt.innerText;
             number_shrt.innerHTML = result_shrt.substring(0, 2);
+        });
+
+        var p = new Object();
+
+        p['token'] = "{{$new_token}}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: `https://demo.pronomix.net/api/coupon-pronostics`,
+            data: p,
+            success: function(data) {
+                var mul_pron = data.data.pronostics.length;
+                $("#pron_numb").append(mul_pron);
+                toastbox('toast-7');
+            }
         });
 
         //console.log(team_name);

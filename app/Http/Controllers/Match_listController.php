@@ -34,7 +34,7 @@ class Match_listController extends Controller
 
         $cur_token = session('token');
 
-        //dd($cur_token);
+        //dd($get_detmatch);
 
         $get_curuser = session('current_user');
 
@@ -69,6 +69,25 @@ class Match_listController extends Controller
             "status" => 'success',
             "message" => 'Votre pronostic a bien été enregistré!'
             ];
+
+        return $data;
+
+    }
+
+    public function pronostiquer_multi(Request $request){
+        session()->forget([
+            'token'
+        ]);
+
+        session([
+            'token' => $request['new_token'],
+            'user_pronos_multi' => $request['data_reg'],
+        ]);
+
+        $data = [
+            "status" => 'success',
+            "message" => $request['message']
+        ];
 
         return $data;
 

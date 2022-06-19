@@ -544,7 +544,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="app-cards.html" class="item">
+                        <a href="javascript:void(0);" class="item" id="all_lot2">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="gift-outline"></ion-icon>
                             </div>
@@ -664,6 +664,20 @@
 <!-- * iOS Add to Home Action Sheet -->
 
 
+<!-- toast bottom iconed -->
+<div id="toast-7" class="toast-box toast-bottom" style="justify-content: center">
+    <div class="in">
+        <ion-icon name="document-outline" style="width: 24px"></ion-icon>
+        <ion-icon name="trash-outline" style="width: 24px"></ion-icon>
+    </div>
+    <div class="in" style="padding: 0">
+        <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
+        {{---<ion-icon class="close-button" name="close-circle-outline" style="width: 24px"></ion-icon>---}}
+    </div>
+</div>
+<!-- * toast bottom iconed -->
+
+
 <!-- Android Add to Home Action Sheet -->
 <div class="modal inset fade action-sheet android-add-to-home" id="android-add-to-home-screen" tabindex="-1"
      role="dialog">
@@ -714,6 +728,34 @@
 </script>
 
 <script>
+
+
+
+    window.addEventListener("load", function() {
+
+        var p = new Object();
+
+        p['token'] = "{{$token}}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: `https://demo.pronomix.net/api/coupon-pronostics`,
+            data: p,
+            success: function(data) {
+                var mul_pron = data.data.pronostics.length;
+                $("#pron_numb").append(mul_pron);
+                toastbox('toast-7');
+            }
+        });
+
+    });
+
+
+
     $('#allmatch').click(function() {
         var token = "{{$token}}";
         //var loader =  document.getElementById('loader');
@@ -794,6 +836,45 @@
     });
 
     $('#all_lot').click(function() {
+        //var loader =  document.getElementById('loader');
+        //loader.show();
+
+        $("#loader").show();
+
+        $.ajax({
+            url: `https://demo.pronomix.net/api/lots/liste/search=all_&type_lot=all_&value_min=none&value_max=none`,
+            method: "GET",
+            success: function (data) {
+                if (data.success === true){
+                    //$("#loader").hide();
+                    console.log(data.response)
+                    var url = "{{ route('store_lots') }}";
+                    var lot_data = data.response;
+                    var o = new Object();
+                    o["lot_data"] = lot_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            console.log(data)
+                            window.location = data;
+                        }
+                    });
+
+                }
+            }
+        });
+
+    });
+    $('#all_lot2').click(function() {
         //var loader =  document.getElementById('loader');
         //loader.show();
 

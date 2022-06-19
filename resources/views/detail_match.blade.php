@@ -1085,8 +1085,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="btn btn-list" data-bs-dismiss="modal">
-                                <span>Pronostique multiple</span> <div data-bs-toggle="modal" data-bs-target="#actionSheetInset" style="color: black; text-align: center; background-color: white"><span style="font-size: 15px;font-weight: 700; vertical-align: bottom" class="short_team_name" id="coupname"></span> <span class="badge-green" id="coupval"></span></div>
+                        <a href="#" class="btn btn-list" id="pron_multi">
+                                <span>Ajouter au coupons de pronostique</span> <div style="color: black; text-align: center; background-color: white"><span style="font-size: 15px;font-weight: 700; vertical-align: bottom" class="short_team_name" id="coupname"></span> <span class="badge-green" id="coupval"></span></div>
                         </a>
                     </li>
                 </ul>
@@ -1130,14 +1130,13 @@
 <!-- * Android Add to Home Action Sheet -->
 
 <!-- toast bottom iconed -->
-<div id="toast-7" class="toast-box toast-bottom">
+<div id="toast-7" class="toast-box toast-bottom" style="justify-content: center">
     <div class="in">
         <ion-icon name="document-outline" style="width: 24px"></ion-icon>
         <ion-icon name="trash-outline" style="width: 24px"></ion-icon>
-        <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(0)</button>
     </div>
     <div class="in" style="padding: 0">
-        <ion-icon class="close-button" name="close-circle-outline" style="width: 24px"></ion-icon>
+        <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
     </div>
     </div>
 <!-- * toast bottom iconed -->
@@ -1269,8 +1268,6 @@
 
         var p = new Object();
 
-        p['type_pronostic'] = "combine";
-        p['nbr_tickets'] = 1;
         p['token'] = "{{$cur_token}}";
         $.ajaxSetup({
             headers: {
@@ -1278,12 +1275,13 @@
             }
         });
         $.ajax({
-            type: "POST",
-            url: `https://demo.pronomix.net/api/pronostic-multiple`,
+            type: "GET",
+            url: `https://demo.pronomix.net/api/coupon-pronostics`,
             data: p,
             success: function(data) {
-                //var mul_pron = data.pronostics.length();
-                console.log(data)
+                var mul_pron = data.data.pronostics.length;
+                $("#pron_numb").append(mul_pron);
+                toastbox('toast-7');
             }
         });
 
@@ -1301,8 +1299,6 @@
             number.innerHTML = result.substring(0, 9);
 
         });
-
-        toastbox('toast-7');
 
 
 
@@ -1465,6 +1461,75 @@
             });*/
 
         });
+
+        $('#pron_multi').click(function (e) {
+            console.log(bet_id)
+            console.log(value)
+            $('#actionSheetInset').modal('hide');
+            $("#loader").show();
+            var rencontre_id = "{{$get_detmatch['id_']}}";
+            var o = new Object();
+            o["rencontre_id_"] = rencontre_id;
+            o["bet_id"] = bet_id;
+            o["value"] = value;
+            o["token"] = "{{$cur_token}}";
+            console.log(o)
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: `https://demo.pronomix.net/api/pronostic-combine/add-to-coupon`,
+                data: o,
+                success: function(data) {
+                    if (data.status === 'success'){
+
+                        var new_token = data.new_token;
+                        var message = data.message;
+                        var data_reg = data.data;
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["message"] = message;
+                        o["data_reg"] = data_reg;
+                        var url = "{{ route('pronos_multi') }}";
+                        //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                if (data['status'] === 'success'){
+                                    $('#coup_success').append(data['message']);
+                                    $("#loader").hide();
+                                    $('#DialogIconedSuccess').modal('show');
+                                }
+                            }
+                        });
+
+                    }
+                    else {
+
+                        $('#coup_error').append(data.message);
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    }
+                }
+            });
+
+
+        });
+
 
         //console.log(coup);
     });

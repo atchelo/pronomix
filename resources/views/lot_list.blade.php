@@ -97,7 +97,7 @@
 </div>
 <!-- * loader -->
 
-<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; position: relative">
+<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; position: relative; overflow-y: auto">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
@@ -272,6 +272,17 @@
 </div>
 <!-- * Add Card Action Sheet -->
 
+<div id="toast-7" class="toast-box toast-bottom" style="justify-content: center">
+    <div class="in">
+        <ion-icon name="document-outline" style="width: 24px"></ion-icon>
+        <ion-icon name="trash-outline" style="width: 24px"></ion-icon>
+    </div>
+    <div class="in" style="padding: 0">
+        <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
+        {{---<ion-icon class="close-button" name="close-circle-outline" style="width: 24px"></ion-icon>---}}
+    </div>
+</div>
+
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
 <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
@@ -283,6 +294,30 @@
 <script src="assets/js/base.js"></script>
 
 <script>
+
+    window.addEventListener("load", function() {
+
+        var p = new Object();
+
+        p['token'] = "{{$token}}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: `https://demo.pronomix.net/api/coupon-pronostics`,
+            data: p,
+            success: function(data) {
+                var mul_pron = data.data.pronostics.length;
+                $("#pron_numb").append(mul_pron);
+                toastbox('toast-7');
+            }
+        });
+
+    });
+
     $(".rating").rate();
     var rollback = "{{route('rollback')}}";
     var current_page = "{{$get_lot['current_page']}}";
