@@ -97,8 +97,9 @@ class Match_listController extends Controller
 
     public function get_coup_pron(){
         $pron_coups = session('user_pronos_multi');
+        $token = session('token');
         //dd($pron_coups);
-        return view('pron_coup', compact('pron_coups'));
+        return view('pron_coup', compact('pron_coups', 'token'));
     }
 
 }

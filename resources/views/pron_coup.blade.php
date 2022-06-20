@@ -131,7 +131,7 @@
             </div>
         </div>
         <div class="in" style="padding: 0">
-            <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: #11a44c !important; border:#11a44c !important; color: white  !important;"><ion-icon name="save-outline" style="width: 24px; color: white !important;"></ion-icon>Valider Coupon</button>
+            <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: #11a44c !important; border:#11a44c !important; color: white  !important;"><ion-icon name="save-outline" style="width: 20px; color: white !important;"></ion-icon>Valider Coupon</button>
         </div>
     </div>
     <!-- App Capsule -->
@@ -155,10 +155,27 @@
                         color: #fff;
                         background-color: #006951;
                     }
+
+
+                    .badge-red {
+                        display: inline-block;
+                        padding: 3px 5px;
+                        min-width: 10px;
+                        border-radius: 0.25rem;
+                        text-align: center;
+                        font-size: 15px;
+                        font-weight: bold;
+                        line-height: 1;
+                        white-space: nowrap;
+                        vertical-align: baseline;
+                        color: #fff;
+                        background-color: #d40000;
+                    }
+
                 </style>
 
-                @foreach($pron_coups['pronostics'] as $pron_coup)
-                    <a href="" class="item" style="padding: 15px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }} ">
+                @foreach($pron_coups['pronostics'] as $index => $pron_coup)
+                    <div id="pron_coup{{$index}}" class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
                         <div class="detail">
                             <div>
                                 <strong style="color: #11a44c;"> {{ $pron_coup['team_name_home'] }} - {{ $pron_coup['team_name_away'] }} </strong>
@@ -171,11 +188,16 @@
                                 <div class="badge-green"> {{ $pron_coup['value_odd'] }} </div>
                             </div>
                             <div class="col-6">
-                                <div class="price text-danger"> <ion-icon name="close-circle" style="font-size: x-large; padding: 3px 5px !important;"></ion-icon></div>
+                                <div class="price text-danger" style="color: #d40000 !important;" data-pron_coup_id="{{$pron_coup['rencontre_id_']}}" id="pron_coup_del{{$index}}"  data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline"> <ion-icon name="close-circle" style="font-size: x-large; padding: 3px 5px !important;"></ion-icon></div>
                             </div>
 
                         </div>
-                    </a>
+                        @if($pron_coup['bloque'] === 'true')
+                            <span class="row" style="position: absolute; left: 0.5rem; width: 100%;bottom: 0;">
+                        <div class="badge-red"> <h6 style="color: white; margin: 0">Pronostic Bloqué</h6> </div>
+                    </span>
+                            @endif
+                    </div>
                 @endforeach
 
             </div>
@@ -274,6 +296,34 @@
 </div>
 <!-- * Add Card Action Sheet -->
 
+<!-- Dialog Iconed Inline -->
+<div class="modal fade dialogbox" id="DialogIconedButtonInline" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">SUPPRIMER</h5>
+            </div>
+            <div class="modal-body">
+                Etes vous sûr de vouloir suprimer ce pronostic?
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a id="pron_coup_sup" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        SUPPRIMER
+                    </a>
+                    <a href="#" class="btn btn-text-primary" data-bs-dismiss="modal">
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        ANNULER
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Iconed Inline -->
+
 
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
@@ -288,6 +338,45 @@
 <script>
     window.addEventListener("load", function() {
         toastbox('toast-1');
+    });
+    $('[id^="pron_coup_del"]').click(function (e) {
+       var renc_id = $(this).data('pron_coup_id');
+        var token = "{{$token}}";
+
+        var p = new Object();
+        p['renc_id'] = renc_id;
+        p['token'] = token;
+
+        $("#pron_coup_sup").click(function (e) {
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: `https://demo.pronomix.net/api/pronostic-combine/delete-pronostic`,
+                data: p,
+                success: function(data) {
+                    $('#coup_success').append(data['message']);
+                    $('#actionSheetInset2').modal('hide');
+                    $("#loader").hide();
+                    $('#DialogIconedSuccess').modal('show');
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    }
+                }
+            });
+
+        });
+
+        console.log(renc_id)
+
     });
 </script>
 
