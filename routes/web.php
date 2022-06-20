@@ -67,6 +67,9 @@ Route::middleware(['authLog'])->group(function () {
     Route::get('lot_list', [LotController::class, 'getAll'])->name('all_lot');
     Route::post('lot_list', [LotController::class, 'storeAll'])->name('store_lots');
     Route::get('rollback_lot_list', [LotController::class, 'rollback'])->name('rollback');
+
+    Route::get('coup_pron', [Match_listController::class, 'get_coup_pron'])->name('coup_pron');
+
 });
 
 Route::get('/welcome', function () {

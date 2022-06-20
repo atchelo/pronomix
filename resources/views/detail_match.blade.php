@@ -1086,7 +1086,7 @@
                     </li>
                     <li>
                         <a href="#" class="btn btn-list" id="pron_multi">
-                                <span>Ajouter au coupons de pronostique</span> <div style="color: black; text-align: center; background-color: white"><span style="font-size: 15px;font-weight: 700; vertical-align: bottom" class="short_team_name" id="coupname"></span> <span class="badge-green" id="coupval"></span></div>
+                                <span>Ajouter au coupon</span> <div style="color: black; text-align: center; background-color: white"><span style="font-size: 15px;font-weight: 700; vertical-align: bottom" class="short_team_name" id="coupname"></span> <span class="badge-green" id="coupval"></span></div>
                         </a>
                     </li>
                 </ul>
@@ -1218,7 +1218,32 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
-                    <button type="button" class="btn btn-success btn-block">Historiques Coupon<</button>
+                    <button type="button" class="btn btn-success btn-block">Historiques Pronostique</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedSuccess -->
+
+
+
+<!-- DialogIconedSuccess -->
+<div class="modal fade dialogbox" id="DialogIconedSuccess1" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-success">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+            </div>
+            <div class="modal-body" id="coup_success1">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <button type="button" id="coup_pron" class="btn btn-success btn-block">Historiques Coupon</button>
                 </div>
             </div>
         </div>
@@ -1282,6 +1307,13 @@
                 var mul_pron = data.data.pronostics.length;
                 $("#pron_numb").append(mul_pron);
                 toastbox('toast-7');
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                }
             }
         });
 
@@ -1409,6 +1441,13 @@
                                         $("#loader").hide();
                                         $('#DialogIconedSuccess').modal('show');
                                     }
+                                },
+                                statusCode: {
+                                    500: function() {
+                                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                        $("#loader").hide();
+                                        $('#DialogIconedDanger').modal('show');
+                                    }
                                 }
                             });
 
@@ -1420,6 +1459,13 @@
                                 $("#loader").hide();
                                 $('#DialogIconedDanger').modal('show');
                         }
+                    },
+                    statusCode: {
+                        500: function() {
+                            $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                            $("#loader").hide();
+                            $('#DialogIconedDanger').modal('show');
+                        }
                     }
                 });
 
@@ -1428,37 +1474,6 @@
                 $('#error_message').show()
 
             }
-
-            //
-            /*$.ajax({
-                url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
-                method: "GET",
-                success: function (data) {
-                    if (data.success === true){
-                        var detail_match_data = data.data;
-                        var o = new Object();
-                        o["detail_match_data"] = detail_match_data;
-                        var url = "";
-                        //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
-
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: o,
-                            success: function(data) {
-                                window.location = data;
-                            }
-                        });
-
-                    }
-                }
-            });*/
 
         });
 
@@ -1510,9 +1525,16 @@
                             data: o,
                             success: function(data) {
                                 if (data['status'] === 'success'){
-                                    $('#coup_success').append(data['message']);
+                                    $('#coup_success1').append(data['message']);
                                     $("#loader").hide();
-                                    $('#DialogIconedSuccess').modal('show');
+                                    $('#DialogIconedSuccess1').modal('show');
+                                }
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
                                 }
                             }
                         });
@@ -1521,6 +1543,13 @@
                     else {
 
                         $('#coup_error').append(data.message);
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    }
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').append("Impossible d'enregistrer votre pronostic. Merci de ressayer plutard.");
                         $("#loader").hide();
                         $('#DialogIconedDanger').modal('show');
                     }
@@ -1534,6 +1563,9 @@
         //console.log(coup);
     });
 
+    $('#coup_pron').click(function(e) {
+        window.location = "{{ route('coup_pron') }}";
+    });
 
 
     $('#actionSheetInset2').on('hidden.bs.modal', function () {

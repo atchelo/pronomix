@@ -145,7 +145,12 @@ display: -webkit-box;
                             <div class="container mt-1" style="background-color: rgba(255, 255, 255, 0.2); justify-content: space-between;height: 40px;border-radius: 10px;">
                                 <div class="row">
                                     <div class="col-3" style="padding: 0">
-                                        <div class="team_name" style="color: black; font-weight: bold; margin-top: 5px; text-align: center">{{ $match['team_name_home'] }}</div>
+                                        <div class="team_name" style="color: black; font-weight: bold; margin-top: 5px; text-align: center; overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 1;
+           line-clamp: 2;
+   -webkit-box-orient: vertical;">{{ $match['team_name_home'] }}</div>
                                     </div>
                                     <div class="col-2" style="padding: 0">
                                         <img src="{{ $match['team_logo_home'] }}" alt="logo" class="logo" style="width: 35px;height: 35px;">
@@ -179,7 +184,12 @@ display: -webkit-box;
                                         <img src="{{ $match['team_logo_away'] }}" alt="logo" class="logo" style="width: 35px;height: 35px;">
                                     </div>
                                     <div class="col-3" style="padding: 0">
-                                        <div id="team_name" class="team_name" style="color: black; font-weight: bold; margin-top: 5px; text-align: center">{{ $match['team_name_away'] }}</div>
+                                        <div id="team_name" class="team_name" style="color: black; font-weight: bold; margin-top: 5px; text-align: center;overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 1;
+           line-clamp: 2;
+   -webkit-box-orient: vertical;">{{ $match['team_name_away'] }}</div>
                                     </div>
                                 </div>
                                 <div class="row" style="padding: 0 50px;">
@@ -349,13 +359,13 @@ display: -webkit-box;
 
 
     window.addEventListener("load", function() {
-        var team_name = document.getElementsByClassName('team_name');
+        /*var team_name = document.getElementsByClassName('team_name');
         var result;
         team_name.forEach(function(number) {
             result = number.innerText;
             number.innerHTML = result.substring(0, 6);
 
-        });
+        });*/
 
 
         var team_name_shrt = document.getElementsByClassName('short_team_name');

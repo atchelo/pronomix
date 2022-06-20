@@ -34,6 +34,8 @@ class Match_listController extends Controller
 
         $cur_token = session('token');
 
+        $test = session('user_pronos_multi');
+
         //dd($get_detmatch);
 
         $get_curuser = session('current_user');
@@ -86,11 +88,17 @@ class Match_listController extends Controller
 
         $data = [
             "status" => 'success',
-            "message" => $request['message']
+            "message" => "Pronostique ajoute"
         ];
 
         return $data;
 
+    }
+
+    public function get_coup_pron(){
+        $pron_coups = session('user_pronos_multi');
+        //dd($pron_coups);
+        return view('pron_coup', compact('pron_coups'));
     }
 
 }
