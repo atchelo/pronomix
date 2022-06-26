@@ -126,8 +126,8 @@
             <ion-icon name="document-outline" style="width: 24px"></ion-icon>
             <ion-icon name="trash-outline" style="width: 24px"></ion-icon>
             <div>
-                <p style="color: black; margin: 0;">Cote: {{ $pron_coups['cumul'] }}</p>
-                <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: {{ count($pron_coups['pronostics']) }}</p>
+                <p style="color: black; margin: 0;">Cote: @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif</p>
+                <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: @if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif</p>
             </div>
         </div>
         <div class="in" style="padding: 0">
@@ -136,7 +136,7 @@
     </div>
     <!-- App Capsule -->
     <div id="appCapsule" style="padding: 0">
-        <div class="section mt-2" style="margin-top: 4.1rem !important; padding: 0 8px">
+        <div class="section mt-2" style="margin-top: 5rem !important; padding: 0 8px">
 
             <div class="transactions">
 
@@ -174,31 +174,39 @@
 
                 </style>
 
-                @foreach($pron_coups['pronostics'] as $index => $pron_coup)
-                    <div id="pron_coup{{$index}}" class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
-                        <div class="detail">
-                            <div>
-                                <strong style="color: #11a44c;"> {{ $pron_coup['team_name_home'] }} - {{ $pron_coup['team_name_away'] }} </strong>
-                                <p>{{ $pron_coup['date'] }}</p>
-                                <h5 style="margin: 0;">{{ $pron_coup['pronostic_name'] }}</h5>
+                @if(isset($pron_coups['pronostics']))
+                    @foreach($pron_coups['pronostics'] as $index => $pron_coup)
+                        <div id="pron_coup{{$index}}" class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
+                            <div class="detail">
+                                <div>
+                                    <strong style="color: #11a44c;"> {{ $pron_coup['team_name_home'] }} - {{ $pron_coup['team_name_away'] }} </strong>
+                                    <p>{{ $pron_coup['date'] }}</p>
+                                    <h5 style="margin: 0;">{{ $pron_coup['pronostic_name'] }}</h5>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="badge-green"> {{ $pron_coup['value_odd'] }} </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="price text-danger" style="color: #d40000 !important;" data-pron_coup_id="{{$pron_coup['rencontre_id_']}}" id="pron_coup_del{{$index}}"  data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline"> <ion-icon name="close-circle" style="font-size: x-large; padding: 3px 5px !important;"></ion-icon></div>
-                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="badge-green"> {{ $pron_coup['value_odd'] }} </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="price text-danger" style="color: #d40000 !important;" data-pron_coup_id="{{$pron_coup['rencontre_id_']}}" id="pron_coup_del{{$index}}"  data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline"> <ion-icon name="close-circle" style="font-size: x-large; padding: 3px 5px !important;"></ion-icon></div>
+                                </div>
 
-                        </div>
-                        @if($pron_coup['bloque'] === 'true')
-                            <span class="row" style="position: absolute; left: 0.5rem; width: 100%;bottom: 0;">
+                            </div>
+                            @if($pron_coup['bloque'] === 'true')
+                                <span class="row" style="position: absolute; left: 0.5rem; width: 100%;bottom: 0;">
                         <div class="badge-red"> <h6 style="color: white; margin: 0">Pronostic Bloqué</h6> </div>
                     </span>
                             @endif
+                        </div>
+                    @endforeach
+                @else
+                    <div class="item" style="padding: 25px 24px; opacity: 1; position: relative; overflow: hidden;">
+                        <div class="detail">
+                            Aucun pronostic dans votre coupon
+                        </div>
                     </div>
-                @endforeach
+                    @endif
 
             </div>
 
@@ -325,6 +333,30 @@
 <!-- * Dialog Iconed Inline -->
 
 
+<!-- DialogIconedSuccess -->
+<div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-success">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+            </div>
+            <div class="modal-body" id="coup_success">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <button type="button" id="coup_pron" class="btn btn-success btn-block">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedSuccess -->
+
+
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
 <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
@@ -344,7 +376,7 @@
         var token = "{{$token}}";
 
         var p = new Object();
-        p['renc_id'] = renc_id;
+        p['rencontre_id_'] = renc_id;
         p['token'] = token;
 
         $("#pron_coup_sup").click(function (e) {
@@ -359,10 +391,43 @@
                 url: `https://demo.pronomix.net/api/pronostic-combine/delete-pronostic`,
                 data: p,
                 success: function(data) {
-                    $('#coup_success').append(data['message']);
-                    $('#actionSheetInset2').modal('hide');
-                    $("#loader").hide();
-                    $('#DialogIconedSuccess').modal('show');
+                    if (data.status === "success"){
+
+                        console.log(data)
+                        var new_token = data.new_token;
+                        var data_reg = data.coupon[0];
+                        var message = data.message;
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["data_reg"] = data_reg;
+                        o["message"] = message;
+                        var url = "{{ route('sup_pronos') }}";
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                $('#coup_success').append(data['message']);
+                                $("#loader").hide();
+                                $('#DialogIconedSuccess').modal('show');
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+
+                    }
                 },
                 statusCode: {
                     500: function() {
@@ -377,6 +442,11 @@
 
         console.log(renc_id)
 
+    });
+
+    $('#coup_pron').click(function(e) {
+        $("#loader").show();
+        window.location = "{{ route('coup_pron') }}";
     });
 </script>
 

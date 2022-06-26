@@ -64,6 +64,9 @@ Route::middleware(['authLog'])->group(function () {
     Route::post('pronostiquer', [Match_listController::class, 'pronostiquer'])->name('pronos');
     Route::post('pronostiquer_multi', [Match_listController::class, 'pronostiquer_multi'])->name('pronos_multi');
 
+
+    Route::post('sup_pronostique', [Match_listController::class, 'sup_coup_pron'])->name('sup_pronos');
+
     Route::get('lot_list', [LotController::class, 'getAll'])->name('all_lot');
     Route::post('lot_list', [LotController::class, 'storeAll'])->name('store_lots');
     Route::get('rollback_lot_list', [LotController::class, 'rollback'])->name('rollback');

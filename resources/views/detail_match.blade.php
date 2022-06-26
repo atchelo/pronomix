@@ -1332,7 +1332,11 @@
             url: `https://demo.pronomix.net/api/coupon-pronostics`,
             data: p,
             success: function(data) {
-                var mul_pron = data.data.pronostics.length;
+                if (data.data.pronostics !== undefined){
+                    var mul_pron = data.data.pronostics.length;
+                }else {
+                    mul_pron = 0;
+                }
                 $("#pron_numb").append(mul_pron);
                 toastbox('toast-7');
             },
@@ -1591,7 +1595,7 @@
         //console.log(coup);
     });
 
-    $('#coup_pron1').click(function(e) {
+    $('#coup_pron').click(function(e) {
         $("#loader").show();
         var p = new Object();
 

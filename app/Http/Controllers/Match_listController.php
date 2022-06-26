@@ -102,4 +102,25 @@ class Match_listController extends Controller
         return view('pron_coup', compact('pron_coups', 'token'));
     }
 
+    public function sup_coup_pron(Request $request){
+
+        session()->forget([
+            'token',
+            'user_pronos_multi'
+        ]);
+
+        session([
+            'token' => $request['new_token'],
+            'user_pronos_multi' => $request['data_reg'],
+        ]);
+
+        $data = [
+            "status" => 'success',
+            "message" => $request['message']
+        ];
+
+        return $data;
+
+    }
+
 }
