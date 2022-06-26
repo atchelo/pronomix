@@ -17,8 +17,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="__manifest.json">
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
-    </script>
+    <link rel="stylesheet" href="scroll-bounce/ptrLight.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+    <script src="scroll-bounce/ptrLight.js"></script>
     <style>
         .user-card div:before {
             content: "";
@@ -87,6 +88,33 @@
         }
 
     </style>
+
+    <script>
+        $(function() {
+            $('#appCapsule').ptrLight({
+                'refresh': function(ptrLightInstance) {
+                    console.log('Updating...');
+                    location.reload()
+                    setTimeout(function() {
+                        console.log('Updated!');
+                        ptrLightInstance.done();
+                    }, 2000);
+                },
+                pullThreshold: $(window).height() * 0.5,
+                maxPullThreshold: $(window).height(),
+            });
+        });
+    </script>
+    <style type="text/css">
+        #appCapsule {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+        }
+
+        body #ptr-light-spinner {
+            top: 10px;
+        }
+    </style>
 </head>
 
 <body style="background-color: white; margin: 0; height: 100%; overflow: hidden; ">
@@ -101,7 +129,7 @@
     <!-- App Header -->
     <div class="appHeader"  style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
-            <a href="{{ route('home') }}" class="headerButton">
+            <a href="javascript:void(0);" class="headerButton" id="allmatch">
                 <ion-icon name="chevron-back-outline"></ion-icon>
             </a>
         </div>
@@ -1563,7 +1591,7 @@
         //console.log(coup);
     });
 
-    $('#coup_pron').click(function(e) {
+    $('#coup_pron1').click(function(e) {
         $("#loader").show();
         var p = new Object();
 
@@ -1636,6 +1664,50 @@
 
         $('#pronticketval').val('');
     })
+
+
+    $('#allmatch').click(function() {
+        var token = "{{$cur_token}}";
+        //var loader =  document.getElementById('loader');
+        //loader.show();
+
+        $("#loader").show();
+
+        $.ajax({
+            url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
+            method: "GET",
+            success: function (data) {
+                if (data.success === true){
+                    //$("#loader").hide();
+                    var url = "{{ route('store_match') }}";
+                    var new_token = data.new_token;
+                    var match_data = data.data;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["match_data"] = match_data;
+                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            window.location = data;
+                        }
+                    });
+
+                }
+            }
+        });
+
+    });
+
 
 
 </script>
