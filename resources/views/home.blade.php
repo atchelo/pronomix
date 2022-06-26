@@ -79,7 +79,7 @@
                     }, 2000);
                 },
                 pullThreshold: $(window).height() * 0.5,
-                maxPullThreshold: $(window).height()
+                maxPullThreshold: $(window).height(),
             });
         });
     </script>

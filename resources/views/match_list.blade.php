@@ -12,6 +12,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="Finapp HTML Mobile Template">
     <meta name="keywords" content="bootstrap, wallet, banking, fintech mobile template, cordova, phonegap, mobile, html, responsive" />
+    <link rel="stylesheet" href="scroll-bounce/ptrLight.css">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -19,6 +20,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
     </script>
+    <script src="scroll-bounce/ptrLight.js"></script>
     <style>
         .user-card div:before {
             content: "";
@@ -83,6 +85,68 @@
         }
 
     </style>
+
+    <script>
+        $(function() {
+            $('#appCapsule').ptrLight({
+                'refresh': function(ptrLightInstance) {
+                    console.log('Updating...');
+                    var token = "{{$new_token}}";
+
+                    $.ajax({
+                        url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
+                        method: "GET",
+                        success: function (data) {
+                            if (data.success === true){
+                                //$("#loader").hide();
+                                var url = "{{ route('store_match') }}";
+                                var new_token = data.new_token;
+                                var match_data = data.data;
+                                var o = new Object();
+                                o["new_token"] = new_token;
+                                o["match_data"] = match_data;
+                                //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: o,
+                                    success: function(data) {
+                                        window.location = data;
+                                        location.reload();
+                                    }
+                                });
+
+                            }
+                        }
+                    });
+                    setTimeout(function() {
+                        console.log('Updated!');
+                        ptrLightInstance.done();
+                    }, 2000);
+                },
+                pullThreshold: $(window).height() * 0.5,
+                maxPullThreshold: $(window).height()
+            });
+        });
+    </script>
+    <style type="text/css">
+        #appCapsule {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+        }
+
+        body #ptr-light-spinner {
+            top: 10px;
+        }
+    </style>
+
 </head>
 
 <body style="background-color: white; margin: 0; height: 100%; overflow: hidden; ">
@@ -93,7 +157,7 @@
 </div>
 <!-- * loader -->
 
-<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; overflow-y: auto; position: relative">
+<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; overflow-y: auto; position: relative">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">

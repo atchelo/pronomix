@@ -16,7 +16,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="__manifest.json">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
     </script>
     <script src="{{ asset('rater/rater.js') }}" ></script>
@@ -89,7 +88,7 @@
     </style>
 </head>
 
-<body style="background-color: white; margin: 0; height: 100%; overflow: hidden; ">
+<body style="background-color: white; margin: 0; height: 100%; overflow: hidden;  -webkit-overflow-scrolling: touch;">
 
 <!-- loader -->
 <div id="loader">
@@ -97,7 +96,7 @@
 </div>
 <!-- * loader -->
 
-<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; position: relative; overflow-y: auto">
+<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; position: relative; overflow-y: auto;">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
@@ -124,6 +123,7 @@
     <div id="appCapsule" style="padding: 0">
 
         <div class="section inset mt-2 mb-2">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <div class="transactions">
                 <div class="container">
                     @foreach($get_lot['data'] as $index => $lot)
@@ -176,6 +176,7 @@
                             </div>
                         </div>
                     @endforeach
+                        <div class="spinner-grow text-success" role="status"></div>
                 </div>
             </div>
         </div>
@@ -383,19 +384,24 @@
     var current_page = "{{$get_lot['current_page']}}";
     var total_page = "{{$get_lot['last_page']}}";
     var next_page = "{!! $get_lot['next_page_url'] !!}";
-    jQuery(function($) {
-        $('#flux').on('scroll', function() {
-            if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-                console.log(next_page)
-               if (current_page < total_page){
-                   $.ajax({
-                       url: `${next_page}`,
-                       method: "GET",
-                       success: function (data) {
-                           if (data.success === true){
-                               $("#loader").show();
-                               console.log(data.response)
-                               var url = "{{ route('store_lots') }}";
+
+    $('#flux').on('touchmove', onScroll);
+    function onScroll(){
+        console.log($('#flux').scrollTop());
+        //console.log($(this)[0].scrollHeight - window.innerHeight);
+       /* if ($('#flux').scrollTop() > ($(this)[0].scrollHeight - window.innerHeight)){
+            console.log('start');
+        }*/
+            if($('#flux').scrollTop() + window.innerHeight >= $(this)[0].scrollHeight) {
+                if (current_page < total_page){
+                    /*$.ajax({
+                        url: `${next_page}`,
+                        method: "GET",
+                        success: function (data) {
+                            if (data.success === true){
+                                $("#loader").show();
+                                console.log(data.response)
+                                var url = "{{ route('store_lots') }}";
                                var lot_data = data.response;
                                var o = new Object();
                                o["lot_data"] = lot_data;
@@ -419,12 +425,12 @@
 
                            }
                        }
-                   });
-                   console.log('end reached');
+                   });*/
+                   //console.log('end reached');
                }
             }
-        })
-    });
+
+    }
 
     $("#back").click(function(e) {
         $.ajax({
