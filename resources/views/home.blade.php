@@ -12,10 +12,12 @@
     <meta name="description" content="Finapp HTML Mobile Template">
     <meta name="keywords"
           content="bootstrap, wallet, banking, fintech mobile template, cordova, phonegap, mobile, html, responsive" />
+    <link rel="stylesheet" href="scroll-bounce/ptrLight.css">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
     </script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
+    <script src="scroll-bounce/ptrLight.js"></script>
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="manifest" href="__manifest.json">
@@ -64,19 +66,80 @@
         }
 
     </style>
+
+    <script>
+        $(function() {
+            $('#aft_body').ptrLight({
+                'refresh': function(ptrLightInstance) {
+                    console.log('Updating...');
+                    location.reload()
+                    setTimeout(function() {
+                        console.log('Updated!');
+                        ptrLightInstance.done();
+                    }, 2000);
+                },
+                pullThreshold: $(window).height() * 0.5,
+                maxPullThreshold: $(window).height()
+            });
+        });
+    </script>
+    <style type="text/css">
+        #aft_body {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: scroll;
+        }
+
+        body #ptr-light-spinner {
+            top: 10px;
+        }
+    </style>
+
 </head>
 
 <body style="height: 98vh; background-color: white">
+
+<style>
+    .placeholder-item {
+        box-shadow: 0 4px 10px 0 rgba(33, 33, 33, 0.15);
+        border-radius: 4px;
+        height: 200px;
+        position: fixed;
+        overflow: hidden;
+    }
+
+    .placeholder-item::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: -150px;
+        top: 0;
+        height: 100%;
+        width: 150px;
+        background: linear-gradient(to right, transparent 0%, #E8E8E8 50%, transparent 100%);
+        animation: load 1s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+    }
+
+    @keyframes load {
+        from {
+            left: -150px;
+        }
+        to   {
+            left: 100%;
+        }
+    }
+</style>
 
 <!-- loader -->
 <div id="loader">
     <div class="spinner-border text-light" role="status"></div>
 </div>
+
+
 <!-- * loader -->
 
-<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px;">
+<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px;">
     <!-- App Header -->
-    <div class="appHeader" style="border-radius: 30px; margin: 12px; position: absolute">
+    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: absolute">
         <div class="left">
             <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
                 <ion-icon name="menu-outline"></ion-icon>
@@ -974,5 +1037,6 @@
 </script>
 
 </body>
+<div class="placeholder-item"></div>
 
 </html>

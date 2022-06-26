@@ -1086,7 +1086,7 @@
                     </li>
                     <li>
                         <a href="#" class="btn btn-list" id="pron_multi">
-                                <span>Ajouter au coupon</span> <div style="color: black; text-align: center; background-color: white"><span style="font-size: 15px;font-weight: 700; vertical-align: bottom" class="short_team_name" id="coupname"></span> <span class="badge-green" id="coupval"></span></div>
+                            <span>Ajouter au coupon</span> <div style="color: black; text-align: center; background-color: white"><span style="font-size: 15px;font-weight: 700; vertical-align: bottom" class="short_team_name" id="coupname"></span> <span class="badge-green" id="coupval"></span></div>
                         </a>
                     </li>
                 </ul>
@@ -1138,7 +1138,7 @@
     <div class="in" style="padding: 0">
         <button type="button" class="btn btn-secondary" id="coup_pron1" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
     </div>
-    </div>
+</div>
 <!-- * toast bottom iconed -->
 
 
@@ -1454,10 +1454,10 @@
                         }
                         else {
 
-                                $('#coup_error').append(data.message);
-                                $('#actionSheetInset2').modal('hide');
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
+                            $('#coup_error').append(data.message);
+                            $('#actionSheetInset2').modal('hide');
+                            $("#loader").hide();
+                            $('#DialogIconedDanger').modal('show');
                         }
                     },
                     statusCode: {
@@ -1567,7 +1567,7 @@
         $("#loader").show();
         var p = new Object();
 
-        p['token'] = "{{$token}}";
+        p['token'] = "{{$cur_token}}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
