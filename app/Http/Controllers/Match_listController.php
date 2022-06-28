@@ -123,4 +123,18 @@ class Match_listController extends Controller
 
     }
 
+    public function vid_coup_pron(Request $request){
+        session()->forget([
+            'token',
+            'user_pronos_multi'
+        ]);
+        session([
+            'token' => $request['new_token'],
+        ]);
+        $data = [
+            "message" => $request["message"],
+        ];
+        return $data;
+    }
+
 }

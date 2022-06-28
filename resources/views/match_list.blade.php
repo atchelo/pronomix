@@ -395,18 +395,69 @@ display: -webkit-box;
 </div>
 <!-- * Add Card Action Sheet -->
 
+<!-- DialogIconedSuccess -->
+<div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-success">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+            </div>
+            <div class="modal-body" id="coup_success">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <button type="button" id="coup_pron" class="btn btn-success btn-block">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedSuccess -->
+
 
 <!-- toast bottom iconed -->
 <div id="toast-7" class="toast-box toast-bottom" style="justify-content: center">
     <div class="in">
         <ion-icon name="document-outline" style="width: 24px"></ion-icon>
-        <ion-icon name="trash-outline" style="width: 24px"></ion-icon>
+        <ion-icon name="trash-outline" style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
     </div>
     <div class="in" style="padding: 0">
         <button type="button" id="coup_pron" class="btn btn-secondary" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
     </div>
 </div>
 <!-- * toast bottom iconed -->
+
+<!-- Dialog Iconed Inline -->
+<div class="modal fade dialogbox" id="DialogIconedButtonInline1" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">VIDER</h5>
+            </div>
+            <div class="modal-body">
+                Etes vous sûr de vouloir vider ce coupon?
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        VIDER
+                    </a>
+                    <a href="#" class="btn btn-text-primary" data-bs-dismiss="modal">
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        ANNULER
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Iconed Inline -->
 
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
@@ -521,6 +572,68 @@ display: -webkit-box;
         //console.log(team_name);
         //var result = team_name.substring(0, 10);
         //document.getElementsByClassName("team_name").innerHTML = result;
+    });
+    $('#pron_coup_del_all').click(function (e) {
+        var token = "{{$new_token}}";
+
+        var p = new Object();
+        p['token'] = token;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: `https://demo.pronomix.net/api/pronostic-combine/delete-coupon`,
+            data: p,
+            success: function(data) {
+                if (data.status === "success"){
+
+                    console.log(data)
+                    var new_token = data.new_token;
+                    var message = data.message;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["message"] = message;
+                    var url = "{{ route('vid_pronos') }}";
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            $('#coup_success').append(data['message']);
+                            $("#loader").hide();
+                            $('#DialogIconedSuccess').modal('show');
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        }
+                    });
+
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                }
+            }
+        });
+
     });
 </script>
 

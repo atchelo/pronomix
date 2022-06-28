@@ -124,7 +124,7 @@
     <div id="toast-1" class="toast-box toast-top" style="top: 67px; justify-content: space-around; background: white">
         <div class="in">
             <ion-icon name="document-outline" style="width: 24px"></ion-icon>
-            <ion-icon name="trash-outline" style="width: 24px"></ion-icon>
+            <ion-icon name="trash-outline" style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
             <div>
                 <p style="color: black; margin: 0;">Cote: @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif</p>
                 <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: @if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif</p>
@@ -333,6 +333,62 @@
 <!-- * Dialog Iconed Inline -->
 
 
+<!-- Dialog Iconed Inline -->
+<div class="modal fade dialogbox" id="DialogIconedButtonInline1" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">VIDER</h5>
+            </div>
+            <div class="modal-body">
+                Etes vous sûr de vouloir vider ce coupon?
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        VIDER
+                    </a>
+                    <a href="#" class="btn btn-text-primary" data-bs-dismiss="modal">
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        ANNULER
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Iconed Inline -->
+
+
+<!-- Default Action Sheet Inset -->
+<div class="modal fade action-sheet inset" id="actionSheetInset" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="action-title">Pronostic Multiple</h5>
+            </div>
+            <div class="modal-body">
+                <ul class="action-button-list">
+                    <li>
+                        <a href="#" class="btn btn-list" id="pron_simple"  data-bs-toggle="modal" data-bs-target="#actionSheetInset2">
+                            <span>Pronostique rapide</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-list" id="pron_multi">
+                            <span>Ajouter au coupon</span> <div style="color: black; text-align: center; background-color: white"><span style="font-size: 15px;font-weight: 700; vertical-align: bottom" class="short_team_name" id="coupname"></span> <span class="badge-green" id="coupval"></span></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Default Action Sheet Inset -->
+
+
 <!-- DialogIconedSuccess -->
 <div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
      role="dialog">
@@ -441,6 +497,69 @@
         });
 
         console.log(renc_id)
+
+    });
+
+    $('#pron_coup_del_all').click(function (e) {
+        var token = "{{$token}}";
+
+        var p = new Object();
+        p['token'] = token;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: `https://demo.pronomix.net/api/pronostic-combine/delete-coupon`,
+            data: p,
+            success: function(data) {
+                if (data.status === "success"){
+
+                    console.log(data)
+                    var new_token = data.new_token;
+                    var message = data.message;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["message"] = message;
+                    var url = "{{ route('vid_pronos') }}";
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            $('#coup_success').append(data['message']);
+                            $("#loader").hide();
+                            $('#DialogIconedSuccess').modal('show');
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        }
+                    });
+
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                }
+            }
+        });
 
     });
 
