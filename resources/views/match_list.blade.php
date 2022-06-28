@@ -410,7 +410,7 @@ display: -webkit-box;
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
-                    <button type="button" id="coup_pron" class="btn btn-success btn-block">Fermer</button>
+                    <button type="button" id="coup_pron1" class="btn btn-success btn-block">Fermer</button>
                 </div>
             </div>
         </div>
@@ -634,6 +634,10 @@ display: -webkit-box;
             }
         });
 
+    });
+    $('#coup_pron1').click(function(e) {
+        $("#loader").show();
+        window.location = "{{ route('coup_pron') }}";
     });
 </script>
 
