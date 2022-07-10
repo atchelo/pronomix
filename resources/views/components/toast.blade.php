@@ -11,7 +11,75 @@
 </div>
 <!-- * toast bottom iconed -->
 
+<!-- Dialog Iconed Inline -->
+<div class="modal fade dialogbox" id="DialogIconedButtonInline1" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">VIDER</h5>
+            </div>
+            <div class="modal-body">
+                Etes vous sûr de vouloir vider ce coupon?
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        VIDER
+                    </a>
+                    <a href="#" class="btn btn-text-primary" data-bs-dismiss="modal">
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        ANNULER
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Iconed Inline -->
+
 <script>
+
+    window.addEventListener("load", function() {
+
+        var p = new Object();
+
+        p['token'] = "{{$token}}";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: `https://demo.pronomix.net/api/coupon-pronostics`,
+            data: p,
+            success: function(data) {
+                if (data.data.pronostics !== undefined){
+                    var mul_pron = data.data.pronostics.length;
+                }else {
+                    mul_pron = 0;
+                }
+
+                $("#pron_numb").append(mul_pron);
+                toastbox('toast-7');
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
+            }
+        });
+
+    });
+
+
     $('#coup_pron').click(function(e) {
         $("#loader").show();
         var p = new Object();
