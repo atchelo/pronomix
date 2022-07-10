@@ -1384,10 +1384,10 @@
                                 data: o,
                                 success: function(data) {
                                     if (data['status'] === 'success'){
-                                        $('#coup_success').append(data['message']);
+                                        $('#coup_success1').append(data['message']);
                                         $('#actionSheetInset2').modal('hide');
                                         $("#loader").hide();
-                                        $('#DialogIconedSuccess').modal('show');
+                                        $('#DialogIconedSuccess1').modal('show');
                                     }
                                 },
                                 statusCode: {
@@ -1473,9 +1473,9 @@
                             data: o,
                             success: function(data) {
                                 if (data['status'] === 'success'){
-                                    $('#coup_success1').append(data['message']);
+                                    $('#coup_success').append(data['message']);
                                     $("#loader").hide();
-                                    $('#DialogIconedSuccess1').modal('show');
+                                    $('#DialogIconedSuccess').modal('show');
                                 }
                             },
                             statusCode: {
