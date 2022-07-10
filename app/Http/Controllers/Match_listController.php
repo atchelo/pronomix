@@ -32,7 +32,7 @@ class Match_listController extends Controller
     public function getDetails(){
         $get_detmatch = session('details_match');
 
-        $cur_token = session('token');
+        $token = session('token');
 
         $test = session('user_pronos_multi');
 
@@ -42,7 +42,7 @@ class Match_listController extends Controller
 
         $ticket_numb = intval($get_curuser['balance_tickets']);
 
-        return view('detail_match', compact('get_detmatch', 'ticket_numb', 'cur_token'));
+        return view('detail_match', compact('get_detmatch', 'ticket_numb', 'token'));
     }
 
     public function storegetDetails(Request $request){

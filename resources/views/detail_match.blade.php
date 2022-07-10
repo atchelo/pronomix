@@ -842,6 +842,8 @@
     <!-- * App Capsule -->
 </div>
 
+@include('components.toast')
+
 
 <!-- App Bottom Menu -->
 <!----<div class="appBottomMenu">
@@ -1157,18 +1159,6 @@
 </div>
 <!-- * Android Add to Home Action Sheet -->
 
-<!-- toast bottom iconed -->
-<div id="toast-7" class="toast-box toast-bottom" style="justify-content: center">
-    <div class="in">
-        <ion-icon name="document-outline" style="width: 24px"></ion-icon>
-        <ion-icon name="trash-outline" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1" style="width: 24px"></ion-icon>
-    </div>
-    <div class="in" style="padding: 0">
-        <button type="button" class="btn btn-secondary" id="coup_pron" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
-    </div>
-</div>
-<!-- * toast bottom iconed -->
-
 <!-- Dialog Iconed Inline -->
 <div class="modal fade dialogbox" id="DialogIconedButtonInline1" data-bs-backdrop="static" tabindex="-1"
      role="dialog">
@@ -1350,7 +1340,7 @@
 
         var p = new Object();
 
-        p['token'] = "{{$cur_token}}";
+        p['token'] = "{{$token}}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1453,7 +1443,7 @@
                 var bet_id1 = bet_id;
                 var value1 = value;
                 var nbre_ticket1 = nbre_ticket;
-                var token = "{{$cur_token}}";
+                var token = "{{$token}}";
 
                 var o = new Object();
                 o["rencontre_id_"] = rencontre_id;
@@ -1548,7 +1538,7 @@
             o["rencontre_id_"] = rencontre_id;
             o["bet_id"] = bet_id;
             o["value"] = value;
-            o["token"] = "{{$cur_token}}";
+            o["token"] = "{{$token}}";
             console.log(o)
 
             $.ajaxSetup({
@@ -1624,71 +1614,11 @@
         //console.log(coup);
     });
 
-    $('#coup_pron').click(function(e) {
-        $("#loader").show();
-        var p = new Object();
-
-        p['token'] = "{{$cur_token}}";
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: `https://demo.pronomix.net/api/coupon-pronostics`,
-            data: p,
-            success: function(data) {
-                if (data.success === true){
-                    console.log(data)
-                    var new_token = data.new_token;
-                    var data_reg = data.data;
-                    var o = new Object();
-                    o["new_token"] = new_token;
-                    o["data_reg"] = data_reg;
-                    var url = "{{ route('pronos_multi') }}";
-                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                            window.location = "{{ route('coup_pron') }}";
-                        },
-                        statusCode: {
-                            500: function() {
-                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
-                            }
-                        }
-                    });
-                }
-
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                }
-            }
-        });
-
-    });
-
     $('#coup_pron1').click(function(e) {
         $("#loader").show();
         var p = new Object();
 
-        p['token'] = "{{$cur_token}}";
+        p['token'] = "{{$token}}";
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1760,7 +1690,7 @@
 
 
     $('#allmatch').click(function() {
-        var token = "{{$cur_token}}";
+        var token = "{{$token}}";
         //var loader =  document.getElementById('loader');
         //loader.show();
 
@@ -1802,7 +1732,7 @@
     });
 
     $('#pron_coup_del_all').click(function (e) {
-        var token = "{{$cur_token}}";
+        var token = "{{$token}}";
 
         var p = new Object();
         p['token'] = token;
