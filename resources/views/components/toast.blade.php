@@ -80,6 +80,70 @@
     });
 
 
+    $('#pron_coup_del_all').click(function (e) {
+        var token = "{{$token}}";
+
+        var p = new Object();
+        p['token'] = token;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: `https://demo.pronomix.net/api/pronostic-combine/delete-coupon`,
+            data: p,
+            success: function(data) {
+                if (data.status === "success"){
+
+                    console.log(data)
+                    var new_token = data.new_token;
+                    var message = data.message;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["message"] = message;
+                    var url = "{{ route('vid_pronos') }}";
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            $('#coup_success').append(data['message']);
+                            $("#loader").hide();
+                            $('#DialogIconedSuccess').modal('show');
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        }
+                    });
+
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                }
+            }
+        });
+
+    });
+
+
     $('#coup_pron').click(function(e) {
         $("#loader").show();
         var p = new Object();
