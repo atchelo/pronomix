@@ -397,29 +397,6 @@ display: -webkit-box;
 </div>
 <!-- * Add Card Action Sheet -->
 
-<!-- DialogIconedSuccess -->
-<div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
-     role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-icon text-success">
-                <ion-icon name="checkmark-circle"></ion-icon>
-            </div>
-            <div class="modal-header">
-                <h5 class="modal-title">Success</h5>
-            </div>
-            <div class="modal-body" id="coup_success">
-            </div>
-            <div class="modal-footer">
-                <div class="btn-inline">
-                    <button type="button" id="coup_pron1" class="btn btn-success btn-block">Fermer</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- * DialogIconedSuccess -->
-
 
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
