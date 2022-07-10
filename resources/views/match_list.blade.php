@@ -161,8 +161,8 @@
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
-            <a href="{{ route('home') }}" class="headerButton">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
@@ -416,6 +416,19 @@ display: -webkit-box;
 </script>
 
 <script>
+
+    window.addEventListener("load", function() {
+
+        var team_name_shrt = document.getElementsByClassName('short_team_name');
+        var result_shrt;
+        team_name_shrt.forEach(function(number_shrt) {
+            result_shrt = number_shrt.innerText;
+            number_shrt.innerHTML = result_shrt.substring(0, 2);
+        });
+
+    });
+
+
     $('[id^="detmatch"]').click(function(e) {
         var match_id = $(this).data('matchid');
         $("#loader").show();

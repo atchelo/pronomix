@@ -14,6 +14,7 @@
     <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/192x192.png">
     <link rel="stylesheet" href="assets/css/style.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="manifest" href="__manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous">
@@ -99,8 +100,8 @@
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 0 0 30px 30px; margin: 0 12px;">
         <div class="left">
-            <a href="{{ route('home') }}" class="headerButton">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
@@ -153,7 +154,7 @@
     </div>
     <!-- * App Capsule -->
 </div>
-
+@include('components.toast')
 
 
 <!-- Add Card Action Sheet -->

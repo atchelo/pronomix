@@ -10,7 +10,8 @@ class LotController extends Controller
         $get_lot = session('list_lot');
             //dd($get_lot);
         $token = session('token');
-        return view('lot_list', compact('get_lot', 'token'));
+        $islogged = session('current_user');
+        return view('lot_list', compact('get_lot', 'token', 'islogged'));
     }
 
     public function storeAll(Request $request){

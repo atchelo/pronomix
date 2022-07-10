@@ -47,6 +47,10 @@ Route::middleware(['authLog'])->group(function () {
 
         $islogged = session('current_user');
 
+        session()->forget([
+            'list_lot',
+        ]);
+
         $token = session('token');
 
         return view('home', compact('islogged', 'token'));

@@ -11,9 +11,13 @@ class Match_listController extends Controller
     public function getAll(Request $request){
 
        $get_match = session('list_match');
+        session()->forget([
+            'list_lot',
+        ]);
       //dd($get_match);
+        $islogged = session('current_user');
        $token = session('token');
-        return view('match_list', compact('get_match', 'token'));
+        return view('match_list', compact('get_match', 'token', 'islogged'));
     }
     public function storeAll(Request $request){
         session()->forget([
@@ -30,6 +34,11 @@ class Match_listController extends Controller
     }
 
     public function getDetails(){
+
+        session()->forget([
+            'list_lot',
+        ]);
+
         $get_detmatch = session('details_match');
 
         $token = session('token');
@@ -38,11 +47,13 @@ class Match_listController extends Controller
 
         //dd($get_detmatch);
 
+        $islogged = session('current_user');
+
         $get_curuser = session('current_user');
 
         $ticket_numb = intval($get_curuser['balance_tickets']);
 
-        return view('detail_match', compact('get_detmatch', 'ticket_numb', 'token'));
+        return view('detail_match', compact('get_detmatch', 'ticket_numb', 'token', 'islogged'));
     }
 
     public function storegetDetails(Request $request){
@@ -96,6 +107,9 @@ class Match_listController extends Controller
     }
 
     public function get_coup_pron(){
+        session()->forget([
+            'list_lot',
+        ]);
         $pron_coups = session('user_pronos_multi');
         $token = session('token');
         //dd($pron_coups);

@@ -129,8 +129,8 @@
     <!-- App Header -->
     <div class="appHeader"  style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
-            <a href="javascript:void(0);" class="headerButton" id="allmatch">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
@@ -1283,6 +1283,25 @@
 <script>
     // Add to Home with 2 seconds delay.
     AddtoHome("2000", "once");
+
+    window.addEventListener("load", function() {
+
+        var team_name_shrt = document.getElementsByClassName('short_team_name');
+        var result_shrt;
+        team_name_shrt.forEach(function(number_shrt) {
+            result_shrt = number_shrt.innerText;
+            number_shrt.innerHTML = result_shrt.substring(0, 9);
+        });
+
+        var team_name = document.getElementsByClassName('team_name');
+        var result;
+        team_name.forEach(function(number) {
+            result = number.innerText;
+            number.innerHTML = result.substring(0, 9);
+
+        });
+
+    });
 
     $('[id^="coupon"]').on('click', function (e) {
         var pron = $(this).data('proname');

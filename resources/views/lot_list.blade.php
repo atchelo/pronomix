@@ -100,8 +100,8 @@
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
-            <a href="{{ route('home') }}" class="headerButton" id="back">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
