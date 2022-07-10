@@ -105,7 +105,7 @@
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="app-notifications.html" class="headerButton">
+            <a href="" class="headerButton" onclick="">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
@@ -123,7 +123,7 @@
     <!-- * App Header -->
     <div id="toast-1" class="toast-box toast-top" style="top: 67px; justify-content: space-around; background: white">
         <div class="in">
-            <ion-icon name="document-outline" style="width: 24px"></ion-icon>
+            <ion-icon name="document-outline" data-bs-toggle="modal" data-bs-target="#gen_coup" style="width: 24px"></ion-icon>
             <ion-icon name="trash-outline" style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
             <div>
                 <p style="color: black; margin: 0;">Cote: @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif</p>
@@ -304,6 +304,65 @@
 </div>
 <!-- * Add Card Action Sheet -->
 
+<!-- Default Action Sheet Inset -->
+<div class="modal fade action-sheet inset" id="gen_coup" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="action-title">Option code coupon</h5>
+            </div>
+            <div class="modal-body">
+                <ul class="action-button-list">
+                    <li>
+                        <a href="#" class="btn btn-list"  data-bs-toggle="modal" data-bs-target="#saisir_coup">
+                            <span>Saisir un coupon</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-list" id="gen_coup_click">
+                            <span>Generer un code coupon</span> <div style="color: black; text-align: center; background-color: white"></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Default Action Sheet Inset -->
+
+
+<!-- Default Action Sheet Inset -->
+<div class="modal fade action-sheet inset" id="saisir_coup" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="action-title">Charger le code coupon</h5>
+            </div>
+            <div class="modal-body">
+                <div class="action-sheet-content">
+
+                    <form>
+                        <div class="form-group basic">
+                            <label class="label">Saisir le code coupon</label>
+                            <div class="input-group">
+                                <input type="text" id="code_coupon" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <button type="button" id="code_coupon_val" class="btn btn-primary btn-block btn-lg" data-bs-dismiss="modal">Valider</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Default Action Sheet Inset -->
+
+
+
 <!-- Dialog Iconed Inline -->
 <div class="modal fade dialogbox" id="DialogIconedButtonInline" data-bs-backdrop="static" tabindex="-1"
      role="dialog">
@@ -389,18 +448,55 @@
 <!-- * Default Action Sheet Inset -->
 
 
+<!-- DialogIconedDanger -->
+<div class="modal fade dialogbox" id="DialogIconedDanger" data-bs-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-danger">
+                <ion-icon name="close-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Erreur</h5>
+            </div>
+            <div class="modal-body" id="coup_error">
+
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a href="#" class="btn" id="code_coup_ferme" data-bs-dismiss="modal">Fermer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedDanger -->
+
+
 <!-- DialogIconedSuccess -->
 <div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
      role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-icon text-success">
-                <ion-icon name="checkmark-circle"></ion-icon>
+            <div class="modal-header" style="display: flex; justify-content: center">
+                <h1 id="code" style="text-align: center"></h1>
             </div>
-            <div class="modal-header">
-                <h5 class="modal-title">Success</h5>
+            <div class="modal-body" id="coup_success" style="margin-bottom: 15px">
             </div>
-            <div class="modal-body" id="coup_success">
+            <div class="container" style="margin-bottom: 15px">
+                <div class="row">
+                    <div class="col" style="cursor:pointer; display: flex; justify-content: center" onclick="toastbox('toast-9')">
+                        <ion-icon style="width: 1.5em;height: 1.5em; color: #11a44c !important" name="link-outline"></ion-icon><br>
+                    </div>
+                    <div class="col" style="opacity: 0.3; display: flex; justify-content: center">
+                        <ion-icon style="width: 1.5em;height: 1.5em;" name="logo-whatsapp"></ion-icon>
+                    </div>
+                    <div class="col" style="opacity: 0.3; display: flex; justify-content: center">
+                        <ion-icon style="width: 1.5em;height: 1.5em;" name="logo-google"></ion-icon>
+                    </div>
+                    <div class="col" style="opacity: 0.3; display: flex; justify-content: center">
+                        <ion-icon style="width: 1.5em;height: 1.5em;" name="chatbox-outline"></ion-icon>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
@@ -411,6 +507,21 @@
     </div>
 </div>
 <!-- * DialogIconedSuccess -->
+
+<!-- toast center -->
+<div id="toast-9" class="toast-box toast-center" style="z-index: 9999; background: black">
+    <div class="in">
+        <div class="text">
+            <div class="form-group basic">
+                <div class="input-group" style="background: aliceblue">
+                    <input type="text" id="link_code_coupon" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-sm btn-text-light close-button">CLOSE</button>
+</div>
+<!-- toast center -->
 
 
 <!-- ========= JS Files =========  -->
@@ -427,6 +538,164 @@
     window.addEventListener("load", function() {
         toastbox('toast-1');
     });
+
+    $('#code_coupon_val').click(function(e) {
+        var token = "{{$token}}";
+        var s = new Object();
+        s['token'] = token;
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: `https://demo.pronomix.net/api/pronostic-combine/load-coupon`,
+            data: s,
+            success: function(data) {
+                console.log(data)
+                var new_token = data.new_token;
+                var message = data.message;
+                var status = data.status;
+                var o = new Object();
+                o["new_token"] = new_token;
+                o["status"] = status;
+                o["message"] = message;
+                var url = "{{ route('code_coupon') }}";
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: o,
+                    success: function(data) {
+                        //console.log(data)
+                        $("#gen_coup").modal('hide');
+                        if (data['status'] === "failed"){
+                            $('#coup_error').append(data['message']);
+                            $("#loader").hide();
+                            $('#DialogIconedDanger').modal('show');
+                        }else {
+                            $('#coup_success').append(data['message']);
+                            $("#loader").hide();
+                            $('#DialogIconedSuccess').modal('show');
+                        }
+                    },
+                    statusCode: {
+                        500: function() {
+                            $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                            $("#loader").hide();
+                            $('#DialogIconedDanger').modal('show');
+                        }
+                    }
+                });
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+
+
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
+            }
+        });
+
+    });
+
+    $('#gen_coup_click').click(function (e) {
+
+        $("#loader").show();
+
+        var token = "{{$token}}";
+        var s = new Object();
+        s['token'] = token;
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: `https://demo.pronomix.net/api/pronostic-combine/generate-code`,
+            data: s,
+            success: function(data) {
+                if (data.status === 'success'){
+                    console.log(data)
+                    var new_token = data.new_token;
+                    var code = data.code;
+                    var link = data.link;
+                    var message = data.message;
+                    var status = data.status;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["message"] = message;
+                    o["code"] = code;
+                    o["link"] = link;
+                    o["status"] = status;
+                    var url = "{{ route('gen_code_coupon') }}";
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            $("#gen_coup").modal('hide');
+                            if (data['status'] === 'success'){
+                                $('#coup_success').append(data['message']);
+                                $('#code').append(data['code']);
+                                $('#link_code_coupon').val(data['link']);
+                                $("#loader").hide();
+                                $('#DialogIconedSuccess').modal('show');
+                            }else {
+                                $('#coup_error').append(data['message']);
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        }
+                    });
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $('#coup_error').append(thrownError);
+                $("#loader").hide();
+                $('#DialogIconedDanger').modal('show');
+            }
+        });
+
+    });
+
     $('[id^="pron_coup_del"]').click(function (e) {
        var renc_id = $(this).data('pron_coup_id');
         var token = "{{$token}}";
@@ -564,6 +833,11 @@
     });
 
     $('#coup_pron').click(function(e) {
+        $("#loader").show();
+        window.location = "{{ route('coup_pron') }}";
+    });
+
+    $('#code_coup_ferme').click(function(e) {
         $("#loader").show();
         window.location = "{{ route('coup_pron') }}";
     });

@@ -137,4 +137,34 @@ class Match_listController extends Controller
         return $data;
     }
 
+    public function sais_code_coupon(Request $request){
+        session()->forget([
+            'token',
+        ]);
+        session([
+            'token' => $request['new_token'],
+        ]);
+        $data = [
+            "message" => $request["message"],
+            "status" => $request["status"],
+        ];
+        return $data;
+    }
+
+    public function gen_code_coupon(Request $request){
+        session()->forget([
+            'token',
+        ]);
+        session([
+            'token' => $request['new_token'],
+        ]);
+        $data = [
+            "message" => $request["message"],
+            "status" => $request["status"],
+            "code" => $request["code"],
+            "link" => $request["link"],
+        ];
+        return $data;
+    }
+
 }
