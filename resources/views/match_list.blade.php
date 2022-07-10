@@ -421,34 +421,6 @@ display: -webkit-box;
 <!-- * DialogIconedSuccess -->
 
 
-<!-- Dialog Iconed Inline -->
-<div class="modal fade dialogbox" id="DialogIconedButtonInline1" data-bs-backdrop="static" tabindex="-1"
-     role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">VIDER</h5>
-            </div>
-            <div class="modal-body">
-                Etes vous sûr de vouloir vider ce coupon?
-            </div>
-            <div class="modal-footer">
-                <div class="btn-inline">
-                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
-                        <ion-icon name="close-outline"></ion-icon>
-                        VIDER
-                    </a>
-                    <a href="#" class="btn btn-text-primary" data-bs-dismiss="modal">
-                        <ion-icon name="checkmark-outline"></ion-icon>
-                        ANNULER
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- * Dialog Iconed Inline -->
-
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
 <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
@@ -460,50 +432,6 @@ display: -webkit-box;
 <script src="assets/js/base.js"></script>
 
 <script>
-    window.addEventListener("load", function() {
-        /*var team_name = document.getElementsByClassName('team_name');
-        var result;
-        team_name.forEach(function(number) {
-            result = number.innerText;
-            number.innerHTML = result.substring(0, 6);
-
-        });*/
-
-
-        var team_name_shrt = document.getElementsByClassName('short_team_name');
-        var result_shrt;
-        team_name_shrt.forEach(function(number_shrt) {
-            result_shrt = number_shrt.innerText;
-            number_shrt.innerHTML = result_shrt.substring(0, 2);
-        });
-
-        var p = new Object();
-
-        p['token'] = "{{$token}}";
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: `https://demo.pronomix.net/api/coupon-pronostics`,
-            data: p,
-            success: function(data) {
-                if (data.data.pronostics !== undefined){
-                    var mul_pron = data.data.pronostics.length;
-                }else {
-                    mul_pron = 0;
-                }
-                $("#pron_numb").append(mul_pron);
-                toastbox('toast-7');
-            }
-        });
-
-        //console.log(team_name);
-        //var result = team_name.substring(0, 10);
-        //document.getElementsByClassName("team_name").innerHTML = result;
-    });
     $('#pron_coup_del_all').click(function (e) {
         var token = "{{$token}}";
 

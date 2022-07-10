@@ -1159,34 +1159,6 @@
 </div>
 <!-- * Android Add to Home Action Sheet -->
 
-<!-- Dialog Iconed Inline -->
-<div class="modal fade dialogbox" id="DialogIconedButtonInline1" data-bs-backdrop="static" tabindex="-1"
-     role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">VIDER</h5>
-            </div>
-            <div class="modal-body">
-                Etes vous sûr de vouloir vider ce coupon?
-            </div>
-            <div class="modal-footer">
-                <div class="btn-inline">
-                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
-                        <ion-icon name="close-outline"></ion-icon>
-                        VIDER
-                    </a>
-                    <a href="#" class="btn btn-text-primary" data-bs-dismiss="modal">
-                        <ion-icon name="checkmark-outline"></ion-icon>
-                        ANNULER
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- * Dialog Iconed Inline -->
-
 
 
 <!-- Default Action Sheet Inset -->
@@ -1335,57 +1307,6 @@
 <script>
     // Add to Home with 2 seconds delay.
     AddtoHome("2000", "once");
-
-    window.addEventListener("load", function() {
-
-        var p = new Object();
-
-        p['token'] = "{{$token}}";
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: `https://demo.pronomix.net/api/coupon-pronostics`,
-            data: p,
-            success: function(data) {
-                if (data.data.pronostics !== undefined){
-                    var mul_pron = data.data.pronostics.length;
-                }else {
-                    mul_pron = 0;
-                }
-                $("#pron_numb").append(mul_pron);
-                toastbox('toast-7');
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                }
-            }
-        });
-
-        var team_name_shrt = document.getElementsByClassName('short_team_name');
-        var result_shrt;
-        team_name_shrt.forEach(function(number_shrt) {
-            result_shrt = number_shrt.innerText;
-            number_shrt.innerHTML = result_shrt.substring(0, 9);
-        });
-
-        var team_name = document.getElementsByClassName('team_name');
-        var result;
-        team_name.forEach(function(number) {
-            result = number.innerText;
-            number.innerHTML = result.substring(0, 9);
-
-        });
-
-
-
-    });
 
     $('[id^="coupon"]').on('click', function (e) {
         var pron = $(this).data('proname');
