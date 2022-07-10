@@ -92,7 +92,7 @@
 
 <!-- loader -->
 <div id="loader">
-    <div class="spinner-border text-light" role="status"></div>
+    <div class="spinner-border" role="status"></div>
 </div>
 <!-- * loader -->
 
@@ -288,7 +288,7 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
-                    <button type="button" id="coup_pron" class="btn btn-success btn-block">Fermer</button>
+                    <button type="button" id="coup_pron1" class="btn btn-success btn-block">Fermer</button>
                 </div>
             </div>
         </div>
@@ -302,7 +302,7 @@
         <ion-icon name="trash-outline" style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
     </div>
     <div class="in" style="padding: 0">
-        <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
+        <button type="button" id="coup_pron" class="btn btn-secondary" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
         {{---<ion-icon class="close-button" name="close-circle-outline" style="width: 24px"></ion-icon>---}}
     </div>
 </div>
@@ -582,6 +582,11 @@
             }
         });
 
+    });
+
+    $('#coup_pron1').click(function(e) {
+        $("#loader").show();
+        window.location = "{{ route('coup_pron') }}";
     });
 
 

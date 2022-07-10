@@ -121,7 +121,7 @@
 
 <!-- loader -->
 <div id="loader">
-    <div class="spinner-border text-light" role="status"></div>
+    <div class="spinner-border" role="status"></div>
 </div>
 <!-- * loader -->
 

@@ -131,13 +131,13 @@
 
 <!-- loader -->
 <div id="loader">
-    <div class="spinner-border text-light" role="status"></div>
+        <div class="spinner-border" role="status"></div>
 </div>
 
 
 <!-- * loader -->
 
-<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px;">
+<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; margin-top: 30px">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: 2px; position: absolute">
         <div class="left">
@@ -361,8 +361,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="form-group basic">
                                     <button type="button" class="btn btn-primary btn-block btn-lg"
                                             data-bs-dismiss="modal">Exchange</button>
@@ -450,6 +448,9 @@
     </div>
     <!-- * App Capsule -->
 </div>
+
+
+@include('components.toast')
 
 
 <!-- App Bottom Menu -->
@@ -750,20 +751,6 @@
 <!-- * iOS Add to Home Action Sheet -->
 
 
-<!-- toast bottom iconed -->
-<div id="toast-7" class="toast-box toast-bottom" style="justify-content: center">
-    <div class="in">
-        <ion-icon name="document-outline" style="width: 24px"></ion-icon>
-            <ion-icon name="trash-outline" style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
-    </div>
-    <div class="in" style="padding: 0">
-        <button type="button" class="btn btn-secondary" id="coup_pron" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
-        {{---<ion-icon class="close-button" name="close-circle-outline" style="width: 24px"></ion-icon>---}}
-    </div>
-</div>
-<!-- * toast bottom iconed -->
-
-
 <!-- Dialog Iconed Inline -->
 <div class="modal fade dialogbox" id="DialogIconedButtonInline1" data-bs-backdrop="static" tabindex="-1"
      role="dialog">
@@ -845,66 +832,6 @@
 
 <script>
 
-    $('#coup_pron').click(function(e) {
-        $("#loader").show();
-        var p = new Object();
-
-        p['token'] = "{{$token}}";
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "GET",
-            url: `https://demo.pronomix.net/api/coupon-pronostics`,
-            data: p,
-            success: function(data) {
-                if (data.success === true){
-                    console.log(data)
-                    var new_token = data.new_token;
-                    var data_reg = data.data;
-                    var o = new Object();
-                    o["new_token"] = new_token;
-                    o["data_reg"] = data_reg;
-                    var url = "{{ route('pronos_multi') }}";
-                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                            window.location = "{{ route('coup_pron') }}";
-                        },
-                        statusCode: {
-                            500: function() {
-                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
-                            }
-                        }
-                    });
-                }
-
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                }
-            }
-        });
-
-    });
-
     window.addEventListener("load", function() {
 
         var p = new Object();
@@ -928,6 +855,16 @@
 
                 $("#pron_numb").append(mul_pron);
                 toastbox('toast-7');
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
             }
         });
 
@@ -941,6 +878,7 @@
         //loader.show();
 
         $("#loader").show();
+        document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
 
         $.ajax({
             url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
@@ -971,6 +909,16 @@
                         }
                     });
 
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
                 }
             }
         });
@@ -1008,6 +956,16 @@
                         }
                     });
 
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
                 }
             }
         });
@@ -1049,6 +1007,16 @@
                     });
 
                 }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
             }
         });
 
@@ -1087,6 +1055,16 @@
                         }
                     });
 
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
                 }
             }
         });
