@@ -83,6 +83,8 @@ Route::middleware(['authLog'])->group(function () {
 
     Route::post('gen_code_coupon', [Match_listController::class, 'gen_code_coupon'])->name('gen_code_coupon');
 
+    Route::post('enr_code_coupon', [Match_listController::class, 'enr_sais_code_coupon'])->name('enr_code_coupon');
+
 });
 
 Route::get('/welcome', function () {

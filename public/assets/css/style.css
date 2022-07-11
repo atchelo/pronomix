@@ -1152,6 +1152,11 @@ blockquote.blockquote .blockquote-footer {
   border-radius: 0 !important;
 }
 
+.disable_icon {
+    opacity: .4 !important;
+    pointer-events: none !important;
+}
+
 #loader {
     position: fixed;
     left: 45vw;
@@ -1798,9 +1803,9 @@ color: #FFFFFF !important;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
-background: #fff !important;
-border-color: #fff !important;
-color: black !important;
+background: #11a44c !important;
+border-color: #11a44c !important;
+color: #FFFFFF !important;
 }
 
 .btn-primary.disabled, .btn-primary:disabled {

@@ -1303,6 +1303,15 @@
 
     });
 
+    $('#pronticketval').blur(function()
+    {
+        if( !$(this).val() ) {
+            console.log('test')
+            $('#error_message').show()
+            //$('#pronticketval').css("display","block");
+        }
+    });
+
     $('[id^="coupon"]').on('click', function (e) {
         var pron = $(this).data('proname');
         var coup = $(this).data('couponame');
@@ -1350,11 +1359,10 @@
 
         $('#pronostiquer').click(function(e) {
             var nbre_ticket = $('#pronticketval').val();
-            $('#actionSheetInset2').modal('hide');
-            $("#loader").show();
-            var res = $('#pronticketval').val();
-            if (res !== ''){
 
+            if ($('#pronticketval').val()){
+                $('#actionSheetInset2').modal('hide');
+                $("#loader").show();
                 var rencontre_id = "{{$get_detmatch['id_']}}";
                 var bet_id1 = bet_id;
                 var value1 = value;

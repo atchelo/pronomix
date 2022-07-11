@@ -181,4 +181,22 @@ class Match_listController extends Controller
         return $data;
     }
 
+    public function enr_sais_code_coupon(Request $request){
+        session()->forget([
+            'token',
+        ]);
+        session([
+            'token' => $request['new_token'],
+            'his_coupon' => $request['data'],
+            'current_user.balance_tickets' => $request['data']['user_new_balance']
+        ]);
+
+        $data = [
+            "message" => $request["message"],
+            "status" => $request["status"],
+        ];
+        return $data;
+
+    }
+
 }

@@ -124,14 +124,14 @@
     <div id="toast-1" class="toast-box toast-top" style="top: 67px; justify-content: space-around; background: white">
         <div class="in">
             <ion-icon name="document-outline" data-bs-toggle="modal" data-bs-target="#gen_coup" style="width: 24px"></ion-icon>
-            <ion-icon name="trash-outline" style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
+            <ion-icon name="trash-outline" @if(!isset($pron_coups['cumul'])) class="disable_icon" @endif style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
             <div>
                 <p style="color: black; margin: 0;">Cote: @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif</p>
                 <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: @if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif</p>
             </div>
         </div>
         <div class="in" style="padding: 0">
-            <button type="button" class="btn btn-secondary" style="border-radius: inherit; background: #11a44c !important; border:#11a44c !important; color: white  !important;"><ion-icon name="save-outline" style="width: 20px; color: white !important;"></ion-icon>Valider Coupon</button>
+            <button type="button"  data-bs-toggle="modal" data-bs-target="#actionSheetInset2"  class="btn btn-secondary" style="border-radius: inherit; background: #11a44c !important; border:#11a44c !important; color: white  !important;"><ion-icon name="save-outline" style="width: 20px; color: white !important;"></ion-icon>Valider Coupon</button>
         </div>
     </div>
     <!-- App Capsule -->
@@ -305,6 +305,55 @@
 <!-- * Add Card Action Sheet -->
 
 <!-- Default Action Sheet Inset -->
+<div class="modal fade action-sheet inset" id="actionSheetInset2" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="simprontitle"></h5>
+            </div>
+            <div class="modal-body">
+                <div class="action-sheet-content">
+
+                    <form>
+                        <div class="form-group basic">
+                            <label class="label">Type Pronostic</label>
+                            <div class="input-group">
+                                <select class="form-control custom-select" id="type_pron">
+                                    <option value="combine">Combiné</option>
+                                    <option value="systeme-1">Système-1</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <label class="label">Valeur Pronostic</label>
+                            <div class="input-group">
+                                <input id="pronval" type="text" class="form-control" placeholder="Enter an amount" value="Cote: @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif/ pronostics: @if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <label class="label">Pronostiquer avec combien de tickets ?</label>
+                            <div class="input-group">
+                                <input id="pronticketval" required type="number" min="1" class="form-control" placeholder="Saisir le nombre de tickets à utiliser">
+                            </div>
+                            <small id="error_message" class="text-danger">Veuillez remplir svp</small>
+                            <div>Nombre de points : <span class="price text-danger" id="ipt_info"></span></div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <button id="valid_muli" type="button" class="btn btn-primary btn-block btn-lg">Valider</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Default Action Sheet Inset -->
+
+<!-- Default Action Sheet Inset -->
 <div class="modal fade action-sheet inset" id="gen_coup" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -421,33 +470,6 @@
 <!-- * Dialog Iconed Inline -->
 
 
-<!-- Default Action Sheet Inset -->
-<div class="modal fade action-sheet inset" id="actionSheetInset" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="action-title">Pronostic Multiple</h5>
-            </div>
-            <div class="modal-body">
-                <ul class="action-button-list">
-                    <li>
-                        <a href="#" class="btn btn-list" id="pron_simple"  data-bs-toggle="modal" data-bs-target="#actionSheetInset2">
-                            <span>Pronostique rapide</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="btn btn-list" id="pron_multi">
-                            <span>Ajouter au coupon</span> <div style="color: black; text-align: center; background-color: white"><span style="font-size: 15px;font-weight: 700; vertical-align: bottom" class="short_team_name" id="coupname"></span> <span class="badge-green" id="coupval"></span></div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- * Default Action Sheet Inset -->
-
-
 <!-- DialogIconedDanger -->
 <div class="modal fade dialogbox" id="DialogIconedDanger" data-bs-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -472,15 +494,15 @@
 <!-- * DialogIconedDanger -->
 
 
-<!-- DialogIconedSuccess -->
-<div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
+<!-- DialogIconedSuccessValCode -->
+<div class="modal fade dialogbox" id="DialogIconedSuccessValCode" data-bs-backdrop="static" tabindex="-1"
      role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="display: flex; justify-content: center">
                 <h1 id="code" style="text-align: center"></h1>
             </div>
-            <div class="modal-body" id="coup_success" style="margin-bottom: 15px">
+            <div class="modal-body" id="coup_successValCode" style="margin-bottom: 15px">
             </div>
             <div class="container" style="margin-bottom: 15px">
                 <div class="row">
@@ -501,6 +523,30 @@
             <div class="modal-footer">
                 <div class="btn-inline">
                     <button type="button" id="coup_pron" class="btn btn-success btn-block">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedSuccessValCode -->
+
+
+<!-- DialogIconedSuccess -->
+<div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-success">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+            </div>
+            <div class="modal-body" id="coup_success">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <button type="button" id="fermer" data-bs-dismiss="modal" class="btn btn-success btn-block">Fermer</button>
                 </div>
             </div>
         </div>
@@ -537,6 +583,157 @@
 <script>
     window.addEventListener("load", function() {
         toastbox('toast-1');
+        $('#error_message').hide();
+    });
+
+    $('#fermer').click(function(e) {
+        $("#loader").show();
+        window.location = "{{ route('coup_pron') }}";
+    });
+
+    $('#pronticketval').on('keyup', function (e) {
+        var coupval = @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif;
+        var res = $(this).val()*47.23*coupval;
+        $('#ipt_info').empty();
+        $('#ipt_info').append(res.toFixed(2));
+    });
+
+    $('#valid_muli').click(function(e) {
+
+        var nbre_ticket = $('#pronticketval').val();
+
+        if ($('#pronticketval').val()){
+            $('#actionSheetInset2').modal('hide');
+            $("#loader").show();
+            var token = "{{$token}}";
+            var type_pron = $('#type_pron').val();
+            var nmbre_ticket = $('#pronticketval').val();
+            console.log(type_pron);
+            console.log(nmbre_ticket)
+            var p = new Object();
+            p['token'] = token;
+            p['type_pronostic'] = type_pron;
+            p['nbr_tickets'] = nmbre_ticket;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: `https://demo.pronomix.net/api/pronostic-multiple`,
+                data: p,
+                success: function(data) {
+                    if (data.status === 'success'){
+                        var new_token1 = data.new_token;
+                        var message1 = data.message;
+                        var status1 = data.status;
+                        var data1 = data.data;
+                        var p = new Object();
+                        p["new_token"] = new_token1;
+                        p["message"] = message1;
+                        p["status"] = status1;
+                        p["data"] = data1;
+                        var url1 = "{{ route('enr_code_coupon') }}";
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: url1,
+                            data: p,
+                            success: function(data) {
+                                console.log(data)
+                                $("#gen_coup").modal('hide');
+                                if (data['status'] === "failed"){
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append(data['message']);
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }else {
+                                    $('#coup_success').empty();
+                                    $('#coup_success').append(data['message']);
+                                    $("#loader").hide();
+                                    $('#DialogIconedSuccess').modal('show');
+                                }
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+                    }
+                    else if(data.status === 'failed') {
+                        var new_token = data.new_token;
+                        var message = data.message;
+                        var status = data.status;
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["message"] = message;
+                        o["status"] = status;
+                        var url = "{{ route('code_coupon') }}";
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                console.log(data)
+                                $("#gen_coup").modal('hide');
+                                if (data['status'] === "failed"){
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append(data['message']);
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }else {
+                                    $('#coup_success').empty();
+                                    $('#coup_success').append(data['message']);
+                                    $("#loader").hide();
+                                    $('#DialogIconedSuccess').modal('show');
+                                }
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+
+                    }
+
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').empty();
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
+                }
+            });
+        }else{
+            console.log('not submit')
+            $('#error_message').show()
+        }
+
     });
 
     $('#code_coupon_val').click(function(e) {
@@ -572,10 +769,12 @@
                         //console.log(data)
                         $("#gen_coup").modal('hide');
                         if (data['status'] === "failed"){
+                            $('#coup_error').empty();
                             $('#coup_error').append(data['message']);
                             $("#loader").hide();
                             $('#DialogIconedDanger').modal('show');
                         }else {
+                            $('#coup_success').empty();
                             $('#coup_success').append(data['message']);
                             $("#loader").hide();
                             $('#DialogIconedSuccess').modal('show');
@@ -583,6 +782,7 @@
                     },
                     statusCode: {
                         500: function() {
+                            $('#coup_error').empty();
                             $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                             $("#loader").hide();
                             $('#DialogIconedDanger').modal('show');
@@ -601,6 +801,7 @@
             },
             statusCode: {
                 500: function() {
+                    $('#coup_error').empty();
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
@@ -659,12 +860,15 @@
                         success: function(data) {
                             $("#gen_coup").modal('hide');
                             if (data['status'] === 'success'){
-                                $('#coup_success').append(data['message']);
+                                $('#coup_successValCode').empty();
+                                $('#coup_successValCode').append(data['message']);
+                                $('#code').empty();
                                 $('#code').append(data['code']);
                                 $('#link_code_coupon').val(data['link']);
                                 $("#loader").hide();
-                                $('#DialogIconedSuccess').modal('show');
+                                $('#DialogIconedSuccessValCode').modal('show');
                             }else {
+                                $('#coup_error').empty();
                                 $('#coup_error').append(data['message']);
                                 $("#loader").hide();
                                 $('#DialogIconedDanger').modal('show');
@@ -672,6 +876,7 @@
                         },
                         statusCode: {
                             500: function() {
+                                $('#coup_error').empty();
                                 $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                                 $("#loader").hide();
                                 $('#DialogIconedDanger').modal('show');
@@ -682,6 +887,7 @@
             },
             statusCode: {
                 500: function() {
+                    $('#coup_error').empty();
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
@@ -739,12 +945,14 @@
                             url: url,
                             data: o,
                             success: function(data) {
+                                $('#coup_success').empty();
                                 $('#coup_success').append(data['message']);
                                 $("#loader").hide();
                                 $('#DialogIconedSuccess').modal('show');
                             },
                             statusCode: {
                                 500: function() {
+                                    $('#coup_error').empty();
                                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                                     $("#loader").hide();
                                     $('#DialogIconedDanger').modal('show');
@@ -756,6 +964,7 @@
                 },
                 statusCode: {
                     500: function() {
+                        $('#coup_error').empty();
                         $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                         $("#loader").hide();
                         $('#DialogIconedDanger').modal('show');
@@ -806,12 +1015,14 @@
                         url: url,
                         data: o,
                         success: function(data) {
+                            $('#coup_success').empty();
                             $('#coup_success').append(data['message']);
                             $("#loader").hide();
                             $('#DialogIconedSuccess').modal('show');
                         },
                         statusCode: {
                             500: function() {
+                                $('#coup_error').empty();
                                 $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                                 $("#loader").hide();
                                 $('#DialogIconedDanger').modal('show');
@@ -823,6 +1034,7 @@
             },
             statusCode: {
                 500: function() {
+                    $('#coup_error').empty();
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
