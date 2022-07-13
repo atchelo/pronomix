@@ -85,7 +85,7 @@ a:hover, a:active, a:focus {
 .appHeader .left ion-icon,
 .appHeader .right .icon,
 .appHeader .right ion-icon {
-  font-size: 26px;
+  font-size: 3vh;
 }
 
 .appHeader .left .headerButton,

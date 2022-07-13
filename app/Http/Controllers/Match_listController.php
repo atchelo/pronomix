@@ -30,7 +30,7 @@ class Match_listController extends Controller
             'token' => $request['new_token'],
         ]);
 
-        return route('allmatch');
+        return 'ok';
     }
 
     public function getDetails(){

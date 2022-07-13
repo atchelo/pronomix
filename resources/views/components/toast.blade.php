@@ -562,8 +562,8 @@
 
     });
 
-    $('[id^="allmatch"]').click(function() {
-        var token = "{{$token}}";
+    /*$('[id^="allmatch"]').click(function() {
+        var token = "{{---$token---}}";
         //var loader =  document.getElementById('loader');
         //loader.show();
 
@@ -576,7 +576,7 @@
             success: function (data) {
                 if (data.success === true){
                     //$("#loader").hide();
-                    var url = "{{ route('store_match') }}";
+                    var url = "{{--- route('store_match') ---}}";
                     var new_token = data.new_token;
                     var match_data = data.data;
                     var o = new Object();
@@ -595,6 +595,7 @@
                         url: url,
                         data: o,
                         success: function(data) {
+                           // console.log(data)
                             window.location = data;
                         }
                     });
@@ -614,7 +615,7 @@
             },
         });
 
-    });
+    });*/
 
     $('#pron_coup_del_all').click(function (e) {
         var token = "{{$token}}";

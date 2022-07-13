@@ -378,7 +378,7 @@
 
         $numb =  number_format((float)$number, 2, '.', '');
         @endphp
-        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 47px">{{ $numb }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
+        <h1 class="total" id="nbre_point" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 47px">{{ $numb }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
         <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 24px; color: #3a87ad">{{ $islogged['balance_tickets'] }}<small style="color: #3a87ad; font-size: .675em;">Tickets</small></h1>
 
         <!-- Stats -->
@@ -400,7 +400,7 @@
                                 </a>
                                 <!-- * item -->
                                 <!-- item -->
-                                <a href="javascript:void(0);" class="item" id="allmatch">
+                                <a href="{{ route('allmatch') }}" class="item" {{----id="allmatch"---}}>
                                     <div class="detail">
                                         <ion-icon name="dice-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
                                         <div>
@@ -568,6 +568,62 @@
 <script>
     // Add to Home with 2 seconds delay.
     AddtoHome("2000", "once");
+
+    function liveupdate() {
+
+        setInterval(function () {
+
+            var token = "{{$token}}";
+
+            $.ajax({
+                url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
+                method: "GET",
+                success: function (data) {
+                    if (data.success === true){
+                        var url = "{{ route('store_match') }}";
+                        var new_token = data.new_token;
+                        var match_data = data.data;
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["match_data"] = match_data;
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                console.log(data)
+                            }
+                        });
+
+                    }
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                },
+                error: function (data, textStatus, errorThrown) {
+                    console.log('test');
+
+                },
+            });
+        }, 2000);
+
+    }
+
+    window.addEventListener("load", function() {
+        liveupdate();
+    });
+
 </script>
 
 

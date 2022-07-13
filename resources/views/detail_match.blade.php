@@ -89,7 +89,7 @@
 
     </style>
 
-    <script>
+    {{---<script>
         $(function() {
             $('#appCapsule').ptrLight({
                 'refresh': function(ptrLightInstance) {
@@ -114,7 +114,7 @@
         body #ptr-light-spinner {
             top: 10px;
         }
-    </style>
+    </style>----}}
 </head>
 
 <body style="background-color: white; margin: 0; height: 100%; overflow: hidden; ">
