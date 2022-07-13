@@ -121,7 +121,7 @@
         }
     </style>
     <!-- * App Header -->
-    <div id="toast-1" class="toast-box toast-top" style="top: 67px; justify-content: space-around; background: white">
+    <div id="toast-1" class="toast-box toast-top" style="top: 67px; justify-content: space-around; background: white; position: absolute">
         <div class="in">
             <ion-icon name="document-outline" data-bs-toggle="modal" data-bs-target="#gen_coup" style="width: 24px"></ion-icon>
             <ion-icon name="trash-outline" @if(!isset($pron_coups['cumul'])) class="disable_icon" @endif style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
