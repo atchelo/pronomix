@@ -422,7 +422,7 @@
                                 </a>
                                 <!-- * item -->
                                 <!-- item -->
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="item">
+                                <a href="{{ route('his_coup') }}" {{---data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"---}} class="item">
                                     <div class="detail">
                                         <ion-icon name="file-tray-full-outline" style="margin-right: 16px; font-size: 6vmax; color: #11a44c"></ion-icon>
                                         <div>
@@ -569,7 +569,7 @@
     // Add to Home with 2 seconds delay.
     AddtoHome("2000", "once");
 
-    function liveupdate() {
+    /*function liveupdate() {
 
         setInterval(function () {
 
@@ -616,13 +616,13 @@
 
                 },
             });
-        }, 2000);
+        }, 30000);
 
     }
 
     window.addEventListener("load", function() {
         liveupdate();
-    });
+    });*/
 
     $('[id^="linkTo"]').click(function () {
         $("#loader").show();

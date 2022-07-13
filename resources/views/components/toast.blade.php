@@ -372,7 +372,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('logout') }}" class="item" data-bs-dismiss="modal">
+                        <a href="{{ route('logout') }}" class="item">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="log-out-outline"></ion-icon>
                             </div>

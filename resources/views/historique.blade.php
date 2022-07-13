@@ -93,7 +93,7 @@
 </div>
 <!-- * loader -->
 
-<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
+<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; overflow-y: auto; position: relative">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
@@ -124,10 +124,10 @@
     <div id="toast-1" class="toast-box toast-top" style="top: 67px; justify-content: space-around; background: white">
         <div class="in">
             <ion-icon name="document-outline" data-bs-toggle="modal" data-bs-target="#gen_coup" style="width: 24px"></ion-icon>
-            <ion-icon name="trash-outline" @if(!isset($pron_coups['cumul'])) class="disable_icon" @endif style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
+            <ion-icon name="trash-outline" style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
             <div>
-                <p style="color: black; margin: 0;">Cote: @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif</p>
-                <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: @if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif</p>
+                <p style="color: black; margin: 0;">Cote: 32</p>
+                <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: 3</p>
             </div>
         </div>
         <div class="in" style="padding: 0">
@@ -174,39 +174,24 @@
 
                 </style>
 
-                @if(isset($pron_coups['pronostics']))
-                    @foreach($pron_coups['pronostics'] as $index => $pron_coup)
-                        <div id="pron_coup{{$index}}" class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
-                            <div class="detail">
-                                <div>
-                                    <strong style="color: #11a44c;"> {{ $pron_coup['team_name_home'] }} - {{ $pron_coup['team_name_away'] }} </strong>
-                                    <p>{{ $pron_coup['date'] }}</p>
-                                    <h5 style="margin: 0;">{{ $pron_coup['pronostic_name'] }}</h5>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="badge-green"> {{ $pron_coup['value_odd'] }} </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="price text-danger" style="color: #d40000 !important;" data-pron_coup_id="{{$pron_coup['rencontre_id_']}}" id="pron_coup_del{{$index}}"  data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline"> <ion-icon name="close-circle" style="font-size: x-large; padding: 3px 5px !important;"></ion-icon></div>
-                                </div>
-
-                            </div>
-                            @if($pron_coup['bloque'] === 'true')
-                                <span class="row" style="position: absolute; left: 0.5rem; width: 100%;bottom: 0;">
-                        <div class="badge-red"> <h6 style="color: white; margin: 0">Pronostic Bloqué</h6> </div>
-                    </span>
-                            @endif
-                        </div>
-                    @endforeach
-                @else
-                    <div class="item" style="padding: 25px 24px; opacity: 1; position: relative; overflow: hidden;">
-                        <div class="detail">
-                            Aucun pronostic dans votre coupon
+                <div id="pron_coup" class="item" style="padding: 25px 24px; position: relative; overflow: hidden;">
+                    <div class="detail">
+                        <div>
+                            <strong style="color: #11a44c;"> team home - team away </strong>
+                            <p>2022-07-12 12:39:27</p>
+                            <h5 style="margin: 0;">Match Winner</h5>
                         </div>
                     </div>
-                    @endif
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="badge-green"> 4.3 </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="price text-danger" style="color: #d40000 !important;" data-pron_coup_id="" id="pron_coup_del"  data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline"> <ion-icon name="close-circle" style="font-size: x-large; padding: 3px 5px !important;"></ion-icon></div>
+                        </div>
+
+                    </div>
+                </div>
 
             </div>
 
@@ -328,7 +313,7 @@
                         <div class="form-group basic">
                             <label class="label">Valeur Pronostic</label>
                             <div class="input-group">
-                                <input id="pronval" type="text" class="form-control" placeholder="Enter an amount" value="Cote: @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif/ pronostics: @if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif" readonly>
+                                <input id="pronval" type="text" class="form-control" placeholder="Enter an amount" value="Cote: " readonly>
                             </div>
                         </div>
 
@@ -579,481 +564,6 @@
 <script src="assets/js/plugins/splide/splide.min.js"></script>
 <!-- Base Js File -->
 <script src="assets/js/base.js"></script>
-
-<script>
-    window.addEventListener("load", function() {
-        toastbox('toast-1');
-        $('#error_message').hide();
-    });
-
-    $('#fermer').click(function(e) {
-        $("#loader").show();
-        window.location = "{{ route('coup_pron') }}";
-    });
-
-    $('#pronticketval').on('keyup', function (e) {
-        var coupval = @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif;
-        var res = $(this).val()*47.23*coupval;
-        $('#ipt_info').empty();
-        $('#ipt_info').append(res.toFixed(2));
-    });
-
-    $('#valid_muli').click(function(e) {
-
-        var nbre_ticket = $('#pronticketval').val();
-
-        if ($('#pronticketval').val()){
-            $('#actionSheetInset2').modal('hide');
-            $("#loader").show();
-            var token = "{{$token}}";
-            var type_pron = $('#type_pron').val();
-            var nmbre_ticket = $('#pronticketval').val();
-            console.log(type_pron);
-            console.log(nmbre_ticket)
-            var p = new Object();
-            p['token'] = token;
-            p['type_pronostic'] = type_pron;
-            p['nbr_tickets'] = nmbre_ticket;
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $.ajax({
-                type: "POST",
-                url: `https://demo.pronomix.net/api/pronostic-multiple`,
-                data: p,
-                success: function(data) {
-                    if (data.status === 'success'){
-                        var new_token1 = data.new_token;
-                        var message1 = data.message;
-                        var status1 = data.status;
-                        var data1 = data.data;
-                        var p = new Object();
-                        p["new_token"] = new_token1;
-                        p["message"] = message1;
-                        p["status"] = status1;
-                        p["data"] = data1;
-                        var url1 = "{{ route('enr_code_coupon') }}";
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        $.ajax({
-                            type: "POST",
-                            url: url1,
-                            data: p,
-                            success: function(data) {
-                                console.log(data)
-                                $("#gen_coup").modal('hide');
-                                if (data['status'] === "failed"){
-                                    $('#coup_error').empty();
-                                    $('#coup_error').append(data['message']);
-                                    $("#loader").hide();
-                                    $('#DialogIconedDanger').modal('show');
-                                }else {
-                                    $('#coup_success').empty();
-                                    $('#coup_success').append(data['message']);
-                                    $("#loader").hide();
-                                    $('#DialogIconedSuccess').modal('show');
-                                }
-                            },
-                            statusCode: {
-                                500: function() {
-                                    $('#coup_error').empty();
-                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                    $("#loader").hide();
-                                    $('#DialogIconedDanger').modal('show');
-                                }
-                            }
-                        });
-                    }
-                    else if(data.status === 'failed') {
-                        var new_token = data.new_token;
-                        var message = data.message;
-                        var status = data.status;
-                        var o = new Object();
-                        o["new_token"] = new_token;
-                        o["message"] = message;
-                        o["status"] = status;
-                        var url = "{{ route('code_coupon') }}";
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: o,
-                            success: function(data) {
-                                console.log(data)
-                                $("#gen_coup").modal('hide');
-                                if (data['status'] === "failed"){
-                                    $('#coup_error').empty();
-                                    $('#coup_error').append(data['message']);
-                                    $("#loader").hide();
-                                    $('#DialogIconedDanger').modal('show');
-                                }else {
-                                    $('#coup_success').empty();
-                                    $('#coup_success').append(data['message']);
-                                    $("#loader").hide();
-                                    $('#DialogIconedSuccess').modal('show');
-                                }
-                            },
-                            statusCode: {
-                                500: function() {
-                                    $('#coup_error').empty();
-                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                    $("#loader").hide();
-                                    $('#DialogIconedDanger').modal('show');
-                                }
-                            }
-                        });
-
-                    }
-
-                },
-                statusCode: {
-                    500: function() {
-                        $('#coup_error').empty();
-                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                        $("#loader").hide();
-                        $('#DialogIconedDanger').modal('show');
-                    },
-                    419: function (){
-                        window.location = "{{ route('logout') }}";
-                    }
-                }
-            });
-        }else{
-            console.log('not submit')
-            $('#error_message').show()
-        }
-
-    });
-
-    $('#code_coupon_val').click(function(e) {
-        var token = "{{$token}}";
-        var s = new Object();
-        s['token'] = token;
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $.ajax({
-            type: "POST",
-            url: `https://demo.pronomix.net/api/pronostic-combine/load-coupon`,
-            data: s,
-            success: function(data) {
-                console.log(data)
-                var new_token = data.new_token;
-                var message = data.message;
-                var status = data.status;
-                var o = new Object();
-                o["new_token"] = new_token;
-                o["status"] = status;
-                o["message"] = message;
-                var url = "{{ route('code_coupon') }}";
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: o,
-                    success: function(data) {
-                        //console.log(data)
-                        $("#gen_coup").modal('hide');
-                        if (data['status'] === "failed"){
-                            $('#coup_error').empty();
-                            $('#coup_error').append(data['message']);
-                            $("#loader").hide();
-                            $('#DialogIconedDanger').modal('show');
-                        }else {
-                            $('#coup_success').empty();
-                            $('#coup_success').append(data['message']);
-                            $("#loader").hide();
-                            $('#DialogIconedSuccess').modal('show');
-                        }
-                    },
-                    statusCode: {
-                        500: function() {
-                            $('#coup_error').empty();
-                            $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                            $("#loader").hide();
-                            $('#DialogIconedDanger').modal('show');
-                        }
-                    }
-                });
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-
-
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').empty();
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                },
-                419: function (){
-                    window.location = "{{ route('logout') }}";
-                }
-            }
-        });
-
-    });
-
-    $('#gen_coup_click').click(function (e) {
-
-        $("#loader").show();
-
-        var token = "{{$token}}";
-        var s = new Object();
-        s['token'] = token;
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $.ajax({
-            type: "POST",
-            url: `https://demo.pronomix.net/api/pronostic-combine/generate-code`,
-            data: s,
-            success: function(data) {
-                if (data.status === 'success'){
-                    console.log(data)
-                    var new_token = data.new_token;
-                    var code = data.code;
-                    var link = data.link;
-                    var message = data.message;
-                    var status = data.status;
-                    var o = new Object();
-                    o["new_token"] = new_token;
-                    o["message"] = message;
-                    o["code"] = code;
-                    o["link"] = link;
-                    o["status"] = status;
-                    var url = "{{ route('gen_code_coupon') }}";
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                            $("#gen_coup").modal('hide');
-                            if (data['status'] === 'success'){
-                                $('#coup_successValCode').empty();
-                                $('#coup_successValCode').append(data['message']);
-                                $('#code').empty();
-                                $('#code').append(data['code']);
-                                $('#link_code_coupon').val(data['link']);
-                                $("#loader").hide();
-                                $('#DialogIconedSuccessValCode').modal('show');
-                            }else {
-                                $('#coup_error').empty();
-                                $('#coup_error').append(data['message']);
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
-                            }
-                        },
-                        statusCode: {
-                            500: function() {
-                                $('#coup_error').empty();
-                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
-                            }
-                        }
-                    });
-                }
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').empty();
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                $('#coup_error').append(thrownError);
-                $("#loader").hide();
-                $('#DialogIconedDanger').modal('show');
-            }
-        });
-
-    });
-
-    $('[id^="pron_coup_del"]').click(function (e) {
-       var renc_id = $(this).data('pron_coup_id');
-        var token = "{{$token}}";
-
-        var p = new Object();
-        p['rencontre_id_'] = renc_id;
-        p['token'] = token;
-
-        $("#pron_coup_sup").click(function (e) {
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                type: "POST",
-                url: `https://demo.pronomix.net/api/pronostic-combine/delete-pronostic`,
-                data: p,
-                success: function(data) {
-                    if (data.status === "success"){
-
-                        console.log(data)
-                        var new_token = data.new_token;
-                        var data_reg = data.coupon[0];
-                        var message = data.message;
-                        var o = new Object();
-                        o["new_token"] = new_token;
-                        o["data_reg"] = data_reg;
-                        o["message"] = message;
-                        var url = "{{ route('sup_pronos') }}";
-
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: o,
-                            success: function(data) {
-                                $('#coup_success').empty();
-                                $('#coup_success').append(data['message']);
-                                $("#loader").hide();
-                                $('#DialogIconedSuccess').modal('show');
-                            },
-                            statusCode: {
-                                500: function() {
-                                    $('#coup_error').empty();
-                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                    $("#loader").hide();
-                                    $('#DialogIconedDanger').modal('show');
-                                }
-                            }
-                        });
-
-                    }
-                },
-                statusCode: {
-                    500: function() {
-                        $('#coup_error').empty();
-                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                        $("#loader").hide();
-                        $('#DialogIconedDanger').modal('show');
-                    }
-                }
-            });
-
-        });
-
-        console.log(renc_id)
-
-    });
-
-    $('#pron_coup_del_all').click(function (e) {
-        var token = "{{$token}}";
-
-        var p = new Object();
-        p['token'] = token;
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "POST",
-            url: `https://demo.pronomix.net/api/pronostic-combine/delete-coupon`,
-            data: p,
-            success: function(data) {
-                if (data.status === "success"){
-
-                    console.log(data)
-                    var new_token = data.new_token;
-                    var message = data.message;
-                    var o = new Object();
-                    o["new_token"] = new_token;
-                    o["message"] = message;
-                    var url = "{{ route('vid_pronos') }}";
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                            $('#coup_success').empty();
-                            $('#coup_success').append(data['message']);
-                            $("#loader").hide();
-                            $('#DialogIconedSuccess').modal('show');
-                        },
-                        statusCode: {
-                            500: function() {
-                                $('#coup_error').empty();
-                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
-                            }
-                        }
-                    });
-
-                }
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').empty();
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                }
-            }
-        });
-
-    });
-
-    $('#coup_pron').click(function(e) {
-        $("#loader").show();
-        window.location = "{{ route('coup_pron') }}";
-    });
-
-    $('#code_coup_ferme').click(function(e) {
-        $("#loader").show();
-        window.location = "{{ route('coup_pron') }}";
-    });
-</script>
 
 </body>
 
