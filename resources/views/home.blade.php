@@ -391,7 +391,7 @@
                                 <!-- item -->
                                 <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="item">
                                     <div class="detail">
-                                        <ion-icon name="cash-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
+                                        <ion-icon name="cash-outline" style="margin-right: 16px; font-size: 6vmax; color: #11a44c"></ion-icon>
                                         <div>
                                             <strong>Recharger le compte</strong>
                                             <p>when you get direct deposit</p>
@@ -402,7 +402,7 @@
                                 <!-- item -->
                                 <a href="{{ route('allmatch') }}" id="linkToAll_match" class="item" {{----id="allmatch"---}}>
                                     <div class="detail">
-                                        <ion-icon name="dice-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
+                                        <ion-icon name="dice-outline" style="margin-right: 16px; font-size: 6vmax; color: #11a44c"></ion-icon>
                                         <div>
                                             <strong>Pronostiquer</strong>
                                             <p>when you get direct deposit</p>
@@ -413,7 +413,7 @@
                                 <!-- item -->
                                 <a href="javascript:void(0);" class="item" id="all_lot">
                                     <div class="detail">
-                                        <ion-icon name="gift-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
+                                        <ion-icon name="gift-outline" style="margin-right: 16px; font-size: 6vmax; color: #11a44c"></ion-icon>
                                         <div>
                                             <strong>Les lots</strong>
                                             <p>when you get direct deposit</p>
@@ -424,7 +424,7 @@
                                 <!-- item -->
                                 <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="item">
                                     <div class="detail">
-                                        <ion-icon name="file-tray-full-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
+                                        <ion-icon name="file-tray-full-outline" style="margin-right: 16px; font-size: 6vmax; color: #11a44c"></ion-icon>
                                         <div>
                                             <strong>Historiques Pronostics</strong>
                                             <p>when you get direct deposit</p>
