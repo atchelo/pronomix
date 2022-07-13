@@ -378,8 +378,8 @@
 
         $numb =  number_format((float)$number, 2, '.', '');
         @endphp
-        <h1 class="total" id="nbre_point" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 7vmax">{{ $numb }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
-        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 4vmax; color: #3a87ad">{{ $islogged['balance_tickets'] }}<small style="color: #3a87ad; font-size: .675em;">Tickets</small></h1>
+        <h1 class="total" id="nbre_point" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 3rem">{{ $numb }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
+        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 2rem; color: #3a87ad">{{ $islogged['balance_tickets'] }}<small style="color: #3a87ad; font-size: .675em;">Tickets</small></h1>
 
         <!-- Stats -->
         <div class="section" style="margin-top: 9rem; padding: 0; height: -webkit-fill-available; box-shadow: 0px 5px rgb(17 164 76 / 10%), 0px -10px 12px rgb(17 164 76 / 10%);height: -webkit-fill-available;border-radius: 30px 30px;">
@@ -391,7 +391,7 @@
                                 <!-- item -->
                                 <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="item">
                                     <div class="detail">
-                                        <ion-icon name="cash-outline" style="margin-right: 16px; font-size: 6vmax; color: #11a44c"></ion-icon>
+                                        <ion-icon name="cash-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
                                         <div>
                                             <strong>Recharger le compte</strong>
                                             <p>when you get direct deposit</p>
@@ -402,7 +402,7 @@
                                 <!-- item -->
                                 <a href="{{ route('allmatch') }}" id="linkToAll_match" class="item" {{----id="allmatch"---}}>
                                     <div class="detail">
-                                        <ion-icon name="dice-outline" style="margin-right: 16px; font-size: 6vmax; color: #11a44c"></ion-icon>
+                                        <ion-icon name="dice-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
                                         <div>
                                             <strong>Pronostiquer</strong>
                                             <p>when you get direct deposit</p>
@@ -413,7 +413,7 @@
                                 <!-- item -->
                                 <a href="javascript:void(0);" class="item" id="all_lot">
                                     <div class="detail">
-                                        <ion-icon name="gift-outline" style="margin-right: 16px; font-size: 6vmax; color: #11a44c"></ion-icon>
+                                        <ion-icon name="gift-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
                                         <div>
                                             <strong>Les lots</strong>
                                             <p>when you get direct deposit</p>
@@ -424,7 +424,7 @@
                                 <!-- item -->
                                 <a href="{{ route('his_coup') }}" {{---data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"---}} class="item">
                                     <div class="detail">
-                                        <ion-icon name="file-tray-full-outline" style="margin-right: 16px; font-size: 6vmax; color: #11a44c"></ion-icon>
+                                        <ion-icon name="file-tray-full-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
                                         <div>
                                             <strong>Historiques Pronostics</strong>
                                             <p>when you get direct deposit</p>

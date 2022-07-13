@@ -136,7 +136,7 @@
     </div>
     <!-- App Capsule -->
     <div id="appCapsule" style="padding: 0">
-        <div class="section mt-2" style="margin-top: 5rem !important; padding: 0 8px">
+        <div class="section mt-2" style="margin-top: 5rem !important; padding: 0 .1rem">
 
             <div class="transactions">
 

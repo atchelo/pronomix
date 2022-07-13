@@ -5,7 +5,7 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600&display=swap");
 body {
   font-family: "Poppins", sans-serif;
-  font-size: 2vmax;
+  font-size: 1rem;
   line-height: 1.6rem;
   letter-spacing: 0.004em;
   color: #958d9e;
@@ -85,7 +85,7 @@ a:hover, a:active, a:focus {
 .appHeader .left ion-icon,
 .appHeader .right .icon,
 .appHeader .right ion-icon {
-  font-size: 4vmax;
+  font-size: 2rem;
 }
 
 .appHeader .left .headerButton,
@@ -175,8 +175,8 @@ a:hover, a:active, a:focus {
 .extraHeader {
   position: fixed;
   left: 0;
-  top: 50px;
-  height: 50px;
+  top: 5.5rem;
+  /*height: 50px;*/
   right: 0;
   width: 100%;
   padding: 5px 16px;
@@ -363,7 +363,7 @@ a:hover, a:active, a:focus {
 }
 
 .section {
-  padding: 0 16px;
+  padding: 0 .1rem;
 }
 
 .section.full {
@@ -4398,7 +4398,7 @@ border-color: #adadcb;
 }
 
 .searchbox .form-control:focus ~ .input-icon {
-color: #27173E;
+color: #11a44c;
 }
 
 .searchbox .icon {
@@ -4628,7 +4628,7 @@ color: #fff;
 }
 
 .toast-box .btn {
-font-size: 1.5vmax;
+font-size: .7rem;
 font-weight: 500;
 }
 

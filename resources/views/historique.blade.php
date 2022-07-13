@@ -78,6 +78,21 @@
             background-color: #006951;
         }
 
+        .badge-red{
+            display: inline-block;
+            padding: 3px 5px !important;
+            min-width: 10px;
+            border-radius: 0.25rem;
+            text-align: center;
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1;
+            white-space: nowrap;
+            vertical-align: baseline;
+            color: #fff;
+            background-color: #d40000;
+        }
+
         .coupon{
             border: 1px solid #e4e4e4;
         }
@@ -93,7 +108,7 @@
 </div>
 <!-- * loader -->
 
-<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; overflow-y: auto; position: relative">
+<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
@@ -120,23 +135,28 @@
             color: black;
         }
     </style>
-    <!-- * App Header -->
-    <div id="toast-1" class="toast-box toast-top" style="top: 67px; justify-content: space-around; background: white">
-        <div class="in">
-            <ion-icon name="document-outline" data-bs-toggle="modal" data-bs-target="#gen_coup" style="width: 24px"></ion-icon>
-            <ion-icon name="trash-outline" style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
-            <div>
-                <p style="color: black; margin: 0;">Cote: 32</p>
-                <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: 3</p>
+    <div class="extraHeader">
+        <form class="search-form" style="display: flex; justify-content: space-around">
+            <div class="form-group searchbox" style="width: 48%">
+                <input type="text" class="form-control" style="height: 2.5rem">
+                <i class="input-icon">
+                    <ion-icon name="search-outline"></ion-icon>
+                </i>
             </div>
-        </div>
-        <div class="in" style="padding: 0">
-            <button type="button"  data-bs-toggle="modal" data-bs-target="#actionSheetInset2"  class="btn btn-secondary" style="border-radius: inherit; background: #11a44c !important; border:#11a44c !important; color: white  !important;"><ion-icon name="save-outline" style="width: 20px; color: white !important;"></ion-icon>Valider Coupon</button>
-        </div>
+            <div class="form-group boxed" style="padding: 0; width: 48%">
+                <div class="input-wrapper">
+                    <select class="form-control custom-select" id="select4b" style="height: 2.5rem; padding: 0 1rem 0 1.6rem; text-align: center">
+                        <option value="0">Tous les filtres</option>
+                        <option value="1">Gagné</option>
+                        <option value="2">Perdu</option>
+                        <option value="3">Non traité</option>
+                    </select>
+                </div>
+            </div>
+        </form>
     </div>
-    <!-- App Capsule -->
     <div id="appCapsule" style="padding: 0">
-        <div class="section mt-2" style="margin-top: 5rem !important; padding: 0 8px">
+        <div class="section mt-2" style="margin-top: 4rem !important; padding: 0 .1px">
 
             <div class="transactions">
 
@@ -177,19 +197,17 @@
                 <div id="pron_coup" class="item" style="padding: 25px 24px; position: relative; overflow: hidden;">
                     <div class="detail">
                         <div>
-                            <strong style="color: #11a44c;"> team home - team away </strong>
-                            <p>2022-07-12 12:39:27</p>
-                            <h5 style="margin: 0;">Match Winner</h5>
+                            <strong style="color: #11a44c;"> Combine - N° 22429664661 </strong>
+                            <p class="small text-muted"><span><b></b>11/07/2022 06:45</span> - 1 Ticket(s)</p>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <div class="badge-green"> 4.3 </div>
+                            <p>151.14 pts</p>
                         </div>
                         <div class="col-6">
-                            <div class="price text-danger" style="color: #d40000 !important;" data-pron_coup_id="" id="pron_coup_del"  data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline"> <ion-icon name="close-circle" style="font-size: x-large; padding: 3px 5px !important;"></ion-icon></div>
+                            <div class="badge-red"> perdu </div>
                         </div>
-
                     </div>
                 </div>
 

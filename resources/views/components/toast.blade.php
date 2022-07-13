@@ -1,8 +1,8 @@
 <!-- toast bottom iconed -->
 <div id="toast-7" class="toast-box toast-bottom" style="justify-content: center">
     <div class="in">
-        <ion-icon name="document-outline" style="width: 4vmax" data-bs-toggle="modal" data-bs-target="#gen_coup"></ion-icon>
-        <ion-icon id="sup_pron_coup" name="trash-outline" style="width: 4vmax" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
+        <ion-icon name="document-outline" style="width: 1.5rem" data-bs-toggle="modal" data-bs-target="#gen_coup"></ion-icon>
+        <ion-icon id="sup_pron_coup" name="trash-outline" style="width: 1.5rem" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
     </div>
     <div class="in" style="padding: 0">
         <button type="button" class="btn btn-secondary" id="coup_pron" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
