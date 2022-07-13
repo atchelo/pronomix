@@ -199,4 +199,8 @@ class Match_listController extends Controller
 
     }
 
+    public function historique_coupon(Request $request){
+        return view('historique');
+    }
+
 }

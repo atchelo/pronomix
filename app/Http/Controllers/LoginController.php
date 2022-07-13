@@ -36,6 +36,23 @@ class LoginController extends Controller
                'current_user' => $rep['user'],
                'token' => $rep['token'],
            ]);
+
+           $token = session('token');
+
+           $response2 = Http::get("https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=$token");
+
+           $rep2 = json_decode($response2->body(), true);
+
+           session()->forget([
+               'list_match',
+               'token'
+           ]);
+
+           session([
+               'list_match' => $rep2['data'],
+               'token' => $rep2['new_token'],
+           ]);
+
            return redirect()->route('home');
        }else{
            return redirect()->back()->with([
