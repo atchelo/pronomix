@@ -137,7 +137,7 @@
 
 <!-- * loader -->
 
-<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; margin-top: 30px">
+<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: 2px; position: absolute">
         <div class="left">
@@ -378,8 +378,8 @@
 
         $numb =  number_format((float)$number, 2, '.', '');
         @endphp
-        <h1 class="total" id="nbre_point" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 47px">{{ $numb }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
-        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 24px; color: #3a87ad">{{ $islogged['balance_tickets'] }}<small style="color: #3a87ad; font-size: .675em;">Tickets</small></h1>
+        <h1 class="total" id="nbre_point" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 7vmax">{{ $numb }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
+        <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 4vmax; color: #3a87ad">{{ $islogged['balance_tickets'] }}<small style="color: #3a87ad; font-size: .675em;">Tickets</small></h1>
 
         <!-- Stats -->
         <div class="section" style="margin-top: 9rem; padding: 0; height: -webkit-fill-available; box-shadow: 0px 5px rgb(17 164 76 / 10%), 0px -10px 12px rgb(17 164 76 / 10%);height: -webkit-fill-available;border-radius: 30px 30px;">
