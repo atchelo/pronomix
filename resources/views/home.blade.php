@@ -400,7 +400,7 @@
                                 </a>
                                 <!-- * item -->
                                 <!-- item -->
-                                <a href="{{ route('allmatch') }}" class="item" {{----id="allmatch"---}}>
+                                <a href="{{ route('allmatch') }}" id="linkToAll_match" class="item" {{----id="allmatch"---}}>
                                     <div class="detail">
                                         <ion-icon name="dice-outline" style="margin-right: 16px; font-size: 48px; color: #11a44c"></ion-icon>
                                         <div>
@@ -622,6 +622,10 @@
 
     window.addEventListener("load", function() {
         liveupdate();
+    });
+
+    $('[id^="linkTo"]').click(function () {
+        $("#loader").show();
     });
 
 </script>
