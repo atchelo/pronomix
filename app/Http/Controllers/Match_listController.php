@@ -199,8 +199,23 @@ class Match_listController extends Controller
 
     }
 
-    public function historique_coupon(Request $request){
-        return view('historique');
+    public function historique_coupon(){
+         $token = session('token');
+        $response = Http::get("https://demo.pronomix.net/api/historique-pronostics/reference_coupon=all_",
+            [
+                'token' => $token,
+            ]);
+        $rep = json_decode($response->body(), true);
+        session([
+            'list_hist' => $rep['pronostics'],
+            'new_token' => $rep['new_token'],
+        ]);
+        $token = $rep['new_token'];
+        $islogged = session('current_user');
+        $hist_data = $rep['pronostics']['data'];
+
+
+        return view('historique', compact('hist_data', 'token', 'islogged'));
     }
 
 }

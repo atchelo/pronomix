@@ -93,6 +93,21 @@
             background-color: #d40000;
         }
 
+        .badge-blue{
+            display: inline-block;
+            padding: 3px 5px !important;
+            min-width: 10px;
+            border-radius: 0.25rem;
+            text-align: center;
+            font-size: 10px;
+            font-weight: bold;
+            line-height: 1;
+            white-space: nowrap;
+            vertical-align: baseline;
+            color: #fff;
+            background-color: #3a87ad;
+        }
+
         .coupon{
             border: 1px solid #e4e4e4;
         }
@@ -130,11 +145,7 @@
             </a>
         </div>
     </div>
-    <style>
-        .toast-box .in i.icon, .toast-box .in ion-icon{
-            color: black;
-        }
-    </style>
+
     <div class="extraHeader">
         <form class="search-form" style="display: flex; justify-content: space-around">
             <div class="form-group searchbox" style="width: 48%">
@@ -156,62 +167,68 @@
         </form>
     </div>
     <div id="appCapsule" style="padding: 0">
-        <div class="section mt-2" style="margin-top: 4rem !important; padding: 0 .1px">
+        <div class="section mt-2" style="margin-top: 4rem !important; padding: 0 .1px; margin-bottom: 3rem !important">
 
-            <div class="transactions">
+                <div class="transactions">
 
-                <style>
-                    .badge-green{
-                        display: inline-block;
-                        padding: 3px 5px !important;
-                        min-width: 10px;
-                        border-radius: 0.25rem;
-                        text-align: center;
-                        font-size: 10px;
-                        font-weight: bold;
-                        line-height: 1;
-                        white-space: nowrap;
-                        vertical-align: baseline;
-                        color: #fff;
-                        background-color: #006951;
-                    }
+                    <style>
+                        .badge-green{
+                            display: inline-block;
+                            padding: 3px 5px !important;
+                            min-width: 10px;
+                            border-radius: 0.25rem;
+                            text-align: center;
+                            font-size: 10px;
+                            font-weight: bold;
+                            line-height: 1;
+                            white-space: nowrap;
+                            vertical-align: baseline;
+                            color: #fff;
+                            background-color: #006951;
+                        }
 
 
-                    .badge-red {
-                        display: inline-block;
-                        padding: 3px 5px;
-                        min-width: 10px;
-                        border-radius: 0.25rem;
-                        text-align: center;
-                        font-size: 15px;
-                        font-weight: bold;
-                        line-height: 1;
-                        white-space: nowrap;
-                        vertical-align: baseline;
-                        color: #fff;
-                        background-color: #d40000;
-                    }
+                        .badge-red {
+                            display: inline-block;
+                            padding: 3px 5px;
+                            min-width: 10px;
+                            border-radius: 0.25rem;
+                            text-align: center;
+                            font-size: 15px;
+                            font-weight: bold;
+                            line-height: 1;
+                            white-space: nowrap;
+                            vertical-align: baseline;
+                            color: #fff;
+                            background-color: #d40000;
+                        }
 
-                </style>
-
-                <div id="pron_coup" class="item" style="padding: 25px 24px; position: relative; overflow: hidden;">
-                    <div class="detail">
-                        <div>
-                            <strong style="color: #11a44c;"> Combine - N° 22429664661 </strong>
-                            <p class="small text-muted"><span><b></b>11/07/2022 06:45</span> - 1 Ticket(s)</p>
+                    </style>
+                    @foreach($hist_data as $hist)
+                    <div id="pron_coup" class="item" style="padding: 25px 24px; position: relative; overflow: hidden;">
+                        <div class="detail">
+                            <div>
+                                <strong style="color: #11a44c;"> {{ $hist['type'] }} - N° {{ $hist['reference_coupon'] }} </strong>
+                                <p class="small text-muted"><span><b></b> {{ $hist['date_created'] }} </span> - {{ $hist['mise_tickets'] }} Ticket(s)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="display: flex; justify-content: end">
+                                @if($hist['pronostic_win'] === 'lost')
+                                    <div class="badge-red"> Perdu </div>
+                                @elseif($hist['pronostic_win'] === 'win')
+                                    <div class="badge-green"> Gagné </div>
+                                @else
+                                    <div class="badge-blue"> En Attente </div>
+                                @endif
+                            </div>
+                            <div class="col-12" style="display: flex; justify-content: end">
+                                <p>{{ $hist['gain_potentiel'] }} pts</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <p>151.14 pts</p>
-                        </div>
-                        <div class="col-6">
-                            <div class="badge-red"> perdu </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
-
-            </div>
 
         </div>
 
@@ -219,6 +236,9 @@
     </div>
     <!-- * App Capsule -->
 </div>
+
+
+@include('components.toast')
 
 
 

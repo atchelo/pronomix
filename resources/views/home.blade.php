@@ -422,7 +422,7 @@
                                 </a>
                                 <!-- * item -->
                                 <!-- item -->
-                                <a href="{{ route('his_coup') }}" {{---data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"---}} class="item">
+                                <a href="{{ route('his_coup') }}" id="linkToHist" {{---data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"---}} class="item">
                                     <div class="detail">
                                         <ion-icon name="file-tray-full-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
                                         <div>

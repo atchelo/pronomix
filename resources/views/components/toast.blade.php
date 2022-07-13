@@ -562,60 +562,6 @@
 
     });
 
-    /*$('[id^="allmatch"]').click(function() {
-        var token = "{{---$token---}}";
-        //var loader =  document.getElementById('loader');
-        //loader.show();
-
-        $("#loader").show();
-        document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
-
-        $.ajax({
-            url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
-            method: "GET",
-            success: function (data) {
-                if (data.success === true){
-                    //$("#loader").hide();
-                    var url = "{{--- route('store_match') ---}}";
-                    var new_token = data.new_token;
-                    var match_data = data.data;
-                    var o = new Object();
-                    o["new_token"] = new_token;
-                    o["match_data"] = match_data;
-                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                           // console.log(data)
-                            window.location = data;
-                        }
-                    });
-
-                }
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                },
-            },
-            error: function (data, textStatus, errorThrown) {
-                console.log('test');
-
-            },
-        });
-
-    });*/
 
     $('#pron_coup_del_all').click(function (e) {
         var token = "{{$token}}";
