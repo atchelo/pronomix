@@ -206,16 +206,139 @@ class Match_listController extends Controller
                 'token' => $token,
             ]);
         $rep = json_decode($response->body(), true);
-        session([
-            'list_hist' => $rep['pronostics'],
-            'new_token' => $rep['new_token'],
-        ]);
-        $token = $rep['new_token'];
-        $islogged = session('current_user');
-        $hist_data = $rep['pronostics']['data'];
+        if (isset($rep['new_token'])){
+            session([
+                'list_hist' => $rep['pronostics'],
+                'new_token' => $rep['new_token'],
+            ]);
+            $token = $rep['new_token'];
+            $islogged = session('current_user');
+            $hist_data = $rep['pronostics']['data'];
+            $current_page = $rep['pronostics']['current_page'];
+            $total_page = $rep['pronostics']['last_page'];
+            $next_page = $rep['pronostics']['next_page_url'];
+            return view('historique', compact('hist_data', 'token', 'islogged', 'current_page', 'total_page', 'next_page'));
+        }else{
+            return redirect()->back()->withErrors(['error' => 'The Message']);
+        }
+        //dd($rep['pronostics']);
+    }
+
+    public function historique_store(Request $request){
+
+        //return $request;
+
+        $check_hist = session('list_hist');
+
+        //return $get_hist;
+
+        if (!isset($check_hist['current_page'])){
+
+            session()->forget([
+                'list_hist',
+            ]);
+
+            session([
+                'list_hist' => $request->hist_data,
+            ]);
+
+            return route('his_coup');
+        }
+        else{
 
 
-        return view('historique', compact('hist_data', 'token', 'islogged'));
+            session([
+                'list_hist' => $request->hist_data['pronostics'],
+                'token' => $request->hist_data['new_token']
+            ]);
+
+
+            $perd_res = <<<HTML
+
+<div class="badge-red"> Perdu </div>
+
+HTML;
+            $win_res = <<<HTML
+
+<div class="badge-green"> Gagné </div>
+
+HTML;
+            $wait_res =  <<<HTML
+
+<div class="badge-blue"> En Attente </div>
+
+HTML;
+
+            $if = function ($condition, $true, $false) { return $condition ? $true : $false; };
+
+            //$if2 = function ($condition, $true, $false) { return $condition ? $true : $false; };
+
+            $get_hist = session('list_hist');
+
+
+            foreach ($get_hist['data'] as $index => $hist) {
+//return $hist;
+                if (isset($hist['reference_coupon'])) {
+                    $html_hist[] = <<<HTML
+
+               <div id="pron_coup" class="item" style="padding: 25px 24px; position: relative; overflow: hidden;">
+                        <div class="detail">
+                            <div>
+                                <strong style="color: #11a44c;"> {$hist['type']} - N° {$hist['reference_coupon']} </strong>
+                                <p class="small text-muted"><span><b></b> {$hist['date_created']} </span> - {$hist['mise_tickets']} Ticket(s)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="display: flex; justify-content: end">
+                                    {$if($hist['pronostic_win'] === "lost", $perd_res, ' ')}
+                                    {$if($hist['pronostic_win'] === "win", $win_res, ' ')}
+                                    {$if($hist['pronostic_win'] === null, $wait_res, ' ')}
+                            </div>
+                            <div class="col-12" style="display: flex; justify-content: end">
+                                <p>{$hist['gain_potentiel']} pts</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+HTML;
+                }
+            }
+
+            return  [
+                $get_hist['current_page'],
+                $html_hist,
+            ];
+
+            //return json_encode($html_lot);
+
+
+            // $cur = $get_lot['current_page'];
+            $get_lot = session('list_lot');
+
+            $data_all = array_merge($get_lot['data'] , $request->lot_data['data']);
+
+            session([
+                'list_lot' => $request->lot_data,
+            ]);
+
+            $new = session('list_lot');
+
+            $new['data'] = $data_all;
+
+            session([
+                'list_lot' => $new,
+            ]);
+
+            $tab = session('list_lot');
+
+            $el = sizeof($tab['data']);
+
+            $cur = $el - 10;
+
+
+            return url('lot_list#'."item$cur");
+        }
     }
 
 }

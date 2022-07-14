@@ -123,7 +123,7 @@
 </div>
 <!-- * loader -->
 
-<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
+<div id="scroller" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
@@ -169,7 +169,7 @@
     <div id="appCapsule" style="padding: 0">
         <div class="section mt-2" style="margin-top: 4rem !important; padding: 0 .1px; margin-bottom: 3rem !important">
 
-                <div class="transactions">
+                <div class="transactions" id="puthist">
 
                     <style>
                         .badge-green{
@@ -194,7 +194,7 @@
                             min-width: 10px;
                             border-radius: 0.25rem;
                             text-align: center;
-                            font-size: 15px;
+                            font-size: 10px;
                             font-weight: bold;
                             line-height: 1;
                             white-space: nowrap;
@@ -592,6 +592,101 @@
 </div>
 <!-- toast center -->
 
+
+<script>
+    var rollback = "{{route('rollback')}}";
+    var current_page = "{{$current_page}}";
+    current_page = parseInt(current_page) + 1;
+    var total_page = "{{$total_page}}";
+    var next_page = "{!! $next_page !!}";
+    var token = "{{ $token }}";
+
+    var step = 2;
+
+    $('#scroller').on('resize', onScroll);
+    $('#scroller').on('scroll', onScroll);
+    function onScroll(){
+        if($('#scroller').scrollTop() + window.innerHeight >= $(this)[0].scrollHeight) {
+            if (current_page < total_page){
+                if(step == current_page){
+                    $('#load_spinner').css('display', 'block');
+                    console.log('load')
+                    $('#puthist').append("<div id='loader_box' style='width: 100%; display: flex'></div>");
+                   $('#loader_box').append("<div id='load_spinner' class='spinner-grow text-success' style='margin-left: auto; margin-right:auto' role='status'></div>");
+                    step++;
+                    var o = new Object();
+                    o['token'] = token;
+                    o['page'] = current_page;
+                    //$("#bodyID").addClass('block');
+                    $.ajax({
+                        url: "https://demo.pronomix.net/api/historique-pronostics/reference_coupon=all_",
+                        data: o,
+                        method: "GET",
+                        success: function (data) {
+                        console.log(data)
+                            if (data.success === true){
+
+                                var url = "{{ route('store_hist') }}";
+                                var hist_data = data;
+                                var token = data.new_token;
+                                var p = new Object();
+                                p["hist_data"] = hist_data;
+                                p["token"] = token;
+
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: p,
+                                    success: function(data) {
+                                        //console.log(data)
+                                        $('#loader_box').remove();
+                                        $('#load_spinner').remove();
+                                        current_page = parseInt(data[0]) + 1;
+                                        console.log(current_page)
+                                        data[1].forEach(getall);
+                                        function getall(item) {
+                                            $('#puthist').append(item);
+                                        }
+                                      $('#loader').hide();
+                                       // $("#bodyID").removeClass('block');
+
+                                        //window.location = data;
+                                        // location.reload();
+                                    }
+                                });
+
+                            }
+
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            },
+                            419: function (){
+                                window.location = "{{ route('logout') }}";
+                            }
+                        }
+                    });
+
+                }
+                console.log(step)
+            }
+            else {
+                $('#load_spinner').hide();
+                //console.log('last')
+            }
+        }
+
+    }
+</script>
 
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->

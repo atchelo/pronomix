@@ -338,13 +338,11 @@
                                         console.log(current_page)
 
                                         data[1].forEach(getall);
-                                        var all_lot;
                                         function getall(item) {
-                                            all_lot += item;
+                                            $('#putlot').append(item);
                                         }
                                         $('#loader').hide();
                                         $('#load_spinner').hide();
-                                        $('#putlot').append(all_lot);
                                         $("#bodyID").removeClass('block');
 
                                         //window.location = data;

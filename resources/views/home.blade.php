@@ -569,7 +569,7 @@
     // Add to Home with 2 seconds delay.
     AddtoHome("2000", "once");
 
-    /*function liveupdate() {
+    function liveupdate() {
 
         setInterval(function () {
 
@@ -622,7 +622,7 @@
 
     window.addEventListener("load", function() {
         liveupdate();
-    });*/
+    });
 
     $('[id^="linkTo"]').click(function () {
         $("#loader").show();
