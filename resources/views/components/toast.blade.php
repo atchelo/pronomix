@@ -620,6 +620,9 @@
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
                 }
             }
         });
@@ -681,6 +684,9 @@
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
                 }
             }
         });
@@ -734,6 +740,9 @@
                             $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                             $("#loader").hide();
                             $('#DialogIconedDanger').modal('show');
+                        },
+                        419: function (){
+                            window.location = "{{ route('logout') }}";
                         }
                     }
                 });
@@ -833,6 +842,9 @@
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {

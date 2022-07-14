@@ -335,7 +335,17 @@
                                });
 
                            }
-                       }
+                       },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            },
+                            419: function (){
+                                window.location = "{{ route('logout') }}";
+                            }
+                        }
                    });
                    //console.log('end reached');
                     $("#loader").show();

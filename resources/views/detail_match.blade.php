@@ -1440,6 +1440,9 @@
                             $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                             $("#loader").hide();
                             $('#DialogIconedDanger').modal('show');
+                        },
+                        419: function (){
+                            window.location = "{{ route('logout') }}";
                         }
                     }
                 });
@@ -1527,6 +1530,9 @@
                         $('#coup_error').append("Impossible d'enregistrer votre pronostic. Merci de ressayer plutard.");
                         $("#loader").hide();
                         $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
                     }
                 }
             });
@@ -1592,6 +1598,9 @@
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
                 }
             }
         });
@@ -1649,6 +1658,16 @@
                         }
                     });
 
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
                 }
             }
         });
