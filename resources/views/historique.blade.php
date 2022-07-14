@@ -204,8 +204,18 @@
                         }
 
                     </style>
-                    @foreach($hist_data as $hist)
-                    <div id="pron_coup" class="item" style="padding: 25px 24px; position: relative; overflow: hidden;">
+                    @foreach($hist_data as $index => $hist)
+                    <div id="hist_pron{{$index}}" class="item"
+                         data-reference_coupon="{{ $hist['reference_coupon'] }}"
+                         data-user_new_balance="{{ $hist['pronostic_content']['user_new_balance'] }}"
+                         data-type="{{ $hist['pronostic_content']['type'] }}"
+                         {{-----data-pronostics="{{ $hist['pronostic_content']['pronostics'] }}"-----}}
+                         data-pronostic_win="{{ $hist['pronostic_win'] }}"
+                         data-date_created="{{ $hist['date_created'] }}"
+                         data-mise_tickets="{{ $hist['mise_tickets'] }}"
+                         data-odd_cumul="{{ $hist['pronostic_content']['odd_cumul'] }}"
+                         data-gain_potentiel="{{ $hist['pronostic_content']['gain_potentiel'] }}"
+                         style="padding: 25px 24px; position: relative; overflow: hidden;" data-bs-toggle="modal" data-bs-target="#ModalBasic">
                         <div class="detail">
                             <div>
                                 <strong style="color: #11a44c;"> {{ $hist['type'] }} - N° {{ $hist['reference_coupon'] }} </strong>
@@ -326,6 +336,61 @@
     </div>
 </div>
 <!-- * Add Card Action Sheet -->
+
+<!-- Modal Basic -->
+<div class="modal fade modalbox" id="ModalBasic" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <ion-icon name="close-circle" data-bs-dismiss="modal" id="close_his"  style="font-size: 2rem;
+    position: absolute;
+    right: 0.3rem;
+    top: 0.3rem;"></ion-icon>
+                <div class="titleCard ">
+                    <div class="titleCard__textWrapper">
+                                        <span class="titleCard__text">N°<strong id="reference_coupon"></strong>
+                                            <br><span style="font-weight: normal; color: #6f6c6c; font-size: 14px; ">Type pronostic: <span style="font-weight: normal; color: #6f6c6c; font-size: 14px; " id="type"></span></span>
+                                            <br><span style="font-weight: normal; color: #6f6c6c; font-size: 14px; ">Cote: <div class="badge-green" id="odd_cumul"></div></span>
+                                            <br><span style="font-weight: normal; color: #6f6c6c; font-size: 14px; ">Nombre de points: <span id="gain_potentiel"></span> pts</span>
+                                            <br><span style="font-weight: normal; color: #6f6c6c; font-size: 14px; ">Mise:
+                                                <span id="mise_tickets"></span> Tickets
+                                              </span>
+                                            <br><span style="font-weight: normal; color: #6f6c6c; font-size: 14px; ">Date: <span id="date_created"></span> GMT</span>
+                                            <br><span style="font-weight: normal; color: #6f6c6c; font-size: 14px; ">Status:
+                                                <span id="status"></span>
+                                            </span>
+                                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fermentum, urna eget finibus
+                    fermentum, velit metus maximus erat, nec sodales elit justo vitae sapien. Sed fermentum
+                    varius erat, et dictum lorem. Cras pulvinar vestibulum purus sed hendrerit. Praesent et
+                    auctor dolor. Ut sed ultrices justo. Fusce tortor erat, scelerisque sit amet diam rhoncus,
+                    cursus dictum lorem. Ut vitae arcu egestas, congue nulla at, gravida purus.
+                </p>
+                <p>
+                    Donec in justo urna. Fusce pretium quam sed viverra blandit. Vivamus a facilisis lectus.
+                    Nunc non aliquet nulla. Aenean arcu metus, dictum tincidunt lacinia quis, efficitur vitae
+                    dui. Integer id nisi sit amet leo rutrum placerat in ac tortor. Duis sed fermentum mi, ut
+                    vulputate ligula.
+                </p>
+                <p>
+                    Vivamus eget sodales elit, cursus scelerisque leo. Suspendisse lorem leo, sollicitudin
+                    egestas interdum sit amet, sollicitudin tristique ex. Class aptent taciti sociosqu ad litora
+                    torquent per conubia nostra, per inceptos himenaeos. Phasellus id ultricies eros. Praesent
+                    vulputate interdum dapibus. Duis varius faucibus metus, eget sagittis purus consectetur in.
+                    Praesent fringilla tristique sapien, et maximus tellus dapibus a. Quisque nec magna dapibus
+                    sapien iaculis consectetur. Fusce in vehicula arcu. Aliquam erat volutpat. Class aptent
+                    taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Modal Basic -->
 
 <!-- Default Action Sheet Inset -->
 <div class="modal fade action-sheet inset" id="actionSheetInset2" tabindex="-1" role="dialog">
@@ -686,6 +751,61 @@
         }
 
     }
+    $('#select4b').on('change', function () {
+        console.log(this.value)
+    });
+
+    $('[id^="hist_pron"]').click(function () {
+        var reference_coupon = $(this).data('reference_coupon');
+        var user_new_balance = $(this).data('user_new_balance');
+        var type = $(this).data('type');
+        var mise_tickets = $(this).data('mise_tickets');
+        var date_created = $(this).data('date_created');
+        var pronostic_win = $(this).data('pronostic_win');
+        console.log()
+        //var pronostics = $(this).data('pronostics');
+        var odd_cumul = $(this).data('odd_cumul');
+        var gain_potentiel = $(this).data('gain_potentiel');
+
+        console.log(pronostic_win)
+
+        if(pronostic_win === 'lost'){
+            $('#status').append("<div class='badge-red'> Perdu </div>");
+        }if (pronostic_win === 'win'){
+            $('#status').append("<div class='badge-green'> Gagné </div>");
+        }
+        if(pronostic_win === ''){
+            $('#status').append("<div class='badge-blue'> En Attente </div>");
+        }
+        $('#reference_coupon').empty();
+        $('#reference_coupon').append(reference_coupon);
+
+        $('#user_new_balance').empty();
+        $('#user_new_balance').append(user_new_balance);
+
+        $('#type').empty();
+        $('#type').append(type);
+
+        $('#mise_tickets').empty();
+        $('#mise_tickets').append(mise_tickets);
+
+        $('#date_created').empty();
+        $('#date_created').append(date_created);
+
+
+        $('#odd_cumul').empty();
+        $('#odd_cumul').append(odd_cumul);
+
+        $('#gain_potentiel').empty();
+        $('#gain_potentiel').append(gain_potentiel);
+
+    });
+
+    $('#close_his').click(function () {
+        $('#status').empty();
+    });
+
+
 </script>
 
 <!-- ========= JS Files =========  -->
