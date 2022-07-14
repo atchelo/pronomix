@@ -129,7 +129,7 @@
         <div class="section inset mt-2 mb-2" style="margin-bottom: 3.7rem !important;">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <div class="transactions">
-                <div class="container">
+                <div id="putlot" class="container">
                     @foreach($get_lot['data'] as $index => $lot)
                         <div class="row item" style="color: orange; padding: 10px 10px" id="item{{$index}}">
                             <div class="col-12">
@@ -295,47 +295,65 @@
     var total_page = "{{$get_lot['last_page']}}";
     var next_page = "{!! $get_lot['next_page_url'] !!}";
 
-    $('#flux').on('touchmove', onScroll);
+    var step = 1;
+    $('#load_spinner').hide();
+
+    $('#flux').on('resize', onScroll);
+    $('#flux').on('scroll', onScroll);
     function onScroll(){
-        //console.log($('#flux').scrollTop());
-        //console.log($(this)[0].scrollHeight - window.innerHeight);
-        $('#load_spinner').hide();
-        if ($('#flux').scrollTop() > ($(this)[0].scrollHeight - window.innerHeight)){
-            //console.log('start');
-        }
-            if($('#flux').scrollTop() + window.innerHeight >= $(this)[0].scrollHeight) {
-                if (current_page < total_page){
+        if($('#flux').scrollTop() + window.innerHeight >= $(this)[0].scrollHeight) {
+            if (current_page < total_page){
+                if(step == current_page){
+                    console.log('load')
+                    step++;
+                   $("#bodyID").addClass('block');
+
                     $.ajax({
                         url: `${next_page}`,
                         method: "GET",
                         success: function (data) {
                             if (data.success === true){
-                                $("#loader").show();
+                                $('#load_spinner').css('display', 'block');
+                               $("#loader").show();
                                 //console.log(data.response)
                                 var url = "{{ route('store_lots') }}";
-                               var lot_data = data.response;
-                               var o = new Object();
-                               o["lot_data"] = lot_data;
+                                var lot_data = data.response;
+                                var o = new Object();
+                                o["lot_data"] = lot_data;
 
-                               $.ajaxSetup({
-                                   headers: {
-                                       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                   }
-                               });
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    }
+                                });
 
-                               $.ajax({
-                                   type: "POST",
-                                   url: url,
-                                   data: o,
-                                   success: function(data) {
-                                       //console.log(data)
-                                       window.location = data;
-                                       location.reload();
-                                   }
-                               });
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: o,
+                                    success: function(data) {
+                                        console.log(data)
+                                        current_page = data[0];
+                                        next_page = data[2];
+                                        console.log(current_page)
 
-                           }
-                       },
+                                        data[1].forEach(getall);
+                                        var all_lot;
+                                        function getall(item) {
+                                            all_lot += item;
+                                        }
+                                        $('#loader').hide();
+                                        $('#load_spinner').hide();
+                                        $('#putlot').append(all_lot);
+                                        $("#bodyID").removeClass('block');
+
+                                        //window.location = data;
+                                        // location.reload();
+                                    }
+                                });
+
+                            }
+                        },
                         statusCode: {
                             500: function() {
                                 $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
@@ -346,19 +364,19 @@
                                 window.location = "{{ route('logout') }}";
                             }
                         }
-                   });
-                   //console.log('end reached');
-                    $("#loader").show();
-                    $("#bodyID").addClass('block');
-                    $('#load_spinner').css('display', 'block');
-               }
-                else {
-                    $('#load_spinner').hide();
-                    //console.log('last')
+                    });
+
                 }
             }
+            else {
+                $('#load_spinner').hide();
+                //console.log('last')
+            }
+            console.log(step)
+        }
 
     }
+
 
     $("#back").click(function(e) {
         $.ajax({
