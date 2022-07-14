@@ -85,10 +85,14 @@
 
         }
 
+        .block{
+            pointer-events:none !important;
+        }
+
     </style>
 </head>
 
-<body style="background-color: white; margin: 0; height: 100%; overflow: hidden;  -webkit-overflow-scrolling: touch;">
+<body id="bodyID" style="background-color: white; margin: 0; height: 100%; overflow: hidden;  -webkit-overflow-scrolling: touch;">
 
 <!-- loader -->
 <div id="loader">
@@ -96,7 +100,7 @@
 </div>
 <!-- * loader -->
 
-<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; position: relative; overflow-y: auto;">
+<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; position: relative; overflow-y: auto;">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
         <div class="left">
@@ -122,7 +126,7 @@
     <!-- App Capsule -->
     <div id="appCapsule" style="padding: 0">
 
-        <div class="section inset mt-2 mb-2">
+        <div class="section inset mt-2 mb-2" style="margin-bottom: 3.7rem !important;">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             <div class="transactions">
                 <div class="container">
@@ -176,7 +180,7 @@
                             </div>
                         </div>
                     @endforeach
-                        <div class="spinner-grow text-success" role="status"></div>
+                        <div id="load_spinner" class="spinner-grow text-success" role="status"></div>
                 </div>
             </div>
         </div>
@@ -293,20 +297,21 @@
 
     $('#flux').on('touchmove', onScroll);
     function onScroll(){
-        console.log($('#flux').scrollTop());
+        //console.log($('#flux').scrollTop());
         //console.log($(this)[0].scrollHeight - window.innerHeight);
-       /* if ($('#flux').scrollTop() > ($(this)[0].scrollHeight - window.innerHeight)){
-            console.log('start');
-        }*/
+        $('#load_spinner').hide();
+        if ($('#flux').scrollTop() > ($(this)[0].scrollHeight - window.innerHeight)){
+            //console.log('start');
+        }
             if($('#flux').scrollTop() + window.innerHeight >= $(this)[0].scrollHeight) {
                 if (current_page < total_page){
-                    /*$.ajax({
+                    $.ajax({
                         url: `${next_page}`,
                         method: "GET",
                         success: function (data) {
                             if (data.success === true){
                                 $("#loader").show();
-                                console.log(data.response)
+                                //console.log(data.response)
                                 var url = "{{ route('store_lots') }}";
                                var lot_data = data.response;
                                var o = new Object();
@@ -323,7 +328,7 @@
                                    url: url,
                                    data: o,
                                    success: function(data) {
-                                       console.log(data)
+                                       //console.log(data)
                                        window.location = data;
                                        location.reload();
                                    }
@@ -331,9 +336,16 @@
 
                            }
                        }
-                   });*/
+                   });
                    //console.log('end reached');
+                    $("#loader").show();
+                    $("#bodyID").addClass('block');
+                    $('#load_spinner').css('display', 'block');
                }
+                else {
+                    $('#load_spinner').hide();
+                    //console.log('last')
+                }
             }
 
     }
