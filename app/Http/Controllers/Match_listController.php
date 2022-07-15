@@ -199,13 +199,23 @@ class Match_listController extends Controller
 
     }
 
-    public function historique_coupon(){
+    public function historique_coupon(Request $request){
+        if (isset($request->option)){
+            $option = $request->option;
+        }else{
+            $option = '';
+        }
+
+        //dd($option);
+
          $token = session('token');
-        $response = Http::get("https://demo.pronomix.net/api/historique-pronostics/reference_coupon=all_",
+        $response = Http::get("https://demo.pronomix.net/api/historique-pronostics/reference_coupon=all_/status=$option?page=1",
+
             [
                 'token' => $token,
             ]);
         $rep = json_decode($response->body(), true);
+        //dd($rep);
         if (isset($rep['new_token'])){
             session([
                 'list_hist' => $rep['pronostics'],
@@ -281,7 +291,7 @@ HTML;
                 if (isset($hist['reference_coupon'])) {
                     $html_hist[] = <<<HTML
 
-               <div id="pron_coup" class="item" style="padding: 25px 24px; position: relative; overflow: hidden;">
+               <div id="hist_pron" class="item" onclick="showdetails({$hist['reference_coupon']})" style="padding: 25px 24px; position: relative; overflow: hidden;">
                         <div class="detail">
                             <div>
                                 <strong style="color: #11a44c;"> {$hist['type']} - N° {$hist['reference_coupon']} </strong>

@@ -157,10 +157,10 @@
             <div class="form-group boxed" style="padding: 0; width: 48%">
                 <div class="input-wrapper">
                     <select class="form-control custom-select" id="select4b" style="height: 2.5rem; padding: 0 1rem 0 1.6rem; text-align: center">
-                        <option value="0">Tous les filtres</option>
-                        <option value="1">Gagné</option>
-                        <option value="2">Perdu</option>
-                        <option value="3">Non traité</option>
+                        <option value="">Tous les filtres</option>
+                        <option {{ request()->option == 1 ? 'selected' : '' }} value="1">Gagné</option>
+                        <option {{ request()->option == 2 ? 'selected' : '' }} value="2">Perdu</option>
+                        <option {{ request()->option == 3 ? 'selected' : '' }} value="3">En Attente</option>
                     </select>
                 </div>
             </div>
@@ -203,19 +203,35 @@
                             background-color: #d40000;
                         }
 
+                        .badge-cancelled {
+                            display: inline-block;
+                            padding: 3px 5px;
+                            min-width: 10px;
+                            border-radius: 0.25rem;
+                            text-align: center;
+                            font-size: 10px;
+                            font-weight: bold;
+                            line-height: 1;
+                            white-space: nowrap;
+                            vertical-align: baseline;
+                            color: #fff;
+                            background-color: dimgray;
+                        }
+
                     </style>
                     @foreach($hist_data as $index => $hist)
-                    <div id="hist_pron{{$index}}" class="item"
-                         data-reference_coupon="{{ $hist['reference_coupon'] }}"
-                         data-user_new_balance="{{ $hist['pronostic_content']['user_new_balance'] }}"
+                    <div id="hist_pron" class="item"
+                         {{-----data-user_new_balance="{{ $hist['pronostic_content']['user_new_balance'] }}"
                          data-type="{{ $hist['pronostic_content']['type'] }}"
-                         {{-----data-pronostics="{{ $hist['pronostic_content']['pronostics'] }}"-----}}
+
+                         data-pronostics="{{ json_encode($hist['pronostic_content']['pronostics']) }}"
+
                          data-pronostic_win="{{ $hist['pronostic_win'] }}"
                          data-date_created="{{ $hist['date_created'] }}"
                          data-mise_tickets="{{ $hist['mise_tickets'] }}"
                          data-odd_cumul="{{ $hist['pronostic_content']['odd_cumul'] }}"
-                         data-gain_potentiel="{{ $hist['pronostic_content']['gain_potentiel'] }}"
-                         style="padding: 25px 24px; position: relative; overflow: hidden;" data-bs-toggle="modal" data-bs-target="#ModalBasic">
+                         data-gain_potentiel="{{ $hist['pronostic_content']['gain_potentiel'] }}"----}}
+                         style="padding: 25px 24px; position: relative; overflow: hidden;" onclick="showdetails({{ $hist['reference_coupon'] }})">
                         <div class="detail">
                             <div>
                                 <strong style="color: #11a44c;"> {{ $hist['type'] }} - N° {{ $hist['reference_coupon'] }} </strong>
@@ -341,7 +357,7 @@
 <div class="modal fade modalbox" id="ModalBasic" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="margin-top: 2rem">
                 <ion-icon name="close-circle" data-bs-dismiss="modal" id="close_his"  style="font-size: 2rem;
     position: absolute;
     right: 0.3rem;
@@ -363,29 +379,8 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-body">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc fermentum, urna eget finibus
-                    fermentum, velit metus maximus erat, nec sodales elit justo vitae sapien. Sed fermentum
-                    varius erat, et dictum lorem. Cras pulvinar vestibulum purus sed hendrerit. Praesent et
-                    auctor dolor. Ut sed ultrices justo. Fusce tortor erat, scelerisque sit amet diam rhoncus,
-                    cursus dictum lorem. Ut vitae arcu egestas, congue nulla at, gravida purus.
-                </p>
-                <p>
-                    Donec in justo urna. Fusce pretium quam sed viverra blandit. Vivamus a facilisis lectus.
-                    Nunc non aliquet nulla. Aenean arcu metus, dictum tincidunt lacinia quis, efficitur vitae
-                    dui. Integer id nisi sit amet leo rutrum placerat in ac tortor. Duis sed fermentum mi, ut
-                    vulputate ligula.
-                </p>
-                <p>
-                    Vivamus eget sodales elit, cursus scelerisque leo. Suspendisse lorem leo, sollicitudin
-                    egestas interdum sit amet, sollicitudin tristique ex. Class aptent taciti sociosqu ad litora
-                    torquent per conubia nostra, per inceptos himenaeos. Phasellus id ultricies eros. Praesent
-                    vulputate interdum dapibus. Duis varius faucibus metus, eget sagittis purus consectetur in.
-                    Praesent fringilla tristique sapien, et maximus tellus dapibus a. Quisque nec magna dapibus
-                    sapien iaculis consectetur. Fusce in vehicula arcu. Aliquam erat volutpat. Class aptent
-                    taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
-                </p>
+            <div class="modal-body" style="margin-top: 11rem; background-color: #EDEDF5;" id="match_hist">
+
             </div>
         </div>
     </div>
@@ -679,12 +674,20 @@
                     $('#puthist').append("<div id='loader_box' style='width: 100%; display: flex'></div>");
                    $('#loader_box').append("<div id='load_spinner' class='spinner-grow text-success' style='margin-left: auto; margin-right:auto' role='status'></div>");
                     step++;
+                    const queryString = window.location.search;
+                    const urlParams = new URLSearchParams(queryString);
+                    const optionP = urlParams.get('option')
+                    var option ='';
+                    if (optionP !== null){
+                         option = optionP;
+                    }
+
                     var o = new Object();
                     o['token'] = token;
                     o['page'] = current_page;
                     //$("#bodyID").addClass('block');
                     $.ajax({
-                        url: "https://demo.pronomix.net/api/historique-pronostics/reference_coupon=all_",
+                        url: `https://demo.pronomix.net/api/historique-pronostics/reference_coupon=all_/status=${option}?page=1`,
                         data: o,
                         method: "GET",
                         success: function (data) {
@@ -752,22 +755,139 @@
 
     }
     $('#select4b').on('change', function () {
-        console.log(this.value)
+        $('#loader').show();
+        var token2 = "{{ $token }}";
+        var o = new Object();
+        o['token'] = token2;
+        var option = this.value;
+
+       var local_link = "{{route('his_coup')}}";
+       var p = `?option=${option}`;
+       var linkreal= local_link.concat(p);
+
+       window.location = linkreal;
+
     });
 
-    $('[id^="hist_pron"]').click(function () {
+    /*$('[id^="hist_pron"]').click(function () {
         var reference_coupon = $(this).data('reference_coupon');
         var user_new_balance = $(this).data('user_new_balance');
         var type = $(this).data('type');
         var mise_tickets = $(this).data('mise_tickets');
         var date_created = $(this).data('date_created');
         var pronostic_win = $(this).data('pronostic_win');
-        console.log()
-        //var pronostics = $(this).data('pronostics');
+
+        var pronostics = $(this).data('pronostics');
+
+
+        pronostics.forEach(showall);
+        function showall(item) {
+            var res = '';
+            var score = '';
+            if(item.pronostic_win === 'lost'){
+                res = `<div class='badge-red'> Perdu </div>`;
+            }else if(item.pronostic_win === 'win'){
+                res = `<div class='badge-green'> Gagné </div>`;
+            }
+            else if(item.pronostic_win === 'canceled'){
+                res = `<div class='badge-cancelled'> reporte </div>`;
+                score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
+                                            <div class="card-body" style="padding: 0">
+                                                <div class="container" style="padding: 0px 5px 0px">
+
+                                                    <div class="row">
+                                                        <div class="col" style="padding: 0">
+                                                            <strong style="font-size: 20px; color: black;text-decoration: line-through;">16:00</strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>`;
+            }
+            else{
+                res = 'indisponible';
+                score = `<div class='card' style='padding: 7px 0 7px 0; background-color: transparent'>
+                            <div class='card-body' style='padding: 0'>
+                                <div class='container' style='padding: 0px 5px 0px'>
+
+                                    <div class='row'>
+                                        <div class='col' style='padding: 0'>
+                                            <strong style='font-size: 20px; color: black'>_</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+            }
+            $('#match_hist').append(
+                `<div class='card-block mb-2' id='detmatch0' style='height: 135px; background-color: #fff;' data-matchid='897533'>
+                <div class='section full' style='position: relative; text-align: center'>
+                <div class='in' style='padding: 0px'>
+                <div class='titleCard__textWrapper' style='justify-content: space-between;color: #1e1e1e; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;'>
+                <span class='titleCard__text' style='font-size: 12px'>
+                ${item.sport_icon}   ${item.league_name}~ <span style='font-weight: normal; color: #6f6c6c;'>${item.league_round}</span><br>
+            </span>
+        </div>
+
+            <div class='container mt-1'
+                 style='background-color: rgba(255, 255, 255, 0.2); justify-content: space-between;height: 40px;border-radius: 10px;'>
+                <div class='row'>
+                    <div class='col-3' style='padding: 0'>
+                        <div class='team_name' style='color: black; font-weight: bold; margin-top: 5px; text-align: center; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;line-clamp: 2;-webkit-box-orient: vertical;'>
+                            ${item.team_name_home}
+                        </div>
+                    </div>
+                    <div class='col-2' style='padding: 0'>
+                        <img src='${item.team_logo_home}' alt='logo' class='logo'
+                             style='width: 1.8rem;height: 1.8rem;margin-top: 0.3rem'>
+                    </div>
+                    <div class='col-2' style='padding: 0'>
+                        ${score}
+                    </div>
+                    <div class='col-2' style='padding: 0'>
+                        <img src='${item.team_logo_away}' alt='logo' class='logo'
+                             style='width: 1.8rem;height: 1.8rem;margin-top: 0.3rem'>
+                    </div>
+                    <div class='col-3' style='padding: 0'>
+                        <div id='team_name' class='team_name' style='color: black; font-weight: bold; margin-top: 5px; text-align: center;overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 1;
+           line-clamp: 2;
+   -webkit-box-orient: vertical;'>${item.team_name_away}
+                        </div>
+                    </div>
+                </div>
+                <div class='row' style='padding: 0 50px;'>
+                    <div class='col' style='padding: 0'>
+                        <div class='' style='color: black;text-align: center; font-size: 10px'>${item.date}</div>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-6' style='padding: 0'>
+                        <div  style='color: black; text-align: center;  font-size: 10px'>${item.pronostic_name}
+                        <span class='short_team_name'>${item.value_pronostic}</span> <span class='badge-green'>${item.value_odd}</span></div>
+                    </div>
+                    <div class='col-6' style='padding: 0'>
+                        <div  style='color: black; text-align: center;  font-size: 10px'>
+                        ${res}
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>`
+            );
+        }
+
+        //console.log(pronostics)
+
+
         var odd_cumul = $(this).data('odd_cumul');
         var gain_potentiel = $(this).data('gain_potentiel');
 
-        console.log(pronostic_win)
+        //console.log(pronostic_win)
 
         if(pronostic_win === 'lost'){
             $('#status').append("<div class='badge-red'> Perdu </div>");
@@ -799,10 +919,228 @@
         $('#gain_potentiel').empty();
         $('#gain_potentiel').append(gain_potentiel);
 
-    });
+    });*/
+
+    var token1 = "{{ $token }}";
+
+    function showdetails(ref) {
+        console.log(ref)
+        $('#loader').show();
+        var o = new Object();
+        o['token'] = token1;
+        $.ajax({
+            url: `https://demo.pronomix.net/api/detail-pronostics/reference_coupon=${ref}`,
+            data: o,
+            method: "GET",
+            success: function (data) {
+                console.log(data)
+                var res = data.pronostics;
+                var reference_coupon = res.reference_coupon;
+                var type = res.type;
+                var odd_cumul = res.cote_globale;
+                var gain_potentiel = res.gain_potentiel;
+                var mise_tickets = res.mise_tickets;
+                var date_created = res.date_created;
+                var pronostic_win = res.pronostic_win;
+
+                var pronostics = res.pronostic_content.pronostics;
+
+                console.log(pronostics)
+
+
+                if(pronostic_win === 'lost'){
+                    $('#status').append("<div class='badge-red'> Perdu </div>");
+                }if (pronostic_win === 'win'){
+                    $('#status').append("<div class='badge-green'> Gagné </div>");
+                }
+                if(pronostic_win === null){
+                    $('#status').append("non disponible");
+                }
+
+                $('#reference_coupon').empty();
+                $('#reference_coupon').append(reference_coupon);
+
+
+                $('#type').empty();
+                $('#type').append(type);
+
+                $('#mise_tickets').empty();
+                $('#mise_tickets').append(mise_tickets);
+
+                $('#date_created').empty();
+                $('#date_created').append(date_created);
+
+
+                $('#odd_cumul').empty();
+                $('#odd_cumul').append(odd_cumul);
+
+                $('#gain_potentiel').empty();
+                $('#gain_potentiel').append(gain_potentiel);
+
+
+
+                pronostics.forEach(showall);
+                function showall(item) {
+                    var res = '';
+                    var score = '';
+                    var winhome = '';
+                    var winaway = '';
+                    if(item.score_fulltime_home > item.score_fulltime_away){
+                        winhome = "#51b115";
+                    }
+
+                    if(item.score_fulltime_away  > item.score_fulltime_home){
+                        winaway = "#51b115";
+                    }
+
+                    if(item.pronostic_win === 'lost'){
+                        res = `<div class='badge-red'> Perdu </div>`;
+                        score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
+                                            <div class="card-body" style="padding: 0">
+                                                <div class="container" style="padding: 0px 5px 0px">
+
+                                                    <div class="row">
+                                                        <div class="col" style="padding: 0">
+                                                            <strong style="font-size: 20px; color: black;"><span style="color: ${winhome}">${item.score_fulltime_home}</span> - <span style="color: ${winaway}">${item.score_fulltime_away}</span></strong>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+<div class="card-footer" style="padding: 0;font-size: x-small;height: 1rem; width: max-content">(${item.score_halftime_home} - ${item.score_halftime_away}, ${item.score_secondtime_home} - ${item.score_secondtime_away})</div>
+                                        </div>`;
+                    }else if(item.pronostic_win === 'win'){
+                        res = `<div class='badge-green'> Gagné </div>`;
+
+                        score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
+                                            <div class="card-body" style="padding: 0">
+                                                <div class="container" style="padding: 0px 5px 0px">
+
+                                                    <div class="row">
+                                                        <div class="col" style="padding: 0">
+                                                            <strong style="font-size: 20px; color: black;"><span style="color: ${winhome}">${item.score_fulltime_home}</span> - <span style="color: ${winaway}">${item.score_fulltime_away}</span></strong>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+<div class="card-footer" style="padding: 0;font-size: x-small;height: 1rem; width: max-content">(${item.score_halftime_home} - ${item.score_halftime_away}, ${item.score_secondtime_home} - ${item.score_secondtime_away})</div>
+                                        </div>`;
+                    }
+                    else if(item.pronostic_win === 'canceled'){
+                        res = `<div class='badge-red'> reporte </div>`;
+                        score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
+                                            <div class="card-body" style="padding: 0">
+                                                <div class="container" style="padding: 0px 5px 0px">
+
+                                                    <div class="row">
+                                                        <div class="col" style="padding: 0">
+                                                            <strong style="font-size: 20px; color: black;text-decoration: line-through;">16:00</strong>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>`;
+                    }
+                    else{
+                        res = 'indisponible';
+                        score = `<div class='card' style='padding: 7px 0 7px 0; background-color: transparent'>
+                            <div class='card-body' style='padding: 0'>
+                                <div class='container' style='padding: 0px 5px 0px'>
+
+                                    <div class='row'>
+                                        <div class='col' style='padding: 0'>
+                                            <strong style='font-size: 20px; color: black'>_</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                    $('#match_hist').append(
+                        `<div class='card-block mb-2' id='detmatch0' style='height: 9rem; background-color: #fff;' data-matchid='897533'>
+                <div class='section full' style='position: relative; text-align: center'>
+                <div class='in' style='padding: 0px'>
+                <div class='titleCard__textWrapper' style='justify-content: space-between;color: #1e1e1e; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;'>
+                <span class='titleCard__text' style='font-size: 12px'>
+                ${item.sport_icon}   ${item.league_name}~ <span style='font-weight: normal; color: #6f6c6c;'>${item.league_round}</span><br>
+        </div>
+            <div class='container mt-1'
+                 style='background-color: rgba(255, 255, 255, 0.2); justify-content: space-between;height: 40px;border-radius: 10px;'>
+                <div class='row'>
+                    <div class='col-3' style='padding: 0'>
+                        <div class='team_name' style='color: black; font-weight: bold; margin-top: 5px; text-align: center; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;line-clamp: 2;-webkit-box-orient: vertical;'>
+                            ${item.team_name_home}
+                        </div>
+                    </div>
+                    <div class='col-2' style='padding: 0'>
+                        <img src='${item.team_logo_home}' alt='logo' class='logo'
+                             style='width: 1.8rem;height: 1.8rem;margin-top: 0.3rem'>
+                    </div>
+                    <div class='col-2' style='padding: 0'>
+                        ${score}
+                    </div>
+                    <div class='col-2' style='padding: 0'>
+                        <img src='${item.team_logo_away}' alt='logo' class='logo'
+                             style='width: 1.8rem;height: 1.8rem;margin-top: 0.3rem'>
+                    </div>
+                    <div class='col-3' style='padding: 0'>
+                        <div id='team_name' class='team_name' style='color: black; font-weight: bold; margin-top: 5px; text-align: center;overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 1;
+           line-clamp: 2;
+   -webkit-box-orient: vertical;'>${item.team_name_away}
+                        </div>
+                    </div>
+                </div>
+                <div class='row' style='padding: 0 50px;'>
+                    <div class='col' style='padding: 0'>
+                        <div class='' style='color: black;text-align: center; font-size: 10px'>${item.date}</div>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class='col-6' style='padding: 0'>
+                        <div  style='color: black; text-align: center;  font-size: 10px'>${item.pronostic_name}
+                        <span class='short_team_name'>${item.value_pronostic}</span> <span class='badge-green'>${item.value_odd}</span></div>
+                    </div>
+                    <div class='col-6' style='padding: 0'>
+                        <div  style='color: black; text-align: center;  font-size: 10px'>
+                        ${res}
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>`
+                    );
+                }
+
+                //console.log(pronostics)
+
+                $('#loader').hide();
+                $('#ModalBasic').modal('show');
+
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
+            }
+        });
+    }
 
     $('#close_his').click(function () {
         $('#status').empty();
+        $('#match_hist').empty();
     });
 
 
