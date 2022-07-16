@@ -131,7 +131,7 @@
             <div class="transactions">
                 <div id="putlot" class="container">
                     @foreach($get_lot['data'] as $index => $lot)
-                        <div class="row item" style="color: orange; padding: 10px 10px" id="item{{$index}}">
+                        <div class="row item" style="color: orange; padding: 10px 10px; @if($lot['restant'] === '0') opacity: 0.5 @endif" id="item{{$index}}">
                             <div class="col-12">
                                 @if($lot['new'] === 'true')
                                     <span class="badge badge-danger" style="display: inline-block;
@@ -312,6 +312,7 @@
                         url: `${next_page}`,
                         method: "GET",
                         success: function (data) {
+                            console.log(data)
                             if (data.success === true){
                                 $('#load_spinner').css('display', 'block');
                                $("#loader").show();
@@ -332,7 +333,7 @@
                                     url: url,
                                     data: o,
                                     success: function(data) {
-                                        console.log(data)
+                                        //console.log(data)
                                         current_page = data[0];
                                         next_page = data[2];
                                         console.log(current_page)

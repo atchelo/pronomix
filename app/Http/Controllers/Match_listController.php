@@ -351,4 +351,29 @@ HTML;
         }
     }
 
+    public function get_resultats(Request $request){
+
+        $token = session('token');
+
+        $response = Http::get("https://demo.pronomix.net/api/resultats/liste/search=all_/filtre_date=all_",
+
+            [
+                'token' => $token,
+            ]);
+        $rep = json_decode($response->body(), true);
+        if (isset($rep['data'][0])){
+            if ($rep['success'] === true){
+                session([
+                    'result_pron' => $rep['data'],
+                ]);
+
+                $resus = session('result_pron');
+
+
+                return view('resultats', compact('resus', 'token'));
+
+            }
+        }
+    }
+
 }

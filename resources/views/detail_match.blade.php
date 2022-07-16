@@ -1237,7 +1237,7 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
-                    <button type="button" id="coup_pron1" class="btn btn-success btn-block">Historiques Coupon</button>
+                    <a href="{{ route('his_coup') }}" type="button" class="btn btn-success btn-block">Historiques Coupon</a>
                 </div>
             </div>
         </div>

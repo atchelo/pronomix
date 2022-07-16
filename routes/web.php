@@ -89,6 +89,8 @@ Route::middleware(['authLog'])->group(function () {
 
     Route::post('store_hist', [Match_listController::class, 'historique_store'])->name('store_hist');
 
+    Route::get('resultats', [Match_listController::class, 'get_resultats'])->name('result');
+
 });
 
 Route::get('/welcome', function () {

@@ -316,7 +316,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item" data-bs-dismiss="modal">
+                        <a href="{{ route('result') }}" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="checkbox-outline"></ion-icon>
                             </div>
