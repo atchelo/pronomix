@@ -469,9 +469,10 @@
         //loader.show();
 
         $("#loader").show();
-
+        var p = new Object();
+        p['page'] = 1;
         $.ajax({
-            url: `https://demo.pronomix.net/api/competition/liste/search=all_`,
+            url: "https://demo.pronomix.net/api/rencontres-competition/liste/search=all_",
             method: "GET",
             success: function (data) {
                 if (data.success === true){
@@ -864,4 +865,65 @@
         $("#loader").show();
         window.location.reload();
     });
+
+    window.addEventListener("load", function() {
+
+        var team_name_shrt = document.getElementsByClassName('short_team_name');
+        var result_shrt;
+        team_name_shrt.forEach(function(number_shrt) {
+            result_shrt = number_shrt.innerText;
+            number_shrt.innerHTML = result_shrt.substring(0, 2);
+        });
+
+    });
+
+
+    $('[id^="detmatch"]').click(function(e) {
+        var match_id = $(this).data('matchid');
+        $("#loader").show();
+        document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
+        console.log(match_id)
+
+        $.ajax({
+            url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
+            method: "GET",
+            success: function (data) {
+                if (data.success === true){
+                    var detail_match_data = data.data;
+                    var o = new Object();
+                    o["detail_match_data"] = detail_match_data;
+                    var url = "{{ route('detmatch') }}";
+                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            window.location = data;
+                        }
+                    });
+
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
+            }
+        });
+
+    });
+
 </script>

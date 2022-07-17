@@ -49,6 +49,7 @@ Route::middleware(['authLog'])->group(function () {
 
         session()->forget([
             'list_lot',
+            'list_compet'
         ]);
 
         $token = session('token');

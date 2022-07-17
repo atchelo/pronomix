@@ -319,35 +319,6 @@ HTML;
                 $get_hist['current_page'],
                 $html_hist,
             ];
-
-            //return json_encode($html_lot);
-
-
-            // $cur = $get_lot['current_page'];
-            $get_lot = session('list_lot');
-
-            $data_all = array_merge($get_lot['data'] , $request->lot_data['data']);
-
-            session([
-                'list_lot' => $request->lot_data,
-            ]);
-
-            $new = session('list_lot');
-
-            $new['data'] = $data_all;
-
-            session([
-                'list_lot' => $new,
-            ]);
-
-            $tab = session('list_lot');
-
-            $el = sizeof($tab['data']);
-
-            $cur = $el - 10;
-
-
-            return url('lot_list#'."item$cur");
         }
     }
 
