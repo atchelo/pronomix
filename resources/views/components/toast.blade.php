@@ -295,7 +295,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" id="allmatch1" class="item" data-bs-dismiss="modal">
+                        <a href="{{ route('allmatch') }}"  class="item" onclick="$('#loader').show()">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="dice-outline"></ion-icon>
                             </div>
@@ -306,7 +306,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" class="item" id="allcompet" data-bs-dismiss="modal">
+                        <a href="{{ route('allcompet') }}" class="item" onclick="$('#loader').show()">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="trophy-outline"></ion-icon>
                             </div>
@@ -351,16 +351,6 @@
                 <!-- others -->
                 <div class="listview-title mt-1">Others</div>
                 <ul class="listview flush transparent no-line image-listview">
-                    <li>
-                        <a href="javascript:void(0);" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item" data-bs-dismiss="modal">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="settings-outline"></ion-icon>
-                            </div>
-                            <div class="in">
-                                Settings
-                            </div>
-                        </a>
-                    </li>
                     <li>
                         <a href="javascript:void(0);" data-bs-dismiss="modal" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
                             <div class="icon-box bg-primary">
@@ -464,9 +454,7 @@
 
     });
 
-    $('[id^="allcompet"]').click(function() {
-        //var loader =  document.getElementById('loader');
-        //loader.show();
+    /*$('[id^="allcompet"]').click(function() {
 
         $("#loader").show();
         var p = new Object();
@@ -488,7 +476,7 @@
                     });
 
                     $.ajax({
-                        type: "POST",
+                        type: "GET",
                         url: url,
                         data: o,
                         success: function(data) {
@@ -511,7 +499,7 @@
             }
         });
 
-    });
+    });*/
 
     $('[id^="all_lot"]').click(function() {
         //var loader =  document.getElementById('loader');

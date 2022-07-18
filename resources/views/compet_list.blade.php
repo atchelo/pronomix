@@ -197,8 +197,6 @@
 
             <div class="accordion" id="accordionExample2">
                 @foreach($compets as $index => $compet)
-
-
                     <div class="accordion-item" id="compet_det{{$index}}" data-competid="{{$compet['id_']}}">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -247,24 +245,12 @@ display: -webkit-box;
                                                                 <div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
                                                                     <div class="card-body" style="padding: 0">
                                                                         <div class="container" style="padding: 0px 5px 0px">
-                                                                            {{----<div class="row" >
-                                                                                <div class="col" style="padding: 0">
-                                                                                    <strong style="font-size: 25px; color: #11a44c" >3</strong>
-                                                                                </div>
-                                                                                <div class="col" style="padding: 0">
-                                                                                    -
-                                                                                </div>
-                                                                                <div class="col" style="padding: 0">
-                                                                                    <strong style="font-size: 25px;  color: #11a44c" >0</strong>
-                                                                                </div>
-                                                                            </div>-----}}
                                                                             <div class="row" >
                                                                                 <div class="col" style="padding: 0">
                                                                                     <strong style="font-size: 20px; color: black" >{{ $rencontre['hour'] }}</strong>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <!----<h6 class="card-title" style="margin-top: 10px;color: #11a44c">VS</h6>---->
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -297,28 +283,6 @@ display: -webkit-box;
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!----<div class="wallet-inline-button mt-2" style="background-color: rgba(255, 255, 255, 0.6); justify-content: space-between;height: 35px;border-radius: 30px;">
-                                                        <a href="#" class="item" data-bs-toggle="modal" data-bs-target="#depositActionSheet">
-                                                            <div class="iconbox" style="width: 35px; height: 35px; box-shadow: 3px 0px 20px rgb(0 0 0 / 60%);">
-                                                                <img src="assets/img/match/team-logo.png" alt="logo" class="logo" style="width: 55px">
-                                                            </div>
-                                                        </a>
-                                                        <div class="">this is test</div>
-                                                        <div class="card" style="position: absolute;top: 49%;left: 50%;transform: translate(-50%, -50%);">
-                                                            <div class="card-body" style="padding: 0 30px">
-                                                                <h6 class="card-title" style="margin-top: 10px;color: #11a44c">VS</h6>
-                                                            </div>
-                                                            <div class="card-footer" style="padding: 0; height: 15px">
-                                                                <em style="font-size: 10px;position: absolute;left: 30%;top: 65%;">10:18:50</em>
-                                                            </div>
-                                                        </div>
-                                                        <div class="">this is test</div>
-                                                        <a href="crypto-exchange.html" class="item">
-                                                            <div class="iconbox" style="width: 35px; height: 35px; box-shadow: -3px 0px 20px rgb(0 0 0 / 60%);">
-                                                                <img src="assets/img/match/team-logo2.png" alt="logo" class="logo" style="width: 55px">
-                                                            </div>
-                                                        </a>
-                                                    </div>------>
                                                 </div>
                                             </div>
                                         </div>
@@ -447,7 +411,7 @@ display: -webkit-box;
     var current_page = "{{$current_page}}";
     current_page = parseInt(current_page) + 1;
     var total_page = "{{$total_page}}";
-   // var next_page = "";
+   var next_page = "{!! $next_page !!}";
     var token = "{{ $token }}";
 
     var step = 2;
@@ -456,7 +420,7 @@ display: -webkit-box;
     $('#aft_body').on('scroll', onScroll);
     function onScroll(){
         if($('#aft_body').scrollTop() + window.innerHeight >= $(this)[0].scrollHeight) {
-            if (current_page <= total_page){
+            if (next_page !== null){
                 if(step == current_page){
                     $('#load_spinner').css('display', 'block');
                     console.log('load')
@@ -468,47 +432,53 @@ display: -webkit-box;
                     o['page'] = current_page;
                     //$("#bodyID").addClass('block');
                    $.ajax({
-                        url: `https://demo.pronomix.net/api/rencontres-competition/liste/search=all_`,
+                        url: `${next_page}`,
                         data: o,
+                       async:false,
+                       datatype: "json",
                         method: "GET",
                         success: function (data) {
                             console.log(data)
                            if (data.success === true){
-                                //next_page = data.pronostics.next_page_url;
+                                next_page = data.data.next_page_url;
                                 var url = "{{ route('store_compet') }}";
-                                var ccompet_data = data.data;
+                                var ccompet_data = data;
                                 var token = data.new_token;
                                 var p = new Object();
                                 p["list_compet"] = ccompet_data;
                                 p["token"] = token;
 
-                                $.ajaxSetup({
-                                    headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    }
-                                });
+                                var params = JSON.stringify(p);
 
-                                $.ajax({
-                                    type: "POST",
-                                    url: url,
-                                    data: p,
-                                    success: function(data) {
-                                        console.log(data)
-                                        $('#loader_box').remove();
-                                        $('#load_spinner').remove();
-                                        current_page = parseInt(data[0]) + 1;
-                                        step = current_page;
-                                        data[1].forEach(getall);
-                                        function getall(item) {
-                                            $('#accordionExample2').append(item);
-                                        }
-                                        $('#loader').hide();
-                                        // $("#bodyID").removeClass('block');
+                               var CSRF_TOKEN = document.querySelectorAll('meta[name="csrf-token"]')[0].getAttribute('content');
 
-                                        //window.location = data;
-                                        // location.reload();
-                                    }
-                                });
+                               var httpc = new XMLHttpRequest(); // simplified for clarity
+                               httpc.open("POST", url, true); // sending as POST
+                               httpc.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                               httpc.setRequestHeader("X-CSRF-TOKEN", CSRF_TOKEN);
+
+                               httpc.onreadystatechange = function() { //Call a function when the state changes.
+                                   if(httpc.readyState == 4 && httpc.status == 200) { // complete and no errors
+                                       console.log(JSON.parse(httpc.responseText))
+                                       var data = JSON.parse(httpc.responseText);
+                                       $('#loader_box').remove();
+                                       $('#load_spinner').remove();
+                                       current_page = parseInt(data[0]) + 1;
+                                       step = current_page;
+                                       data[1].forEach(getall);
+                                       function getall(item) {
+                                           $('#accordionExample2').append(item);
+                                       }
+                                       var team_name_shrt = document.getElementsByClassName('short_team_name');
+                                       var result_shrt;
+                                       team_name_shrt.forEach(function(number_shrt) {
+                                           result_shrt = number_shrt.innerText;
+                                           number_shrt.innerHTML = result_shrt.substring(0, 2);
+                                       });
+                                       $('#loader').hide();
+                                   }
+                               };
+                               httpc.send(params);
 
                             }
 
