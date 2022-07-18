@@ -66,11 +66,16 @@ HTML;
                 'list_lot' => $request->lot_data,
             ]);
 
+            $instock = <<<HTML
+opacity: 0.5
+HTML;
+
+
             foreach ($allLots as $index => $lots){
                // return $lots['new'];
                 $html_lot[] = <<<HTML
 
-                <div class="row item" style="color: orange; padding: 10px 10px" id="item{$index}">
+                <div class="row item" style="color: orange; padding: 10px 10px; {$if($lots['restant'] === '0', $instock, ' ')} " id="item{$index}">
                             <div class="col-12">
                                 {$if($lots['new'] === 'true', true, false)}
 
