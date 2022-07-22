@@ -153,7 +153,7 @@
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
-            <a href="{{ route('pers_info') }}" class="headerButton">
+            <a href="{{ route('pers_info') }}" class="headerButton" id="linkToPersInfo">
                 <ion-icon class="icon" name="person-outline"></ion-icon>
             </a>
         </div>

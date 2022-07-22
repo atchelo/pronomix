@@ -112,8 +112,8 @@
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky">
         <div class="left">
-            <a href="{{ route('home') }}" class="headerButton">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
@@ -137,22 +137,22 @@
         <div class="section">
 
             <ul class="listview image-listview inset" style="margin:0">
-                <li style="background-color: #11a44c !important" id="pers_info">
+                <li id="pers_info">
                     <div class="item">
-                        <div class="icon-box bg-primary" style="background: white !important;color: #11a44c !important;">
+                        <div class="icon-box bg-primary">
                             <ion-icon name="person-circle-outline" role="img" class="md hydrated" aria-label="wallet outline"></ion-icon>
                         </div>
-                        <div class="in" style="color: white">
+                        <div class="in">
                             <div>Informations Personnelles</div>
                         </div>
                     </div>
                 </li>
-                <li id="pwd_modif">
+                <li style="background-color: #11a44c !important" id="pwd_modif">
                     <div class="item">
-                        <div class="icon-box bg-primary">
+                        <div class="icon-box bg-primary" style="background: white !important;color: #11a44c !important;">
                             <ion-icon name="lock-closed-outline" role="img" class="md hydrated" aria-label="cash outline"></ion-icon>
                         </div>
-                        <div class="in">
+                        <div class="in" style="color: white">
                             <div>Modifier mot de passe</div>
                         </div>
                     </div>
@@ -181,78 +181,40 @@
 
             <div class="card mt-2">
                 <div class="card-body">
-                        <div class="form-group basic">
-                            <div class="input-wrapper">
-                                <label class="label" for="nom">Nom</label>
-                                <input type="text" class="form-control" name="nom" id="nom" required @if(isset($infos['nom'])) value="{{ $infos['nom'] }}"  @endif placeholder="Votre nom">
-                                <i class="clear-input">
-                                    <ion-icon name="close-circle"></ion-icon>
-                                </i>
-                            </div>
-                        </div>
 
-                        <div class="form-group basic">
-                            <div class="input-wrapper">
-                                <label class="label" for="prenom">Prenom</label>
-                                <input type="text" class="form-control" id="prenom" name="prenom" @if(isset($infos['prenom'])) value="{{ $infos['prenom'] }}"  @endif required placeholder="Votre prenom">
-                                <i class="clear-input">
-                                    <ion-icon name="close-circle"></ion-icon>
-                                </i>
-                            </div>
-                        </div>
-
-                        <div class="form-group basic">
-                            <div class="input-wrapper">
-                                <label class="label" for="email">E-mail</label>
-                                <input type="email" class="form-control" disabled id="email" @if(isset($infos['email'])) value="{{ $infos['email'] }}"  @endif name="email" required placeholder="Your e-mail">
-                                <i class="clear-input">
-                                    <ion-icon name="close-circle"></ion-icon>
-                                </i>
-                            </div>
-                        </div>
-
-                        <div class="form-group boxed">
-                            <div class="input-wrapper">
-                                <label class="label" for="pays_id">Pays</label>
-                                <select class="form-control custom-select" id="pays_id" name="pays_id">
-                                    @foreach($liste_pays as $pays)
-                                        <option value="{{ $pays['id'] }}">{{ $pays['nom'] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                    <div class="form-group basic">
+                        <div class="input-wrapper">
+                            <label class="label" for="name">Mot de passe actuel</label>
+                            <input type="text" class="form-control" name="name" id="name" required @if(isset($infos['nom'])) value="{{ $infos['nom'] }}"  @endif placeholder="Mot de passe actuel">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
                         </div>
+                    </div>
 
-                        <div class="form-group boxed">
-                            <div class="input-wrapper">
-                                <label class="label" for="pays_id">Indicatif</label>
-                                <select class="form-control custom-select" id="pays_id" name="pays_id">
-                                    @foreach($liste_pays as $pays)
-                                        <option value="{{ $pays['id'] }}">+{{ $pays['indicatif'] }} ({{ $pays['nom'] }})</option>
-                                    @endforeach
-                                </select>
-                                <i class="clear-input">
-                                    <ion-icon name="close-circle"></ion-icon>
-                                </i>
-                            </div>
+                    <div class="form-group basic">
+                        <div class="input-wrapper">
+                            <label class="label" for="surname">Nouveau mot de passe</label>
+                            <input type="text" class="form-control" id="surname" name="surname" @if(isset($infos['prenom'])) value="{{ $infos['prenom'] }}"  @endif required placeholder="Nouveau mot de passe">
+                            <i class="clear-input">
+                                <ion-icon name="close-circle"></ion-icon>
+                            </i>
                         </div>
+                    </div>
 
-                        <div class="form-group basic">
-                            <div class="input-wrapper">
-                                <label class="label" for="msisdn">Numéro de téléphone</label>
-                                <input type="text" class="form-control" id="msisdn" required name="msisdn" autocomplete="off"
-                                       placeholder="Numéro de téléphone" @if(isset($infos['msisdn'])) value="{{ $infos['msisdn'] }}"  @endif>
-                                <i class="clear-input">
-                                    <ion-icon name="close-circle"></ion-icon>
-                                </i>
-                            </div>
+                    <div class="form-group basic">
+                        <div class="input-wrapper">
+                            <label class="label" for="email1">Confirmez votre nouveau mot de passe</label>
+                            <input type="email" class="form-control" readonly id="email1" @if(isset($infos['email'])) value="{{ $infos['email'] }}"  @endif name="email" required placeholder="Confirmez votre nouveau mot de passe">
+                            <i class="clear-input">
+                                <ion-icon name="close-circle"></ion-icon>
+                            </i>
                         </div>
+                    </div>
 
-                        <div class="form-group basic" style="bottom: auto">
-                            <button type="submit" id="info_modif" class="btn btn-primary btn-block btn-lg">Modifier mes informations</button>
-                        </div>
+                    <div class="form-group basic" style="bottom: auto">
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">Modifier mot de passe</button>
+                    </div>
                 </div>
             </div>
 
@@ -362,54 +324,19 @@
 <script src="assets/js/base.js"></script>
 
 <script>
-    /*$('#pers_info').click(function(e) {
+    $('#pers_info').click(function(e) {
         $("#loader").show();
         window.location = "{{ route('pers_info') }}";
-    });*/
+    });
     $('#suivi_coli').click(function(e) {
         $("#loader").show();
         window.location = "{{ route('suivi_coli') }}";
     });
-    $('#pwd_modif').click(function(e) {
+    /*$('#pwd_modif').click(function(e) {
         $("#loader").show();
         window.location = "{{ route('pwd_modif') }}";
-    });
-
-    $('#info_modif').click(function(e) {
-        $("#loader").show();
-        var token = "{{ $token }}";
-        var o = new Object();
-        o['token'] = token;
-        o['nom'] = $('#nom').val();
-        o['prenom'] =  $('#prenom').val();
-        o['email'] =  $('#email').val();
-        o['pays_id'] =  $('#pays_id').val();
-        o['msisdn'] =  $('#msisdn').val();
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax({
-            type: "POST",
-            url: "https://demo.pronomix.net/form-data/update/user-info",
-            data: o,
-            success: function(data) {
-                console.log(data)
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                }
-            }
-        });
-    });
-
-
+    });*/
 </script>
-
 
 
 <script>
