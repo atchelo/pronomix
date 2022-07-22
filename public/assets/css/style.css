@@ -4573,13 +4573,14 @@ line-height: 1.4em;
 }
 
 .timeline .dot {
-width: 12px;
-height: 12px;
+width: 2rem;
+height: 2rem;
 border-radius: 100%;
 position: absolute;
 background: #A9ABAD;
-left: -5px;
-top: 4px;
+    color: white;
+left: -0.9rem;
+top: -.4rem;
 z-index: 10;
 }
 

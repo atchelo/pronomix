@@ -73,7 +73,7 @@ HTML;
                     if(isset($compet['rencontres'])){
                         foreach ($compet['rencontres'] as $index1 => $rencontre){
                             $rencontres .= <<<HTML
-                                        <div class="card-block mb-1" id="detmatch{$index1}" style="height: 135px; background-color: white" data-matchid="{$if(isset($rencontre['id_']), $rencontre['id_'], ' ')}">
+                                        <div class="card-block mb-1" id="detmatch{$index1}" style="height: 135px; background-color: white" data-matchid="{$if(isset($rencontre['id_']), $rencontre['id_'], ' ')}" onclick="match({$rencontre['id_']})">
                                             <div class="section full" style="position: relative; text-align: center">
                                                 <div class="in" style="padding: 0px">
                                                     <div class="titleCard__textWrapper" style="justify-content: space-between;color: #1e1e1e; overflow: hidden;

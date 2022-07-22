@@ -4,6 +4,7 @@ use App\Http\Controllers\CompetListController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LotController;
 use App\Http\Controllers\Match_listController;
+use App\Http\Controllers\PersInfoController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
@@ -64,7 +65,7 @@ Route::middleware(['authLog'])->group(function () {
     Route::post('store_match', [Match_listController::class, 'storeAll'])->name('store_match');
 
     Route::get('compet_list', [CompetListController::class, 'getAll'])->name('allcompet');
-    Route::post('compet_list', [CompetListController::class, 'storeAll'])->name('store_compet');
+    Route::post('compet_list/store', [CompetListController::class, 'storeAll'])->name('store_compet');
 
     Route::post('pronostiquer', [Match_listController::class, 'pronostiquer'])->name('pronos');
     Route::post('pronostiquer_multi', [Match_listController::class, 'pronostiquer_multi'])->name('pronos_multi');
@@ -72,7 +73,7 @@ Route::middleware(['authLog'])->group(function () {
 
     Route::post('sup_pronostique', [Match_listController::class, 'sup_coup_pron'])->name('sup_pronos');
 
-    Route::post('vid_pronostique', [Match_listController::class, 'vid_coup_pron'])->name('vid_pronos');
+    Route::post('vid_pronostique', [Match_listController::class, 'vid_couppassword_pron'])->name('vid_pronos');
 
     Route::get('lot_list', [LotController::class, 'getAll'])->name('all_lot');
     Route::post('lot_list', [LotController::class, 'storeAll'])->name('store_lots');
@@ -91,6 +92,12 @@ Route::middleware(['authLog'])->group(function () {
     Route::post('store_hist', [Match_listController::class, 'historique_store'])->name('store_hist');
 
     Route::get('resultats', [Match_listController::class, 'get_resultats'])->name('result');
+
+    Route::get('pers_info', [PersInfoController::class, 'infos'])->name('pers_info');
+
+    Route::get('password_modif', [PersInfoController::class, 'pwd_modif'])->name('pwd_modif');
+
+    Route::get('suivi_coli', [PersInfoController::class, 'suivi_coli'])->name('suivi_coli');
 
 });
 

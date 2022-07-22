@@ -9,20 +9,29 @@ class PersInfoController extends Controller
 {
     public function infos(){
         $token = session('token');
-        $all = session()->all();
-        //dd($all);
         $response = Http::get("https://demo.pronomix.net/api/user-informations",
 
             [
                 'token' => $token,
             ]);
         $rep = json_decode($response->body(), true);
-        //dd($rep);
 
         session([
             'token' => $rep['new_token'],
             'current_user' => $rep['data'],
         ]);
-        return view('pers_info');
+
+        $infos =  $rep['data'];
+        $liste_pays = session('list_pays');
+        //dd($liste_pays);
+        return view('pers_info', compact('infos', 'liste_pays', 'token'));
+    }
+
+    public function pwd_modif(){
+        return view('pwd_modif');
+    }
+
+    public function suivi_coli(){
+        return view('suivi_coli');
     }
 }

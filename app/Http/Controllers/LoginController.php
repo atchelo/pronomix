@@ -20,6 +20,14 @@ class LoginController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
+        $responseP = Http::get("https://demo.pronomix.net/api/pays/liste");
+        $repP = json_decode($responseP->body(), true);
+
+        if ($repP['success'] === true){
+            session([
+                'list_pays' => $repP['data']
+            ]);
+        }
 
         $response = Http::post('https://demo.pronomix.net/api/login', [
             'email' => $request->email,

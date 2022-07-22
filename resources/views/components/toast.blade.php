@@ -866,7 +866,8 @@
     });
 
 
-    $('[id^="detmatch"]').click(function(e) {
+    $('[id^="detmatch"]').click(
+        function(e) {
         var match_id = $(this).data('matchid');
         $("#loader").show();
         document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
@@ -912,6 +913,7 @@
             }
         });
 
-    });
+    }
+    );
 
 </script>
