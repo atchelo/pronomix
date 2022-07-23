@@ -96,6 +96,7 @@ Route::middleware(['authLog'])->group(function () {
     Route::get('pers_info', [PersInfoController::class, 'infos'])->name('pers_info');
 
     Route::get('password_modif', [PersInfoController::class, 'pwd_modif'])->name('pwd_modif');
+    Route::post('password_modif', [PersInfoController::class, 'pwd_store']);
 
     Route::get('suivi_coli', [PersInfoController::class, 'suivi_coli'])->name('suivi_coli');
 

@@ -181,11 +181,18 @@
 
             <div class="card mt-2">
                 <div class="card-body">
-
+                    <div id="message_modal_error" class="alert alert-outline-danger alert-dismissible fade show" role="alert" style="display: none">
+                        <p id="message_error" style="margin: 0"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div id="message_modal_success" class="alert alert-outline-primary alert-dismissible fade show" role="alert" style="display: none">
+                        <p id="message_success" style="margin: 0"></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     <div class="form-group basic">
                         <div class="input-wrapper">
-                            <label class="label" for="name">Mot de passe actuel</label>
-                            <input type="text" class="form-control" name="name" id="name" required @if(isset($infos['nom'])) value="{{ $infos['nom'] }}"  @endif placeholder="Mot de passe actuel">
+                            <label class="label" for="actual_password">Mot de passe actuel</label>
+                            <input type="password" autocomplete="off" class="form-control" name="actual_password" id="actual_password" required placeholder="Mot de passe actuel">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -194,8 +201,8 @@
 
                     <div class="form-group basic">
                         <div class="input-wrapper">
-                            <label class="label" for="surname">Nouveau mot de passe</label>
-                            <input type="text" class="form-control" id="surname" name="surname" @if(isset($infos['prenom'])) value="{{ $infos['prenom'] }}"  @endif required placeholder="Nouveau mot de passe">
+                            <label class="label" for="new_password">Nouveau mot de passe</label>
+                            <input type="password" class="form-control" id="new_password" name="new_password" required placeholder="Nouveau mot de passe">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -204,8 +211,8 @@
 
                     <div class="form-group basic">
                         <div class="input-wrapper">
-                            <label class="label" for="email1">Confirmez votre nouveau mot de passe</label>
-                            <input type="email" class="form-control" readonly id="email1" @if(isset($infos['email'])) value="{{ $infos['email'] }}"  @endif name="email" required placeholder="Confirmez votre nouveau mot de passe">
+                            <label class="label" for="confirm_new_password">Confirmez votre nouveau mot de passe</label>
+                            <input type="password" class="form-control"  id="confirm_new_password" name="confirm_new_password" required placeholder="Confirmez votre nouveau mot de passe">
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -213,8 +220,9 @@
                     </div>
 
                     <div class="form-group basic" style="bottom: auto">
-                        <button type="submit" class="btn btn-primary btn-block btn-lg">Modifier mot de passe</button>
+                        <button type="submit" id="pwd_modifpost" class="btn btn-primary btn-block btn-lg">Modifier mot de passe</button>
                     </div>
+
                 </div>
             </div>
 
@@ -312,6 +320,29 @@
 </div>
 <!-- * Add Card Action Sheet -->
 
+<!-- DialogIconedDanger -->
+<div class="modal fade dialogbox" id="DialogIconedDanger" data-bs-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-danger">
+                <ion-icon name="close-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Erreur</h5>
+            </div>
+            <div class="modal-body" id="coup_error">
+
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a href="#" class="btn" id="code_coup_ferme" data-bs-dismiss="modal">Fermer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedDanger -->
+
 
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
@@ -336,6 +367,117 @@
         $("#loader").show();
         window.location = "{{ route('pwd_modif') }}";
     });*/
+
+    $('#pwd_modifpost').click(function(e) {
+        $("#loader").show();
+        var token = "{{ $token }}";
+        var o = new Object();
+        o['token'] = token;
+        o['actual_password'] = $('#actual_password').val();
+        o['new_password'] =  $('#new_password').val();
+        o['confirm_new_password'] =  $('#confirm_new_password').val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: "https://demo.pronomix.net/api/user/password/update",
+            data: o,
+            success: function(data) {
+                console.log(data)
+                var p = new Object();
+                p["new_token"] = data.new_token;
+                p["message"] = data.message;
+                p["status"] = data.status;
+
+                var url = "{{ route('pwd_modif') }}";
+                if (data.success === false){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: p,
+                        success: function(data) {
+                            console.log(data[0])
+                            $('#message_error').empty();
+                            if(Array.isArray(data)){
+                                $('#message_error').append(data[0]);
+                            }else {
+                                $('#message_error').append(data);
+                            }
+                            $('#message_modal_success').hide();
+                            $('#message_modal_error').show();
+                            $("#loader").hide();
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').empty();
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        }
+                    });
+
+                }
+                else if (data.success === true){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: p,
+                        success: function(data) {
+                            console.log(data[0])
+                            $('#message_success').empty();
+                            if(Array.isArray(data)){
+                                $('#message_success').append(data[0]);
+                            }else {
+                                $('#message_success').append(data);
+                            }
+                            $('#message_modal_error').hide();
+                            $('#message_modal_success').show();
+                            $("#loader").hide();
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').empty();
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        }
+                    });
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                }
+            }
+        });
+    });
+
+
+    window.addEventListener("load", function() {
+
+        //$('#message_modal').hide();
+
+    });
+
 </script>
 
 

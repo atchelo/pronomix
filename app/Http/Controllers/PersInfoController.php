@@ -28,10 +28,37 @@ class PersInfoController extends Controller
     }
 
     public function pwd_modif(){
-        return view('pwd_modif');
+        $token = session('token');
+        return view('pwd_modif', compact('token'));
+    }
+
+    public function pwd_store(Request $request){
+        session([
+            'token' => $request->new_token,
+        ]);
+        $message = $request->message;
+        return $message;
     }
 
     public function suivi_coli(){
+
+        $token = session('token');
+        $response = Http::post("https://demo.pronomix.net/api/user/suivi-colis",
+
+            [
+                'token' => $token,
+            ]);
+        $rep = json_decode($response->body(), true);
+
+        if ($rep['success'] === true){
+            session([
+                'token' => $rep['new_token'],
+                'suivi_coli' => $rep['response'],
+            ]);
+        }
+
+        dd($rep);
+
         return view('suivi_coli');
     }
 }
