@@ -124,9 +124,8 @@
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
-            <a href="app-settings.html" class="headerButton">
-                <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="imaged w32">
-                <span class="badge badge-danger">6</span>
+            <a href="{{ route('pers_info') }}" class="headerButton" id="linkToPersInfo">
+                <ion-icon class="icon" name="person-outline"></ion-icon>
             </a>
         </div>
     </div>
@@ -181,6 +180,8 @@
 
             <div class="card mt-2">
                 <div class="card-body">
+                    <p style="margin: 0;     font-size: .8rem;
+    text-align: center;">Numero de compte: <b>2022221004101404</b></p>
                         <div class="form-group basic">
                             <div class="input-wrapper">
                                 <label class="label" for="nom">Nom</label>
@@ -392,7 +393,7 @@
         });
         $.ajax({
             type: "POST",
-            url: "https://demo.pronomix.net/form-data/update/user-info",
+                url: "https://demo.pronomix.net/form-data/update/user-info",
             data: o,
             success: function(data) {
                 console.log(data)
