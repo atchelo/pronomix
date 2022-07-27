@@ -134,7 +134,6 @@
     <div id="appCapsule" style="padding: 0">
 
         <div class="section">
-
             <ul class="listview image-listview inset" style="margin:0">
                 <li style="background-color: #11a44c !important" id="pers_info">
                     <div class="item">
@@ -179,6 +178,14 @@
             </ul>
 
             <div class="card mt-2">
+                <div id="message_modal_error" class="alert alert-outline-danger alert-dismissible fade show" role="alert" style="display: none">
+                    <p id="message_error" style="margin: 0"></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div id="message_modal_success" class="alert alert-outline-primary alert-dismissible fade show" role="alert" style="display: none">
+                    <p id="message_success" style="margin: 0"></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <div class="card-body">
                     <p style="margin: 0;     font-size: .8rem;
     text-align: center;">Numero de compte: <b>2022221004101404</b></p>
@@ -352,6 +359,54 @@
 <!-- * Add Card Action Sheet -->
 
 
+<!-- DialogIconedDanger -->
+<div class="modal fade dialogbox" id="DialogIconedDanger" data-bs-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-danger">
+                <ion-icon name="close-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Erreur</h5>
+            </div>
+            <div class="modal-body" id="coup_error">
+
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a href="#" class="btn" data-bs-dismiss="modal" id="code_coup_ferme">Fermer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedDanger -->
+
+
+<!-- DialogIconedSuccess -->
+<div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-success">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+            </div>
+            <div class="modal-body" id="coup_success">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <button type="button" id="fermer" data-bs-dismiss="modal" class="btn btn-success btn-block">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedSuccess -->
+
+
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
 <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
@@ -363,6 +418,17 @@
 <script src="assets/js/base.js"></script>
 
 <script>
+
+    $('#code_coup_ferme').click(function(e) {
+        $("#loader").show();
+        window.location = "{{ route('pers_info') }}";
+    });
+
+    $('#fermer').click(function(e) {
+        $("#loader").show();
+        window.location = "{{ route('pers_info') }}";
+    });
+
     /*$('#pers_info').click(function(e) {
         $("#loader").show();
         window.location = "{{ route('pers_info') }}";
@@ -383,7 +449,7 @@
         o['token'] = token;
         o['nom'] = $('#nom').val();
         o['prenom'] =  $('#prenom').val();
-        o['email'] =  $('#email').val();
+        //o['email'] =  $('#email').val();
         o['pays_id'] =  $('#pays_id').val();
         o['msisdn'] =  $('#msisdn').val();
         $.ajaxSetup({
@@ -393,10 +459,23 @@
         });
         $.ajax({
             type: "POST",
-                url: "https://demo.pronomix.net/form-data/update/user-info",
+                url: "https://demo.pronomix.net/api/user-informations/update",
             data: o,
             success: function(data) {
                 console.log(data)
+                if (data.status === false){
+                    $('#coup_error').empty();
+                    $('#coup_error').append(data.message);
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+
+                }
+                else if (data.status === true){
+                    $('#coup_success').empty();
+                    $('#coup_success').append(data.message);
+                    $("#loader").hide();
+                    $('#DialogIconedSuccess').modal('show');
+                }
             },
             statusCode: {
                 500: function() {
