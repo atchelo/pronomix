@@ -305,8 +305,8 @@
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky">
         <div class="left">
-            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
-                <ion-icon name="menu-outline"></ion-icon>
+            <a href="{{ route('home') }}" class="headerButton">
+                <ion-icon name="chevron-back-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
@@ -317,9 +317,8 @@
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
-            <a href="app-settings.html" class="headerButton">
-                <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="imaged w32">
-                <span class="badge badge-danger">6</span>
+            <a href="{{ route('pers_info') }}" class="headerButton" id="linkToPersInfo">
+                <ion-icon class="icon" name="person-outline"></ion-icon>
             </a>
         </div>
     </div>
@@ -371,55 +370,57 @@
                     </div>
                 </li>
             </ul>
+            @if(isset($colis[0]))
+                @foreach($colis as $coli)
+                    <div class="card mt-2">
+                        <div class="card-body">
+                            <div class="container" style="padding: 0">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <img src="{{ $coli['article_content']['preview_img'] }}" alt="img" class="image-block imaged" style="width: -webkit-fill-available !important;">
+                                    </div>
+                                    <div class="col-12"><h3 style="font-weight: bold; text-align: center">{{ $coli['article_content']['titre'] }}</h3></div>
+                                    <div class="col-12"><h5 style="text-align: center">{{ $coli['article_content']['description'] }}</h5></div>
+                                    <div class="col-12">
+                                        <p style="text-align: center; margin: 0">Date soumission: {{ $coli['date_created'] }}</p>
+                                        <p style="text-align: center; margin: 0">Quantité: {{ $coli['quantite'] }}</p>
+                                    </div>
+                                    <div class="col">
+                                        <!-- timeline -->
+                                        <div class="timeline ms-2">
+                                            <div class="item">
 
-            <div class="card mt-2">
-                <div class="card-body">
-                    <div class="container" style="padding: 0">
-                        <div class="row">
-                            <div class="col-12">
-                                <img src="{{ asset('ticket.png') }}" alt="img" class="image-block imaged" style="width: -webkit-fill-available !important;">
-                            </div>
-                            <div class="col-12"><h3 style="font-weight: bold; text-align: center">Cuisinière à Gaz 4 Feux</h3></div>
-                            <div class="col-12">
-                                <p style="text-align: center; margin: 0">Date soumission: 01-07-2022, 16:14</p>
-                                <p style="text-align: center; margin: 0">Quantité: 1</p>
-                            </div>
-                            <div class="col">
-                                <!-- timeline -->
-                                <div class="timeline ms-2">
-                                    <div class="item">
-
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-check" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis confirmé</h6>
+                                                <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-check" style="margin-top: 0.5rem;"></i></div>
+                                                <div class="content">
+                                                    <h6 class="title" style="color: #11a44c !important">Colis confirmé</h6>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-archive"  style="margin-top: 0.5rem;" aria-hidden="true"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <h6 class="title" style="color: #11a44c !important">Colis disponible</h6>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-truck" style="margin-top: 0.5rem;"></i></div>
+                                                <div class="content">
+                                                    <h6 class="title" style="color: #11a44c !important"> En cours de livraison </h6>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa-solid fa-truck-fast" style="margin-top: 0.5rem;"></i></div>
+                                                <div class="content">
+                                                    <h6 class="title" style="color: #11a44c !important">Colis livré</h6>
+                                                </div>
+                                            </div>
                                         </div>
+                                        <!-- * timeline -->
                                     </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-archive"  style="margin-top: 0.5rem;" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis disponible</h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-truck" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important"> En cours de livraison </h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa-solid fa-truck-fast" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis livré</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- * timeline -->
-                            </div>
-                            <div class="col">
-                                <div class="info" style="padding: 24px 0;">
-                                    <div class="row">
-                                        <div class="col-12">
+                                    <div class="col">
+                                        <div class="info" style="padding: 24px 0;">
+                                            <div class="row">
+                                                <div class="col-12">
                                             <span style="display: inline-block;
     padding: 3px 5px;
     min-width: 10px;
@@ -431,20 +432,24 @@
     white-space: nowrap;
     vertical-align: baseline;
     color: #fff;
-    background-color: #ff6a00;">661902pts</span>
-                                        </div>
-                                        <div class="col-12">
-                                            <span style="font-weight: bold;">ID :</span> <span>22965002</span>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <p class="mb-0" style="color: black">Colis Livré</p>
-                                                <small class="text-muted" style="font-size: medium">Livré le 10 juillet 2022</small>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="aside icon-sm bg-success-light rounded-circle" style="background-color: #d1efd8 !important;width: 50px;height: 50px;line-height: 48px !important;font-size: 20px;display: flex;
-    justify-content: center;margin-top: 1rem"><i class="fa fa-check" style="margin-top: 0.9rem;color: #00b517 !important"></i>
+    background-color: #ff6a00;">{{ $coli['valeur_lot'] }}pts</span>
                                                 </div>
+                                                <div class="col-12">
+                                                    <span style="font-weight: bold;">ID :</span> <span>{{ $coli['reference_operation'] }}</span>
+                                                </div>
+                                                @if($coli['status_id'] === 3)
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <p class="mb-0" style="color: black">Colis Livré</p>
+                                                            <small class="text-muted" style="font-size: medium">Livré le 10 juillet 2022</small>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="aside icon-sm bg-success-light rounded-circle" style="background-color: #d1efd8 !important;width: 50px;height: 50px;line-height: 48px !important;font-size: 20px;display: flex;
+    justify-content: center;margin-top: 1rem"><i class="fa fa-check" style="margin-top: 0.9rem;color: #00b517 !important"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -452,255 +457,16 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="card mt-2">
-                <div class="card-body">
-                    <div class="container" style="padding: 0">
-                        <div class="row">
-                            <div class="col-12">
-                                <img src="{{ asset('ticket.png') }}" alt="img" class="image-block imaged" style="width: -webkit-fill-available !important;">
-                            </div>
-                            <div class="col-12"><h3 style="font-weight: bold; text-align: center">Cuisinière à Gaz 4 Feux</h3></div>
-                            <div class="col-12">
-                                <p style="text-align: center; margin: 0">Date soumission: 01-07-2022, 16:14</p>
-                                <p style="text-align: center; margin: 0">Quantité: 1</p>
-                            </div>
-                            <div class="col">
-                                <!-- timeline -->
-                                <div class="timeline ms-2">
-                                    <div class="item">
-
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-check" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis confirmé</h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-archive"  style="margin-top: 0.5rem;" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis disponible</h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-truck" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important"> En cours de livraison </h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa-solid fa-truck-fast" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis livré</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- * timeline -->
-                            </div>
-                            <div class="col">
-                                <div class="info" style="padding: 24px 0;">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span style="display: inline-block;
-    padding: 3px 5px;
-    min-width: 10px;
-    border-radius: 0.25rem;
-    text-align: center;
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 1;
-    white-space: nowrap;
-    vertical-align: baseline;
-    color: #fff;
-    background-color: #ff6a00;">661902pts</span>
-                                        </div>
-                                        <div class="col-12">
-                                            <span style="font-weight: bold;">ID :</span> <span>22965002</span>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <p class="mb-0" style="color: black">Colis Livré</p>
-                                                <small class="text-muted" style="font-size: medium">Livré le 10 juillet 2022</small>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="aside icon-sm bg-success-light rounded-circle" style="background-color: #d1efd8 !important;width: 50px;height: 50px;line-height: 48px !important;font-size: 20px;display: flex;
-    justify-content: center;margin-top: 1rem"><i class="fa fa-check" style="margin-top: 0.9rem;color: #00b517 !important"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                @endforeach
+            @else
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <div class="alert alert-outline-danger mb-1" role="alert">
+                            Aucun colis
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card mt-2">
-                <div class="card-body">
-                    <div class="container" style="padding: 0">
-                        <div class="row">
-                            <div class="col-12">
-                                <img src="{{ asset('ticket.png') }}" alt="img" class="image-block imaged" style="width: -webkit-fill-available !important;">
-                            </div>
-                            <div class="col-12"><h3 style="font-weight: bold; text-align: center">Cuisinière à Gaz 4 Feux</h3></div>
-                            <div class="col-12">
-                                <p style="text-align: center; margin: 0">Date soumission: 01-07-2022, 16:14</p>
-                                <p style="text-align: center; margin: 0">Quantité: 1</p>
-                            </div>
-                            <div class="col">
-                                <!-- timeline -->
-                                <div class="timeline ms-2">
-                                    <div class="item">
-
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-check" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis confirmé</h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-archive"  style="margin-top: 0.5rem;" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis disponible</h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-truck" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important"> En cours de livraison </h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa-solid fa-truck-fast" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis livré</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- * timeline -->
-                            </div>
-                            <div class="col">
-                                <div class="info" style="padding: 24px 0;">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span style="display: inline-block;
-    padding: 3px 5px;
-    min-width: 10px;
-    border-radius: 0.25rem;
-    text-align: center;
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 1;
-    white-space: nowrap;
-    vertical-align: baseline;
-    color: #fff;
-    background-color: #ff6a00;">661902pts</span>
-                                        </div>
-                                        <div class="col-12">
-                                            <span style="font-weight: bold;">ID :</span> <span>22965002</span>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <p class="mb-0" style="color: black">Colis Livré</p>
-                                                <small class="text-muted" style="font-size: medium">Livré le 10 juillet 2022</small>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="aside icon-sm bg-success-light rounded-circle" style="background-color: #d1efd8 !important;width: 50px;height: 50px;line-height: 48px !important;font-size: 20px;display: flex;
-    justify-content: center;margin-top: 1rem"><i class="fa fa-check" style="margin-top: 0.9rem;color: #00b517 !important"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card mt-2">
-                <div class="card-body">
-                    <div class="container" style="padding: 0">
-                        <div class="row">
-                            <div class="col-12">
-                                <img src="{{ asset('ticket.png') }}" alt="img" class="image-block imaged" style="width: -webkit-fill-available !important;">
-                            </div>
-                            <div class="col-12"><h3 style="font-weight: bold; text-align: center">Cuisinière à Gaz 4 Feux</h3></div>
-                            <div class="col-12">
-                                <p style="text-align: center; margin: 0">Date soumission: 01-07-2022, 16:14</p>
-                                <p style="text-align: center; margin: 0">Quantité: 1</p>
-                            </div>
-                            <div class="col">
-                                <!-- timeline -->
-                                <div class="timeline ms-2">
-                                    <div class="item">
-
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-check" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis confirmé</h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-archive"  style="margin-top: 0.5rem;" aria-hidden="true"></i>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis disponible</h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-truck" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important"> En cours de livraison </h6>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa-solid fa-truck-fast" style="margin-top: 0.5rem;"></i></div>
-                                        <div class="content">
-                                            <h6 class="title" style="color: #11a44c !important">Colis livré</h6>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- * timeline -->
-                            </div>
-                            <div class="col">
-                                <div class="info" style="padding: 24px 0;">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <span style="display: inline-block;
-    padding: 3px 5px;
-    min-width: 10px;
-    border-radius: 0.25rem;
-    text-align: center;
-    font-size: 15px;
-    font-weight: bold;
-    line-height: 1;
-    white-space: nowrap;
-    vertical-align: baseline;
-    color: #fff;
-    background-color: #ff6a00;">661902pts</span>
-                                        </div>
-                                        <div class="col-12">
-                                            <span style="font-weight: bold;">ID :</span> <span>22965002</span>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <p class="mb-0" style="color: black">Colis Livré</p>
-                                                <small class="text-muted" style="font-size: medium">Livré le 10 juillet 2022</small>
-                                            </div>
-                                            <div class="col-4">
-                                                <div class="aside icon-sm bg-success-light rounded-circle" style="background-color: #d1efd8 !important;width: 50px;height: 50px;line-height: 48px !important;font-size: 20px;display: flex;
-    justify-content: center;margin-top: 1rem"><i class="fa fa-check" style="margin-top: 0.9rem;color: #00b517 !important"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+                @endif
         </div>
 
 

@@ -873,7 +873,7 @@
         document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
         console.log(match_id)
 
-        $.ajax({
+       $.ajax({
             url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
             method: "GET",
             success: function (data) {
