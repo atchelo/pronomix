@@ -112,8 +112,8 @@
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky">
         <div class="left">
-            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
-                <ion-icon name="menu-outline"></ion-icon>
+            <a href="{{ route('home') }}" class="headerButton">
+                <ion-icon name="chevron-back-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
@@ -124,9 +124,8 @@
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
-            <a href="app-settings.html" class="headerButton">
-                <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="imaged w32">
-                <span class="badge badge-danger">6</span>
+            <a href="{{ route('pers_info') }}" class="headerButton" id="linkToPersInfo">
+                <ion-icon class="icon" name="person-outline"></ion-icon>
             </a>
         </div>
     </div>
