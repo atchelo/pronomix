@@ -1321,7 +1321,7 @@
         var team2 = $(this).data('team2');
         var bet_id = $(this).data('bet_id');
         var value = $(this).data('value');
-
+console.log('test')
         $('#error_message').hide()
 
         var sumvar = pron + ',' + coup + ',' + coupval;
