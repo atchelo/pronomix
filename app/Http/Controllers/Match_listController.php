@@ -99,7 +99,7 @@ class Match_listController extends Controller
 
         $data = [
             "status" => 'success',
-            "message" => "Pronostique ajoute"
+            "message" => $request->message
         ];
 
         return $data;

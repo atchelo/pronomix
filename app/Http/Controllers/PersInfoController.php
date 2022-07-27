@@ -16,6 +16,8 @@ class PersInfoController extends Controller
             ]);
         $rep = json_decode($response->body(), true);
 
+        //s dd($rep);
+
         session([
             'token' => $rep['new_token'],
             'current_user' => $rep['data'],
@@ -57,8 +59,10 @@ class PersInfoController extends Controller
             ]);
         }
 
-        dd($rep);
+        $colis = session('suivi_coli')['data'];
 
-        return view('suivi_coli');
+        dd($colis);
+
+        return view('suivi_coli', compact('colis'));
     }
 }
