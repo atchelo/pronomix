@@ -183,9 +183,8 @@
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
-            <a href="app-settings.html" class="headerButton">
-                <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="imaged w32">
-                <span class="badge badge-danger">6</span>
+            <a href="{{ route('pers_info') }}" class="headerButton" id="linkToPersInfo">
+                <ion-icon class="icon" name="person-outline"></ion-icon>
             </a>
         </div>
     </div>
@@ -199,12 +198,13 @@
             @foreach($get_match as $index => $match)
 
                 @php
+                //dd($match['odds_response']['values'][0]['odd']);
                    $date =  Carbon\Carbon::parse($match['date'])->locale('fr');
                 @endphp
 
-                <div class="card-block mb-2" id="detmatch{{$index}}" style="height: 135px; background-color: white" data-matchid="{{$match['id_']}}">
-                    <div class="section full" style="position: relative; text-align: center">
-                        <div class="in" style="padding: 0px">
+                <div class="card-block mb-2" style="height: 135px; background-color: white" data-matchid="{{$match['id_']}}">
+                    <div class="section full" id="detmatch{{$index}}"  data-matchid="{{$match['id_']}}" style="position: relative; text-align: center">
+                        <div class="in" style="padding: 0px;">
                             <div class="titleCard__textWrapper" style="justify-content: space-between;color: #1e1e1e; overflow: hidden;
 text-overflow: ellipsis;
 display: -webkit-box;
@@ -271,41 +271,24 @@ display: -webkit-box;
                                         <div class="" style="color: black;text-align: center; font-size: 10px">{{ $date->isoFormat('ddd D MMMM YYYY') }}</div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-4" style="padding: 0">
-                                        <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Victoire <span class="short_team_name">{{ $match['team_name_home'] }}</span> <span class="badge-green"> 3.30</span></div>
-                                    </div>
-                                    <div class="col-4" style="padding: 0 3px">
-                                        <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Match nul <span class="badge-green"> 3.30</span></div>
-                                    </div>
-                                    <div class="col-4" style="padding: 0">
-                                        <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Victoire <span class="short_team_name">{{ $match['team_name_away'] }}</span> <span class="badge-green"> 3.30</span></div>
-                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 2rem">
+                        @foreach($match['odds_response']['values'] as $index => $item)
+                            @php
+                               $vic = explode(" ", $item['value_name']);
+                            @endphp
+                            <div class="col-4" style="padding: 0">
+                                <div class="coupon" id="coupon" data-rencontre_id="{{$match['id_']}}"  data-couponvalue="{{$item['odd']}}" data-bet_id="{{ $match['odds_response']['id'] }}" data-value= "{{ $item['value'] }}" style="color: black; text-align: center;  font-size: 10px; cursor: pointer">
+                                    @if($item['value'] === 'Home') Victoire @elseif($item['value'] === 'Draw') Match nul @elseif($item['value'] === 'Away') Victoire @endif
+                                        <span class="short_team_name">
+                                            @if($vic[1] !== 'nul') {{ $vic[1] }} @endif
+                                        </span>
+                                        <span class="badge-green">{{$item['odd']}} </span>
                                 </div>
                             </div>
-                            <!----<div class="wallet-inline-button mt-2" style="background-color: rgba(255, 255, 255, 0.6); justify-content: space-between;height: 35px;border-radius: 30px;">
-                                <a href="#" class="item" data-bs-toggle="modal" data-bs-target="#depositActionSheet">
-                                    <div class="iconbox" style="width: 35px; height: 35px; box-shadow: 3px 0px 20px rgb(0 0 0 / 60%);">
-                                        <img src="assets/img/match/team-logo.png" alt="logo" class="logo" style="width: 55px">
-                                    </div>
-                                </a>
-                                <div class="">this is test</div>
-                                <div class="card" style="position: absolute;top: 49%;left: 50%;transform: translate(-50%, -50%);">
-                                    <div class="card-body" style="padding: 0 30px">
-                                        <h6 class="card-title" style="margin-top: 10px;color: #11a44c">VS</h6>
-                                    </div>
-                                    <div class="card-footer" style="padding: 0; height: 15px">
-                                        <em style="font-size: 10px;position: absolute;left: 30%;top: 65%;">10:18:50</em>
-                                    </div>
-                                </div>
-                                <div class="">this is test</div>
-                                <a href="crypto-exchange.html" class="item">
-                                    <div class="iconbox" style="width: 35px; height: 35px; box-shadow: -3px 0px 20px rgb(0 0 0 / 60%);">
-                                        <img src="assets/img/match/team-logo2.png" alt="logo" class="logo" style="width: 55px">
-                                    </div>
-                                </a>
-                            </div>------>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             @endforeach
@@ -407,6 +390,91 @@ display: -webkit-box;
 </div>
 <!-- * Add Card Action Sheet -->
 
+<!-- Default Action Sheet Inset -->
+<div class="modal fade action-sheet inset" id="actionSheetInset" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="action-title"></h5>
+            </div>
+            <div class="modal-body">
+                <ul class="action-button-list">
+                    <li>
+                        <a href="#" class="btn btn-list" id="pron_simple"  data-bs-toggle="modal" data-bs-target="#actionSheetInset2">
+                            <span>Pronostique rapide</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-list" id="pron_multi">
+                            <span>Ajouter au coupon</span> <div style="color: black; text-align: center; background-color: white"><span style="font-size: 10px;font-weight: 700; vertical-align: bottom" class="short_team_name" id="coupname"></span> <span class="badge-green" id="coupval"></span></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Default Action Sheet Inset -->
+
+<!-- Default Action Sheet Inset -->
+<div class="modal fade action-sheet inset" id="actionSheetInset2" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="simprontitle"></h5>
+            </div>
+            <div class="modal-body">
+                <ul class="action-button-list">
+                    <li>
+                        <a href="#" class="btn btn-list" data-bs-dismiss="modal">
+                            <span id="simple_league_name" style="margin-left: auto; margin-right: auto"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="btn btn-list" data-bs-dismiss="modal" style="justify-content: space-around">
+                            <strong id="team1"></strong> - <strong id="team2"></strong>
+                        </a>
+                    </li>
+                </ul>
+                <div class="action-sheet-content">
+
+                    <form>
+                        <div class="form-group basic">
+                            <label class="label">Type Pronostic</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Enter an amount"
+                                       value="Simple" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <label class="label">Valeur Pronostic</label>
+                            <div class="input-group">
+                                <input id="pronval" type="text" class="form-control" placeholder="Enter an amount" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <label class="label">Pronostiquer avec combien de tickets ?</label>
+                            <div class="input-group">
+                                <input id="pronticketval" required type="number" min="1" max="" class="form-control" placeholder="Saisir le nombre de tickets à utiliser">
+                            </div>
+                            <small id="error_message" class="text-danger">Veuillez remplir svp</small>
+                            <div>Nombre de points : <span class="price text-danger" id="ipt_info"></span></div>
+                        </div>
+
+                        <div class="form-group basic">
+                            <button id="pronostiquer" type="button" class="btn btn-primary btn-block btn-lg">Pronostiquer</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Default Action Sheet Inset -->
+
 
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
@@ -422,6 +490,93 @@ display: -webkit-box;
     $('#coup_pron1').click(function(e) {
         $("#loader").show();
         window.location = "{{ route('coup_pron') }}";
+    });
+    $('[id^="coupon"]').on('click', function (e) {
+        $("#loader").show();
+        var bet_id = $(this).data('bet_id');
+        var value = $(this).data('value');
+        var rencontre = $(this).data('rencontre_id');
+        var token = "{{ $token }}";
+
+        var o = new Object();
+        o["rencontre_id_"] = rencontre;
+        o["bet_id"] = bet_id;
+        o["value"] = value;
+        o["token"] = token;
+        console.log(o)
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: `https://demo.pronomix.net/api/pronostic-combine/add-to-coupon`,
+            data: o,
+            success: function(data) {
+                console.log(data)
+                if (data.status === 'success'){
+
+                    var new_token = data.new_token;
+                    var message = data.message;
+                    var data_reg = data.data;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["message"] = message;
+                    o["data_reg"] = data_reg;
+                    var url = "{{ route('pronos_multi') }}";
+                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            console.log(data)
+                            if (data['status'] === 'success'){
+                                $('#coup_success').append(data['message']);
+                                $("#loader").hide();
+                                $('#DialogIconedSuccess').modal('show');
+                            }
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        }
+                    });
+
+                }
+                else {
+
+                    $('#coup_error').append(data.message);
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Impossible d'enregistrer votre pronostic. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
+            }
+        });
+
+        //console.log(coup);
     });
 </script>
 
