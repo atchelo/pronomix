@@ -159,6 +159,13 @@ HTML;
         }
     }
 
+    public function obtenir_lot(Request $request){
+        session([
+            'token' => $request->new_token
+        ]);
+        return $request->message;
+    }
+
     public function rollback(){
         session()->forget([
             'list_lot',

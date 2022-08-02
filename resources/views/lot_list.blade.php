@@ -130,7 +130,7 @@
             <div class="transactions">
                 <div id="putlot" class="container">
                     @foreach($get_lot['data'] as $index => $lot)
-                        <div class="row item" style="color: orange; padding: 10px 10px; @if($lot['restant'] === '0') opacity: 0.5 @endif" id="item{{$index}}">
+                        <div class="row item" style="color: orange; padding: 10px 10px; @if($lot['restant'] === '0') opacity: 0.5 ;pointer-events: none; @endif" id="item{{$index}}">
                             <div class="col-12">
                                 @if($lot['new'] === 'true')
                                     <span class="badge badge-danger" style="display: inline-block;
@@ -174,7 +174,7 @@
     background-color: #ff6a00;">{{ $lot['valeur'] }}pts</span>
                             </div>
                             <div class="col-12 mt-1">
-                                <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" style="border-radius: 0.37rem">OBTENIR</button>
+                                <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" id="obtenir_q{{ $index }}" data-titre="{{ $lot['titre'] }}" data-restant="{{ $lot['restant'] }}" data-valeur="{{ $lot['valeur'] }}" data-id="{{ $lot['id'] }}"  style="border-radius: 0.37rem">OBTENIR</button>
                                 <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
                             </div>
                         </div>
@@ -190,6 +190,71 @@
 </div>
 
 @include('components.toast')
+
+
+<!-- DialogIconedInfo -->
+<div class="modal fade dialogbox" id="DialogIconedInfo" data-bs-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-danger">
+                <ion-icon name="alert-circle-outline" class="text-warning"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title text-warning">ECHEC</h5>
+            </div>
+            <div class="modal-body" id="coup_info">
+
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a href="#" class="btn" id="code_coup_ferme" data-bs-dismiss="modal">Fermer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedInfo -->
+
+<!-- Dialog Iconed Inline -->
+<div class="modal fade dialogbox" id="DialogIconedButtonInline2" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titre"></h5>
+            </div>
+            <div class="modal-body">
+                <p style="margin:0">valeur : <span id="valeur" style="display: inline-block;
+    padding: 3px 5px;
+    min-width: 10px;
+    border-radius: 0.25rem;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1;
+    white-space: nowrap;
+    vertical-align: baseline;
+    color: #fff;
+    background-color: #ff6a00;">{{ $lot['valeur'] }}</span></p>
+                <p style="margin:0">Restant : <strong style="color: black" id="restant"></strong></p>
+                Voulez-vous vraiment obtenir cet article?
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        ANNULER
+                    </a>
+                    <a href="#" id="obtenir_r" class="btn btn-text-primary">
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        OBTENIR
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Iconed Inline -->
 
 <!-- Add Card Action Sheet -->
 <div class="modal fade action-sheet" id="addCardActionSheet" tabindex="-1" role="dialog">
@@ -276,6 +341,15 @@
 </div>
 <!-- * Add Card Action Sheet -->
 
+<div id="toast-11" class="toast-box toast-center" style="background-color: #fff">
+    <div class="in">
+        <ion-icon name="alert-circle-outline" class="text-warning"></ion-icon>
+        <div class="text-warning" id="popuptext">
+
+        </div>
+    </div>
+</div>
+
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->
 <script src="assets/js/lib/bootstrap.bundle.min.js"></script>
@@ -354,6 +428,7 @@
                         },
                         statusCode: {
                             500: function() {
+                                $('#coup_error').empty();
                                 $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                                 $("#loader").hide();
                                 $('#DialogIconedDanger').modal('show');
@@ -388,6 +463,97 @@
             }
         });
     });
+
+    $('[id^="obtenir_q"]').click(function (e) {
+        var titre = $(this).data('titre');
+        var restant = $(this).data('restant');
+        var valeur = $(this).data('valeur');
+        var id = $(this).data('id');
+
+        console.log(id)
+
+        $('#titre').empty();
+        $('#titre').append(titre);
+
+        $('#valeur').empty();
+        $('#valeur').append(valeur + ' pts');
+
+        $('#restant').empty();
+        $('#restant').append(restant);
+
+        $('#DialogIconedButtonInline2').modal('show');
+
+        $("#obtenir_r").click(function (e) {
+            $('#DialogIconedButtonInline2').modal('hide');
+            $("#loader").show();
+            var p = new Object();
+            p['token'] = "{{$token}}";
+            p['id'] = id;
+            console.log(p)
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: `https://demo.pronomix.net/api/obtenir-lot`,
+                data: p,
+                success: function(data) {
+                    console.log(data)
+                    if (data.status === "failed"){
+                        var new_token = data.new_token;
+                        var message = data.message;
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["message"] = message;
+                        var url = "{{ route('obtenir_lot') }}";
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                $('#loader').hide();
+                                $('#coup_info').empty();
+                                $('#coup_info').append(data);
+                                $('#DialogIconedInfo').modal('show');
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+                    }
+
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
+                }
+            });
+
+
+        });
+
+    });
+
 
 
     $( document ).ready(function() {

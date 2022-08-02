@@ -390,28 +390,28 @@
                                         <div class="timeline ms-2">
                                             <div class="item">
 
-                                                <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-check" style="margin-top: 0.5rem;"></i></div>
+                                                <div class="dot @if($coli['status_id'] >= 0)  bg-primary  @endif" style="display: flex; justify-content: center"><i class="fa fa-check" style="margin-top: 0.5rem;"></i></div>
                                                 <div class="content">
-                                                    <h6 class="title" style="color: #11a44c !important">Colis confirmé</h6>
+                                                    <h6 class="title" @if($coli['status_id'] >= 0)  style="color: #11a44c !important"  @endif>Colis confirmé</h6>
                                                 </div>
                                             </div>
                                             <div class="item">
-                                                <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-archive"  style="margin-top: 0.5rem;" aria-hidden="true"></i>
+                                                <div class="dot @if($coli['status_id'] >= 1)  bg-primary  @endif" style="display: flex; justify-content: center"><i class="fa fa-archive"  style="margin-top: 0.5rem;" aria-hidden="true"></i>
                                                 </div>
                                                 <div class="content">
-                                                    <h6 class="title" style="color: #11a44c !important">Colis disponible</h6>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa fa-truck" style="margin-top: 0.5rem;"></i></div>
-                                                <div class="content">
-                                                    <h6 class="title" style="color: #11a44c !important"> En cours de livraison </h6>
+                                                    <h6 class="title" @if($coli['status_id'] >= 1)  style="color: #11a44c !important"  @endif>Colis disponible</h6>
                                                 </div>
                                             </div>
                                             <div class="item">
-                                                <div class="dot bg-primary" style="display: flex; justify-content: center"><i class="fa-solid fa-truck-fast" style="margin-top: 0.5rem;"></i></div>
+                                                <div class="dot @if($coli['status_id'] >= 2)  bg-primary  @endif" style="display: flex; justify-content: center"><i class="fa fa-truck" style="margin-top: 0.5rem;"></i></div>
                                                 <div class="content">
-                                                    <h6 class="title" style="color: #11a44c !important">Colis livré</h6>
+                                                    <h6 class="title" @if($coli['status_id'] >= 2)  style="color: #11a44c !important"  @endif> En cours de livraison </h6>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="dot @if($coli['status_id'] >= 3)  bg-primary  @endif" style="display: flex; justify-content: center"><i class="fa-solid fa-truck-fast" style="margin-top: 0.5rem;"></i></div>
+                                                <div class="content">
+                                                    <h6 class="title" @if($coli['status_id'] >= 3)  style="color: #11a44c !important"  @endif>Colis livré</h6>
                                                 </div>
                                             </div>
                                         </div>

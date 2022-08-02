@@ -4,6 +4,7 @@ use App\Http\Controllers\CompetListController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LotController;
 use App\Http\Controllers\Match_listController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PersInfoController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -77,6 +78,7 @@ Route::middleware(['authLog'])->group(function () {
 
     Route::get('lot_list', [LotController::class, 'getAll'])->name('all_lot');
     Route::post('lot_list', [LotController::class, 'storeAll'])->name('store_lots');
+    Route::post('obtenir_lot', [LotController::class, 'obtenir_lot'])->name('obtenir_lot');
     Route::get('rollback_lot_list', [LotController::class, 'rollback'])->name('rollback');
 
     Route::get('coup_pron', [Match_listController::class, 'get_coup_pron'])->name('coup_pron');
@@ -99,6 +101,8 @@ Route::middleware(['authLog'])->group(function () {
     Route::post('password_modif', [PersInfoController::class, 'pwd_store']);
 
     Route::get('suivi_coli', [PersInfoController::class, 'suivi_coli'])->name('suivi_coli');
+
+    Route::get('payment', [PaymentController::class, 'payment_index'])->name('payment_index');
 
 });
 
