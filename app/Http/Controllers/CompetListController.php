@@ -30,6 +30,20 @@ class CompetListController extends Controller
 
         $compets = $rep['data']['data'];
 
+        //dd($compets);
+
+        /*foreach ($compets as $compet){
+            foreach ($compet['rencontres'] as $index1 => $rencontre){
+                if (isset($rencontre['bets_draw'])){
+                    $renc[] = $rencontre['bets_draw'];
+                }else{
+                    dd($renc);
+                }
+            }
+        }*/
+
+        //dd($renc);
+
         return view('compet_list', compact('compets', 'token', 'islogged', 'current_page', 'total_page', 'next_page'));
     }
 

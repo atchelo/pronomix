@@ -391,7 +391,7 @@
                         <div class="card-body">
                             <div class="transactions">
                                 <!-- item -->
-                                <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="item">
+                                <a href="{{ route('payment_index') }}" id="linkToPayment" class="item">
                                     <div class="detail">
                                         <ion-icon name="cash-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
                                         <div>
@@ -570,61 +570,6 @@
 <script>
     // Add to Home with 2 seconds delay.
     AddtoHome("2000", "once");
-
-    function liveupdate() {
-
-        setInterval(function () {
-
-            var token = "{{$token}}";
-
-            $.ajax({
-                url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
-                method: "GET",
-                success: function (data) {
-                    if (data.success === true){
-                        var url = "{{ route('store_match') }}";
-                        var new_token = data.new_token;
-                        var match_data = data.data;
-                        var o = new Object();
-                        o["new_token"] = new_token;
-                        o["match_data"] = match_data;
-
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: o,
-                            success: function(data) {
-                                console.log(data)
-                            }
-                        });
-
-                    }
-                },
-                statusCode: {
-                    500: function() {
-                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                        $("#loader").hide();
-                        $('#DialogIconedDanger').modal('show');
-                    },
-                },
-                error: function (data, textStatus, errorThrown) {
-                    console.log('test');
-
-                },
-            });
-        }, 30000);
-
-    }
-
-    window.addEventListener("load", function() {
-        liveupdate();
-    });
 
     $('[id^="linkTo"]').click(function () {
         $("#loader").show();

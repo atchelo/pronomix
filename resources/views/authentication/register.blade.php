@@ -185,7 +185,7 @@
 
 
 
-            <div class="form-button-group transparent" style="bottom: auto">
+            <div class="form-button-group transparent" style="bottom: 0">
                 <button type="submit" class="btn btn-primary btn-block btn-lg">Register</button>
             </div>
 

@@ -10,16 +10,36 @@ class Match_listController extends Controller
 {
     public function getAll(Request $request){
 
-       $get_match = session('list_match');
-        session()->forget([
-            'list_lot',
-        ]);
-      //dd($get_match);
-        $islogged = session('current_user');
-       $token = session('token');
-        return view('match_list', compact('get_match', 'token', 'islogged'));
+       //$get_match = session('list_match');
+
+        $token = session('token');
+
+        $response = Http::get("https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=",
+            [
+                'token' => $token,
+            ]);
+        $rep = json_decode($response->body(), true);
+
+
+        if ($rep['success'] === true){
+            if (isset($rep['new_token'])){
+                session([
+                    'list_match' => $rep['data'],
+                    'token' => $rep['new_token'],
+                ]);
+                $get_match = $rep['data'];
+                $islogged = session('current_user');
+                $token = session('token');
+                return view('match_list', compact('get_match', 'token', 'islogged'));
+            }else{
+                return redirect()->back()->withErrors(['error' => 'The Message']);
+            }
+        }else{
+            return redirect()->back()->withErrors(['error' => 'The Message']);
+        }
     }
-    public function storeAll(Request $request){
+
+    /*public function storeAll(Request $request){
         session()->forget([
             'list_match',
             'token'
@@ -31,7 +51,7 @@ class Match_listController extends Controller
         ]);
 
         return 'ok';
-    }
+    }*/
 
     public function getDetails(){
 

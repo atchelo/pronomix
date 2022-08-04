@@ -104,6 +104,9 @@ Route::middleware(['authLog'])->group(function () {
 
     Route::get('payment', [PaymentController::class, 'payment_index'])->name('payment_index');
 
+
+    Route::post('payment_token_store', [PaymentController::class, 'payment_token_store'])->name('payment_token_store');
+
 });
 
 Route::get('/welcome', function () {

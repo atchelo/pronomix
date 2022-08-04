@@ -272,13 +272,13 @@ display: -webkit-box;
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-4" style="padding: 0">
-                                                                <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Victoire <span class="short_team_name">{{ $rencontre['team_name_home'] }}</span> <span class="badge-green"> {{ $rencontre['bets_home']['odd'] }}</span></div>
+                                                                <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Victoire <span class="short_team_name">{{ $rencontre['team_name_home'] }}</span> <span class="badge-green"> @if(isset($rencontre['bets_home']['odd'])) {{ $rencontre['bets_home']['odd'] }}  @endif </span></div>
                                                             </div>
                                                             <div class="col-4" style="padding: 0 3px">
-                                                                <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Match nul <span class="badge-green"> {{ $rencontre['bets_draw']['odd'] }}</span></div>
+                                                                <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Match nul <span class="badge-green"> @if(isset($rencontre['bets_draw'])) {{ $rencontre['bets_draw']['odd'] }} @endif</span></div>
                                                             </div>
                                                             <div class="col-4" style="padding: 0">
-                                                                <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Victoire <span class="short_team_name">{{ $rencontre['team_name_away'] }}</span> <span class="badge-green"> {{ $rencontre['bets_away']['odd'] }}</span></div>
+                                                                <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Victoire <span class="short_team_name">{{ $rencontre['team_name_away'] }}</span> <span class="badge-green"> @if(isset($rencontre['bets_away'])) {{ $rencontre['bets_away']['odd'] }} @endif</span></div>
                                                             </div>
                                                         </div>
                                                     </div>

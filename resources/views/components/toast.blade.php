@@ -854,17 +854,6 @@
         window.location.reload();
     });
 
-    window.addEventListener("load", function() {
-
-        var team_name_shrt = document.getElementsByClassName('short_team_name');
-        var result_shrt;
-        team_name_shrt.forEach(function(number_shrt) {
-            result_shrt = number_shrt.innerText;
-            number_shrt.innerHTML = result_shrt.substring(0, 2);
-        });
-
-    });
-
 
     $('[id^="detmatch"]').click(
         function(e) {
