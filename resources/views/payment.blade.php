@@ -90,7 +90,7 @@
         $(function() {
             $('#appCapsule').ptrLight({
                 'refresh': function(ptrLightInstance) {
-                    window.location.reload();
+                    window.location.replace("/payment")
                     setTimeout(function() {
                         console.log('Updated!');
                         ptrLightInstance.done();

@@ -437,6 +437,13 @@
                                                 <div class="col-12">
                                                     <span style="font-weight: bold;">ID :</span> <span>{{ $coli['reference_operation'] }}</span>
                                                 </div>
+
+                                                @if($coli['status_id'] < 2)
+                                                    <div class="col-12">
+                                                        <button type="button" onclick="remboursement({{ $coli['reference_operation'] }})" class="btn btn-outline-danger shadowed me-1 mb-1">Annuler</button>
+                                                    </div>
+                                                @endif
+
                                                 @if($coli['status_id'] === 3)
                                                     <div class="row">
                                                         <div class="col-8">
@@ -474,6 +481,34 @@
     <!-- * App Capsule -->
 </div>
 
+
+<!-- Dialog Iconed Inline -->
+<div class="modal fade dialogbox" id="DialogIconedButtonInline2" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titre">Remboursement</h5>
+            </div>
+            <div class="modal-body">
+                Etes vous sûr de vouloir proceder au remboursement de ce article?
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        ANNULER
+                    </a>
+                    <a href="#" id="remboursement" class="btn btn-text-primary">
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        VALIDER
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Iconed Inline -->
 
 
 <!-- Add Card Action Sheet -->
@@ -582,6 +617,120 @@
         $("#loader").show();
         window.location = "{{ route('pwd_modif') }}";
     });
+    function remboursement(ref) {
+
+        var ref_operation = ref;
+
+        $('#DialogIconedButtonInline2').modal('show');
+
+
+        $('#remboursement').click(function(e) {
+            $("#loader").show();
+
+            var p = new Object();
+            p['token'] = "{{$token}}";
+            p['reference_operation'] = ref_operation;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: `https://demo.pronomix.net/api/rejeter-lot`,
+                data: p,
+                success: function(data) {
+                    console.log(data)
+                    /*var new_token = data.new_token;
+                    var message = data.message;
+                    if (data.status === "failed"){
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["message"] = message;
+                        var url = "{{ route('obtenir_lot') }}";
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                $('#loader').hide();
+                                $('#coup_info').empty();
+                                $('#coup_info').append(data);
+                                $('#DialogIconedInfo').modal('show');
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+                    }
+                    else if(data.status === "success"){
+                        var p = new Object();
+                        p["new_token"] = new_token;
+                        p["message"] = message;
+                        p["data"] = data.data;
+                        var urlS = "{{ route('obtenir_lot_success') }}";
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: urlS,
+                            data: p,
+                            success: function(data) {
+                                $('#loader').hide();
+                                $('#coup_success').empty();
+                                $('#coup_success').append(data);
+                                $('#DialogIconedSuccess').modal('show');
+
+                                $('#DialogIconedSuccess').on('hidden.bs.modal', function () {
+                                    window.location.href = "{{ route('suivi_coli') }}";
+                                })
+
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+                    }*/
+
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
+                }
+            });
+
+
+        });
+
+    }
 </script>
 
 

@@ -64,8 +64,8 @@ class PersInfoController extends Controller
 
         $colis = session('suivi_coli')['data'];
 
-        //dd($colis);
+        dd($colis);
 
-        return view('suivi_coli', compact('colis'));
+        return view('suivi_coli', compact('colis', 'token'));
     }
 }

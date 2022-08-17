@@ -174,7 +174,7 @@
     background-color: #ff6a00;">{{ $lot['valeur'] }}pts</span>
                             </div>
                             <div class="col-12 mt-1">
-                                <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" id="obtenir_q{{ $index }}" data-titre="{{ $lot['titre'] }}" data-restant="{{ $lot['restant'] }}" data-valeur="{{ $lot['valeur'] }}" data-id="{{ $lot['id'] }}"  style="border-radius: 0.37rem">OBTENIR</button>
+                                <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" onclick="obtenir_q( {{ json_encode($lot['titre']) }}, {{ $lot['restant'] }}, {{ $lot['valeur'] }},  {{ $lot['id'] }})" style="border-radius: 0.37rem">OBTENIR</button>
                                 <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
                             </div>
                         </div>
@@ -377,7 +377,7 @@
         if($('#flux').scrollTop() + window.innerHeight >= $(this)[0].scrollHeight) {
             if (current_page < total_page){
                 if(step == current_page){
-                    console.log('load')
+                    //console.log('load')
                     step++;
                    $("#bodyID").addClass('block');
 
@@ -385,7 +385,7 @@
                         url: `${next_page}`,
                         method: "GET",
                         success: function (data) {
-                            console.log(data)
+                           // console.log(data)
                             if (data.success === true){
                                 $('#load_spinner').css('display', 'block');
                                $("#loader").show();
@@ -406,10 +406,10 @@
                                     url: url,
                                     data: o,
                                     success: function(data) {
-                                        //console.log(data)
+                                        console.log(data)
                                         current_page = data[0];
                                         next_page = data[2];
-                                        console.log(current_page)
+                                       // console.log(current_page)
 
                                         data[1].forEach(getall);
                                         function getall(item) {
@@ -445,7 +445,7 @@
                 $('#load_spinner').hide();
                 //console.log('last')
             }
-            console.log(step)
+           // console.log(step)
         }
 
     }
@@ -464,13 +464,13 @@
         });
     });
 
-    $('[id^="obtenir_q"]').click(function (e) {
-        var titre = $(this).data('titre');
-        var restant = $(this).data('restant');
-        var valeur = $(this).data('valeur');
-        var id = $(this).data('id');
+    function obtenir_q(titreR, restantR, valeurR, idR) {
+        var titre = titreR;
+        var restant = restantR;
+        var valeur = valeurR;
+        var id = idR;
 
-        console.log(id)
+        console.log(titre)
 
         $('#titre').empty();
         $('#titre').append(titre);
@@ -501,9 +501,9 @@
                 data: p,
                 success: function(data) {
                     console.log(data)
+                    var new_token = data.new_token;
+                    var message = data.message;
                     if (data.status === "failed"){
-                        var new_token = data.new_token;
-                        var message = data.message;
                         var o = new Object();
                         o["new_token"] = new_token;
                         o["message"] = message;
@@ -535,6 +535,44 @@
                             }
                         });
                     }
+                    else if(data.status === "success"){
+                        var p = new Object();
+                        p["new_token"] = new_token;
+                        p["message"] = message;
+                        p["data"] = data.data;
+                        var urlS = "{{ route('obtenir_lot_success') }}";
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: urlS,
+                            data: p,
+                            success: function(data) {
+                                $('#loader').hide();
+                                $('#coup_success').empty();
+                                $('#coup_success').append(data);
+                                $('#DialogIconedSuccess').modal('show');
+
+                                $('#DialogIconedSuccess').on('hidden.bs.modal', function () {
+                                    window.location.href = "{{ route('suivi_coli') }}";
+                                })
+
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+                    }
 
                 },
                 statusCode: {
@@ -551,8 +589,8 @@
 
 
         });
+    }
 
-    });
 
 
 

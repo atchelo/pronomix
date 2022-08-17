@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 class LotController extends Controller
 {
     public function getAll(Request $request){
+        //dd(session()->all());
         $get_lot = session('list_lot');
             //dd($get_lot);
         $token = session('token');
@@ -71,8 +72,15 @@ opacity: 0.5
 HTML;
 
 
-            foreach ($allLots as $index => $lots){
-               // return $lots['new'];
+            $i = $request->lot_data['from'];
+            //return $i;
+            foreach ($allLots as $ind => $lots){
+                $index = $ind + $i;
+                $test = <<<HTML
+'{$lots['titre']}'
+HTML;
+                $json_titre = $test;
+                //return $json_titre;
                 $html_lot[] = <<<HTML
 
                 <div class="row item" style="color: orange; padding: 10px 10px; {$if($lots['restant'] === '0', $instock, ' ')} " id="item{$index}">
@@ -109,7 +117,7 @@ HTML;
     background-color: #ff6a00;">{$lots['valeur']}pts</span>
                             </div>
                             <div class="col-12 mt-1">
-                                <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" style="border-radius: 0.37rem">OBTENIR</button>
+                                <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" onclick="obtenir_q({$json_titre} ,{$lots['restant']}, {$lots['valeur']}, {$lots['id']})"  style="border-radius: 0.37rem">OBTENIR</button>
                                 <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
                             </div>
                         </div>
@@ -171,5 +179,17 @@ HTML;
             'list_lot',
         ]);
     }
+
+    public function obtenir_lot_success(Request $request){
+        //current_user.balance_tickets
+        //current_user.balance_points
+        session([
+            'token' => $request->new_token,
+            'current_user.balance_tickets' => $request->data['user_new_balance_tickets'],
+            'current_user.balance_points' => $request->data['user_new_balance'],
+        ]);
+        return $request->message;
+    }
+
 
 }
