@@ -481,6 +481,7 @@
     <!-- * App Capsule -->
 </div>
 
+@include('components.toast')
 
 <!-- Dialog Iconed Inline -->
 <div class="modal fade dialogbox" id="DialogIconedButtonInline2" data-bs-backdrop="static" tabindex="-1"
@@ -499,7 +500,7 @@
                         <ion-icon name="close-outline"></ion-icon>
                         ANNULER
                     </a>
-                    <a href="#" id="remboursement" class="btn btn-text-primary">
+                    <a href="#" id="remboursement" class="btn btn-text-primary" data-bs-dismiss="modal">
                         <ion-icon name="checkmark-outline"></ion-icon>
                         VALIDER
                     </a>
@@ -621,6 +622,7 @@
 
         var ref_operation = ref;
 
+
         $('#DialogIconedButtonInline2').modal('show');
 
 
@@ -630,6 +632,7 @@
             var p = new Object();
             p['token'] = "{{$token}}";
             p['reference_operation'] = ref_operation;
+            console.log(p)
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -641,13 +644,13 @@
                 data: p,
                 success: function(data) {
                     console.log(data)
-                    /*var new_token = data.new_token;
+                    var new_token = data.new_token;
                     var message = data.message;
                     if (data.status === "failed"){
                         var o = new Object();
                         o["new_token"] = new_token;
                         o["message"] = message;
-                        var url = "{{ route('obtenir_lot') }}";
+                        var url = "{{ route('rejeter_lot') }}";
 
                         $.ajaxSetup({
                             headers: {
@@ -679,8 +682,8 @@
                         var p = new Object();
                         p["new_token"] = new_token;
                         p["message"] = message;
-                        p["data"] = data.data;
-                        var urlS = "{{ route('obtenir_lot_success') }}";
+                        p["user"] = data.user;
+                        var urlS = "{{ route('rejeter_lot_success') }}";
 
                         $.ajaxSetup({
                             headers: {
@@ -712,7 +715,7 @@
                                 }
                             }
                         });
-                    }*/
+                    }
 
                 },
                 statusCode: {

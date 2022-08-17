@@ -231,7 +231,7 @@
     </div>
     <!-- * App Capsule -->
 </div>
-
+@include('components.toast')
 
 
 <!-- Add Card Action Sheet -->

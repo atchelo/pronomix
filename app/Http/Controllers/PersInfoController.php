@@ -28,13 +28,15 @@ class PersInfoController extends Controller
 
         $infos =  $rep['data'];
         $liste_pays = session('list_pays');
+        $islogged =  session('current_user');
         //dd($liste_pays);
-        return view('pers_info', compact('infos', 'liste_pays', 'token'));
+        return view('pers_info', compact('infos', 'liste_pays', 'token', 'islogged'));
     }
 
     public function pwd_modif(){
         $token = session('token');
-        return view('pwd_modif', compact('token'));
+        $islogged = session('current_user');
+        return view('pwd_modif', compact('token', 'islogged'));
     }
 
     public function pwd_store(Request $request){
@@ -62,10 +64,32 @@ class PersInfoController extends Controller
             ]);
         }
 
+        $islogged = session('current_user');
+
         $colis = session('suivi_coli')['data'];
 
-        dd($colis);
+        //dd($colis);
 
-        return view('suivi_coli', compact('colis', 'token'));
+        return view('suivi_coli', compact('colis', 'token', 'islogged'));
+    }
+
+    public function rejeter_lot(Request $request){
+        session([
+            'token' => $request->new_token
+        ]);
+        return $request->message;
+    }
+
+    public function rejeter_lot_success(Request $request){
+
+        $balance_tickets  = str_replace(' ', '', $request->user['balance_tickets']);
+        $balance_points = str_replace(' ', '', $request->user['balance_points']);
+
+        session([
+            'token' => $request->new_token,
+            'current_user.balance_tickets' => $balance_tickets,
+            'current_user.balance_points' => $balance_points,
+        ]);
+        return $request->message;
     }
 }

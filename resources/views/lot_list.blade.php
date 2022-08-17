@@ -175,7 +175,7 @@
                             </div>
                             <div class="col-12 mt-1">
                                 <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" onclick="obtenir_q( {{ json_encode($lot['titre']) }}, {{ $lot['restant'] }}, {{ $lot['valeur'] }},  {{ $lot['id'] }})" style="border-radius: 0.37rem">OBTENIR</button>
-                                <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
+                                <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" onclick="suivre_coli()" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
                             </div>
                         </div>
                     @endforeach
@@ -591,7 +591,9 @@
         });
     }
 
-
+    function suivre_coli() {
+        
+    }
 
 
     $( document ).ready(function() {

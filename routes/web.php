@@ -49,6 +49,8 @@ Route::middleware(['authLog'])->group(function () {
 
         $islogged = session('current_user');
 
+        //dd($islogged);
+
         session()->forget([
             'list_lot',
             'list_compet'
@@ -80,7 +82,11 @@ Route::middleware(['authLog'])->group(function () {
     Route::post('lot_list', [LotController::class, 'storeAll'])->name('store_lots');
     Route::post('obtenir_lot', [LotController::class, 'obtenir_lot'])->name('obtenir_lot');
 
+    Route::post('rejeter_lot', [PersInfoController::class, 'rejeter_lot'])->name('rejeter_lot');
+
     Route::post('obtenir_lot_success', [LotController::class, 'obtenir_lot_success'])->name('obtenir_lot_success');
+
+    Route::post('rejeter_lot_success', [PersInfoController::class, 'rejeter_lot_success'])->name('rejeter_lot_success');
 
     Route::get('rollback_lot_list', [LotController::class, 'rollback'])->name('rollback');
 

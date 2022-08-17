@@ -271,7 +271,7 @@
     <!-- * App Capsule -->
 </div>
 
-
+{{-----@include('components.toast')----}}
 
 <!-- Add Card Action Sheet -->
 <div class="modal fade action-sheet" id="addCardActionSheet" tabindex="-1" role="dialog">
