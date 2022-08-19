@@ -440,7 +440,10 @@
 
                                                 @if($coli['status_id'] < 2)
                                                     <div class="col-12">
-                                                        <button type="button" onclick="remboursement({{ $coli['reference_operation'] }})" class="btn btn-outline-danger shadowed me-1 mb-1">Annuler</button>
+                                                        <button type="button" onclick="remboursement({{ $coli['reference_operation'] }})" class="btn btn-outline-danger shadowed me-1 mb-1" style="padding: 11px 7px 10px 2px"> <ion-icon style="margin: 0" name="close-outline"></ion-icon> Annuler</button>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button type="button" onclick="info_modif({{ $coli['reference_operation'] }})" class="btn btn-outline-primary shadowed me-1 mb-1" style="padding: 11px 7px 10px 2px; color: #3167eb; border-color: #3167eb"> <ion-icon style="margin: 0" name="add-outline"></ion-icon> Adresse livraison</button>
                                                     </div>
                                                 @endif
 
@@ -511,6 +514,75 @@
 </div>
 <!-- * Dialog Iconed Inline -->
 
+
+<!-- Dialog Iconed Inline -->
+<div class="modal fade dialogbox" id="DialogIconedButtonInline3" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titre">Informations de livraison</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-group basic">
+                    <div class="input-wrapper">
+                        <label class="label" for="nom">Nom prenom</label>
+                        <input type="text" class="form-control" disabled name="nom_prenom" id="nom_prenom" {{----@if(isset($infos1['nom']) && isset($infos1['prenom'])) value="{{ $infos1['nom'] }} {{ $infos1['prenom'] }}"  @endif----}} placeholder="Votre nom">
+                        <i class="clear-input">
+                            <ion-icon name="close-circle"></ion-icon>
+                        </i>
+                    </div>
+                </div>
+
+                <div class="form-group boxed">
+                    <div class="input-wrapper">
+                        <label class="label" for="pays_id">Indicatif</label>
+                        <select class="form-control custom-select" id="pays_id" name="pays_id">
+                                <option></option>
+                        </select>
+                        <i class="clear-input">
+                            <ion-icon name="close-circle"></ion-icon>
+                        </i>
+                    </div>
+                </div>
+
+                <div class="form-group basic">
+                    <div class="input-wrapper">
+                        <label class="label" for="msisdn">Numéro de téléphone</label>
+                        <input type="text" class="form-control" id="msisdn" disabled required name="msisdn" autocomplete="off"
+                               placeholder="Numéro de téléphone" {{------@if(isset($infos1['msisdn'])) value="{{ $infos1['msisdn'] }}"  @endif-----}}>
+                        <i class="clear-input">
+                            <ion-icon name="close-circle"></ion-icon>
+                        </i>
+                    </div>
+                </div>
+
+                <div class="form-group basic">
+                    <div class="input-wrapper">
+                        <label class="label" for="textarea4">Description</label>
+                        <textarea id="textarea4" rows="2" class="form-control" placeholder="Description"></textarea>
+                        <i class="clear-input">
+                            <ion-icon name="close-circle" role="img" class="md hydrated" aria-label="close circle"></ion-icon>
+                        </i>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        ANNULER
+                    </a>
+                    <a href="#" id="enr_info" class="btn btn-text-success" data-bs-dismiss="modal">
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        ENREGISTRER
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Iconed Inline -->
 
 <!-- Add Card Action Sheet -->
 <div class="modal fade action-sheet" id="addCardActionSheet" tabindex="-1" role="dialog">
@@ -632,7 +704,7 @@
             var p = new Object();
             p['token'] = "{{$token}}";
             p['reference_operation'] = ref_operation;
-            console.log(p)
+            //console.log(p)
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -643,7 +715,7 @@
                 url: `https://demo.pronomix.net/api/rejeter-lot`,
                 data: p,
                 success: function(data) {
-                    console.log(data)
+                   // console.log(data)
                     var new_token = data.new_token;
                     var message = data.message;
                     if (data.status === "failed"){
@@ -734,6 +806,136 @@
         });
 
     }
+
+    function info_modif(ref) {
+        $("#loader").show();
+        var t = new Object();
+        var token1 = "{{ $token }}";
+        t['token'] = token1;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: `https://demo.pronomix.net/api/user/suivi-colis-by-id/${ref}`,
+            data: t,
+            success: function(data) {
+                console.log(data)
+                if (data.success === true){
+                    var d = new Object();
+                    d['new_token'] = data.new_token;
+                    d['response'] = data.response;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('info_livraison') }}",
+                        data: d,
+                        success: function(data) {
+                            console.log(data)
+                            $('#nom_prenom').empty();
+                            $('#nom_prenom').val(data.nom_prenom);
+
+                            var ind = data.indicatif;
+                            var code_pays = data.pays_id;
+
+                            $('#pays_id').empty();
+                            $('#pays_id').append(`<option value="${code_pays}">
+                                       ${ind}
+                                  </option>`);
+
+                            $('#msisdn').empty();
+                            $('#msisdn').val(data.numero_tel);
+
+
+                            $('#textarea4').empty();
+                            $('#textarea4').val(data.description);
+                            $("#loader").hide();
+                            $('#DialogIconedButtonInline3').modal('show');
+
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            },
+                            419: function (){
+                                window.location = "{{ route('logout') }}";
+                            }
+                        }
+                    });
+                }
+
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
+            }
+        });
+
+
+        $('#enr_info').click(function (e) {
+            $("#loader").show();
+            var token = "{{ $token }}";
+            var s = new Object();
+            s['token'] = token;
+            s['pays_id'] = $('#pays_id').val();
+            s['msisdn'] =  $('#msisdn').val();
+            s['description'] =  $('#textarea4').val();
+            s['reference_operation'] = ref;
+
+            console.log(s)
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: `https://demo.pronomix.net/api/suivis-colis/update-infos`,
+                data: s,
+                success: function(data) {
+                    console.log(data)
+                        if (data.status === true){
+                            $("#loader").hide();
+                            $('#coup_success').empty();
+                            $('#coup_success').append(data.message);
+                            $('#DialogIconedSuccess').modal('show');
+                        }
+
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
+                }
+            });
+
+            console.log(s)
+        });
+
+    }
+
 </script>
 
 

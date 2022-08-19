@@ -175,7 +175,7 @@
                             </div>
                             <div class="col-12 mt-1">
                                 <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" onclick="obtenir_q( {{ json_encode($lot['titre']) }}, {{ $lot['restant'] }}, {{ $lot['valeur'] }},  {{ $lot['id'] }})" style="border-radius: 0.37rem">OBTENIR</button>
-                                <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" onclick="suivre_coli()" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
+                                <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" onclick="suivre_coli( {{ json_encode($lot['titre']) }}, {{ $lot['id'] }})" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
                             </div>
                         </div>
                     @endforeach
@@ -248,6 +248,35 @@
                     <a href="#" id="obtenir_r" class="btn btn-text-primary">
                         <ion-icon name="checkmark-outline"></ion-icon>
                         OBTENIR
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Iconed Inline -->
+
+<!-- Dialog Iconed Inline -->
+<div class="modal fade dialogbox" id="DialogIconedButtonInline3" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titre1"></h5>
+            </div>
+            <div class="modal-body">
+                <p>Suivre l'actualité de cet article?</p>
+                Vous serez informé si la valeur de l'article est en baisse ou si votre cumul de points s'en rapproche.
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        ANNULER
+                    </a>
+                    <a href="#" id="obtenir_r3" class="btn btn-text-primary">
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        SUIVRE L'ARTICLE
                     </a>
                 </div>
             </div>
@@ -341,6 +370,29 @@
 </div>
 <!-- * Add Card Action Sheet -->
 
+<!-- DialogIconedSuccess -->
+<div class="modal fade dialogbox" id="DialogIconedSuccessLots" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-icon text-success">
+                <ion-icon name="checkmark-circle"></ion-icon>
+            </div>
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+            </div>
+            <div class="modal-body" id="coup_successLots">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a href="{{ route('suivi_coli') }}" type="button" id="fermerLots" data-bs-dismiss="modal" class="btn btn-success btn-block">Fermer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * DialogIconedSuccess -->
+
 <div id="toast-11" class="toast-box toast-center" style="background-color: #fff">
     <div class="in">
         <ion-icon name="alert-circle-outline" class="text-warning"></ion-icon>
@@ -406,7 +458,7 @@
                                     url: url,
                                     data: o,
                                     success: function(data) {
-                                        console.log(data)
+                                       // console.log(data)
                                         current_page = data[0];
                                         next_page = data[2];
                                        // console.log(current_page)
@@ -458,7 +510,7 @@
             success: function (data) {
                 if (data.success === true){
                     //$("#loader").hide();
-                    console.log('success')
+                   // console.log('success')
                 }
             }
         });
@@ -470,7 +522,7 @@
         var valeur = valeurR;
         var id = idR;
 
-        console.log(titre)
+        //console.log(titre)
 
         $('#titre').empty();
         $('#titre').append(titre);
@@ -489,7 +541,7 @@
             var p = new Object();
             p['token'] = "{{$token}}";
             p['id'] = id;
-            console.log(p)
+           // console.log(p)
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -500,7 +552,7 @@
                 url: `https://demo.pronomix.net/api/obtenir-lot`,
                 data: p,
                 success: function(data) {
-                    console.log(data)
+                  //  console.log(data)
                     var new_token = data.new_token;
                     var message = data.message;
                     if (data.status === "failed"){
@@ -554,12 +606,12 @@
                             data: p,
                             success: function(data) {
                                 $('#loader').hide();
-                                $('#coup_success').empty();
-                                $('#coup_success').append(data);
-                                $('#DialogIconedSuccess').modal('show');
+                                $('#coup_successLots').empty();
+                                $('#coup_successLots').append(data);
+                                $('#DialogIconedSuccessLots').modal('show');
 
-                                $('#DialogIconedSuccess').on('hidden.bs.modal', function () {
-                                    window.location.href = "{{ route('suivi_coli') }}";
+                                $('#DialogIconedSuccessLots').on('hidden.bs.modal', function () {
+                                    location.href = "{{ route('suivi_coli') }}";
                                 })
 
                             },
@@ -591,8 +643,123 @@
         });
     }
 
-    function suivre_coli() {
-        
+    function suivre_coli(titreR1, idR1) {
+
+        var titre1 = titreR1;
+        console.log(titre1)
+        var id1 = idR1;
+
+        $('#titre1').empty();
+        $('#titre1').append(titre1);
+
+        $('#DialogIconedButtonInline3').modal('show');
+
+        $("#obtenir_r3").click(function (e) {
+            $('#DialogIconedButtonInline3').modal('hide');
+            $("#loader").show();
+            var q = new Object();
+            q['token'] = "{{$token}}";
+            q['reference_operation'] = id1;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: `https://demo.pronomix.net/api/user/suivi-colis-by-id`,
+                data: q,
+                success: function(data) {
+                        console.log(data)
+                    /*var new_token = data.new_token;
+                    var message = data.message;
+                    if (data.status === "failed"){
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["message"] = message;
+                        var url = "";
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                $('#loader').hide();
+                                $('#coup_info').empty();
+                                $('#coup_info').append(data);
+                                $('#DialogIconedInfo').modal('show');
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+                    }
+                    else if(data.status === "success"){
+                        var p = new Object();
+                        p["new_token"] = new_token;
+                        p["message"] = message;
+                        p["data"] = data.data;
+                        var urlS = "";
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: urlS,
+                            data: p,
+                            success: function(data) {
+                                $('#loader').hide();
+                                $('#coup_successLots').empty();
+                                $('#coup_successLots').append(data);
+                                $('#DialogIconedSuccessLots').modal('show');
+
+                                $('#DialogIconedSuccessLots').on('hidden.bs.modal', function () {
+                                    location.href = "";
+                                })
+
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+                    }*/
+
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
+                }
+            });
+
+
+        });
     }
 
 

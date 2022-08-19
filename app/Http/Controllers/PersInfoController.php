@@ -64,13 +64,15 @@ class PersInfoController extends Controller
             ]);
         }
 
+        $info_livraison = session('info_livraison');
+
         $islogged = session('current_user');
 
         $colis = session('suivi_coli')['data'];
 
         //dd($colis);
 
-        return view('suivi_coli', compact('colis', 'token', 'islogged'));
+        return view('suivi_coli', compact('colis', 'token', 'islogged', 'info_livraison'));
     }
 
     public function rejeter_lot(Request $request){
@@ -89,6 +91,30 @@ class PersInfoController extends Controller
             'token' => $request->new_token,
             'current_user.balance_tickets' => $balance_tickets,
             'current_user.balance_points' => $balance_points,
+        ]);
+        return $request->message;
+    }
+
+    public function info_livraison(Request $request){
+        $nom_prenom = $request->response['nom_user'] . ' '. $request->response['prenom'];
+        $indicatif = '+' . $request->response['indicatif'] . '('. ($request->response['nom_pays']) . ')';
+        $pays_id = $request->response['pays_id'];
+        $numero_tel = $request->response['msisdn'];
+        $description = $request->response['description'];
+
+        $data = [
+          'nom_prenom' =>   $nom_prenom,
+            'indicatif' => $indicatif,
+            'numero_tel' => $numero_tel,
+            'description' => $description,
+            'pays_id' => $pays_id
+        ];
+
+        return $data;
+
+        session([
+            'token' => $request->new_token,
+            'info_livraison' => $data
         ]);
         return $request->message;
     }

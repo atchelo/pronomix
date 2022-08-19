@@ -111,6 +111,8 @@ Route::middleware(['authLog'])->group(function () {
 
     Route::get('suivi_coli', [PersInfoController::class, 'suivi_coli'])->name('suivi_coli');
 
+    Route::post('info_livraison', [PersInfoController::class, 'info_livraison'])->name('info_livraison');
+
     Route::get('payment', [PaymentController::class, 'payment_index'])->name('payment_index');
 
 
