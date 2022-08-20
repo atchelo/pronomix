@@ -175,7 +175,7 @@
                             </div>
                             <div class="col-12 mt-1">
                                 <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" onclick="obtenir_q( {{ json_encode($lot['titre']) }}, {{ $lot['restant'] }}, {{ $lot['valeur'] }},  {{ $lot['id'] }})" style="border-radius: 0.37rem">OBTENIR</button>
-                                <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" onclick="suivre_coli( {{ json_encode($lot['titre']) }}, {{ $lot['id'] }})" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
+                                <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" onclick="suivre_coli({{ json_encode($lot['titre']) }} ,{{$lot['id']}})" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
                             </div>
                         </div>
                     @endforeach
@@ -200,7 +200,7 @@
                 <ion-icon name="alert-circle-outline" class="text-warning"></ion-icon>
             </div>
             <div class="modal-header">
-                <h5 class="modal-title text-warning">ECHEC</h5>
+                <h5 class="modal-title text-warning">Attention</h5>
             </div>
             <div class="modal-body" id="coup_info">
 
@@ -429,7 +429,6 @@
         if($('#flux').scrollTop() + window.innerHeight >= $(this)[0].scrollHeight) {
             if (current_page < total_page){
                 if(step == current_page){
-                    //console.log('load')
                     step++;
                    $("#bodyID").addClass('block');
 
@@ -437,11 +436,9 @@
                         url: `${next_page}`,
                         method: "GET",
                         success: function (data) {
-                           // console.log(data)
                             if (data.success === true){
                                 $('#load_spinner').css('display', 'block');
                                $("#loader").show();
-                                //console.log(data.response)
                                 var url = "{{ route('store_lots') }}";
                                 var lot_data = data.response;
                                 var o = new Object();
@@ -458,10 +455,8 @@
                                     url: url,
                                     data: o,
                                     success: function(data) {
-                                       // console.log(data)
                                         current_page = data[0];
                                         next_page = data[2];
-                                       // console.log(current_page)
 
                                         data[1].forEach(getall);
                                         function getall(item) {
@@ -495,9 +490,7 @@
             }
             else {
                 $('#load_spinner').hide();
-                //console.log('last')
             }
-           // console.log(step)
         }
 
     }
@@ -522,7 +515,6 @@
         var valeur = valeurR;
         var id = idR;
 
-        //console.log(titre)
 
         $('#titre').empty();
         $('#titre').append(titre);
@@ -541,7 +533,7 @@
             var p = new Object();
             p['token'] = "{{$token}}";
             p['id'] = id;
-           // console.log(p)
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -552,7 +544,6 @@
                 url: `https://demo.pronomix.net/api/obtenir-lot`,
                 data: p,
                 success: function(data) {
-                  //  console.log(data)
                     var new_token = data.new_token;
                     var message = data.message;
                     if (data.status === "failed"){
@@ -610,10 +601,6 @@
                                 $('#coup_successLots').append(data);
                                 $('#DialogIconedSuccessLots').modal('show');
 
-                                $('#DialogIconedSuccessLots').on('hidden.bs.modal', function () {
-                                    location.href = "{{ route('suivi_coli') }}";
-                                })
-
                             },
                             statusCode: {
                                 500: function() {
@@ -642,8 +629,8 @@
 
         });
     }
-
     function suivre_coli(titreR1, idR1) {
+
 
         var titre1 = titreR1;
         console.log(titre1)
@@ -655,11 +642,12 @@
         $('#DialogIconedButtonInline3').modal('show');
 
         $("#obtenir_r3").click(function (e) {
+            console.log('test')
             $('#DialogIconedButtonInline3').modal('hide');
             $("#loader").show();
             var q = new Object();
             q['token'] = "{{$token}}";
-            q['reference_operation'] = id1;
+            q['id'] = id1;
 
             $.ajaxSetup({
                 headers: {
@@ -667,18 +655,18 @@
                 }
             });
             $.ajax({
-                type: "GET",
-                url: `https://demo.pronomix.net/api/user/suivi-colis-by-id`,
+                type: "POST",
+                url: `https://demo.pronomix.net/api/follow-article`,
                 data: q,
                 success: function(data) {
-                        console.log(data)
-                    /*var new_token = data.new_token;
+                    console.log(data)
+                    var new_token = data.new_token;
                     var message = data.message;
                     if (data.status === "failed"){
                         var o = new Object();
                         o["new_token"] = new_token;
                         o["message"] = message;
-                        var url = "";
+                        var url = "{{ route('info_livraison') }}";
 
                         $.ajaxSetup({
                             headers: {
@@ -710,8 +698,7 @@
                         var p = new Object();
                         p["new_token"] = new_token;
                         p["message"] = message;
-                        p["data"] = data.data;
-                        var urlS = "";
+                        var urlS = "{{ route('info_livraison') }}";
 
                         $.ajaxSetup({
                             headers: {
@@ -729,10 +716,6 @@
                                 $('#coup_successLots').append(data);
                                 $('#DialogIconedSuccessLots').modal('show');
 
-                                $('#DialogIconedSuccessLots').on('hidden.bs.modal', function () {
-                                    location.href = "";
-                                })
-
                             },
                             statusCode: {
                                 500: function() {
@@ -743,7 +726,7 @@
                                 }
                             }
                         });
-                    }*/
+                    }
 
                 },
                 statusCode: {
@@ -757,6 +740,9 @@
                     }
                 }
             });
+
+            e.stopImmediatePropagation();
+            e.preventDefault();
 
 
         });

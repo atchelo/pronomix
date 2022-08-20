@@ -96,25 +96,24 @@ class PersInfoController extends Controller
     }
 
     public function info_livraison(Request $request){
-        $nom_prenom = $request->response['nom_user'] . ' '. $request->response['prenom'];
+        /*$nom_prenom = $request->response['nom_user'] . ' '. $request->response['prenom'];
         $indicatif = '+' . $request->response['indicatif'] . '('. ($request->response['nom_pays']) . ')';
         $pays_id = $request->response['pays_id'];
         $numero_tel = $request->response['msisdn'];
-        $description = $request->response['description'];
+        $description = $request->response['description'];*/
 
-        $data = [
+        /*$data = [
           'nom_prenom' =>   $nom_prenom,
             'indicatif' => $indicatif,
             'numero_tel' => $numero_tel,
             'description' => $description,
             'pays_id' => $pays_id
-        ];
+        ];*/
 
-        return $data;
+       // return $data;
 
         session([
             'token' => $request->new_token,
-            'info_livraison' => $data
         ]);
         return $request->message;
     }
