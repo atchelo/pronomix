@@ -150,7 +150,9 @@ class Match_listController extends Controller
 
         $data = [
             "status" => 'success',
-            "message" => $request['message']
+            "message" => $request['message'],
+            "cote" => number_format($request['data_reg']['cumul'],2),
+            "pronostics" => count($request['data_reg']['pronostics'])
         ];
 
         return $data;

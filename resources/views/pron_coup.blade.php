@@ -66,10 +66,10 @@
         .badge-green{
             display: inline-block;
             padding: 3px 5px !important;
-            min-width: 10px;
+            min-width: inherit;
             border-radius: 0.25rem;
             text-align: center;
-            font-size: 10px;
+            font-size: inherit;
             font-weight: bold;
             line-height: 1;
             white-space: nowrap;
@@ -125,8 +125,8 @@
             <ion-icon name="document-outline" data-bs-toggle="modal" data-bs-target="#gen_coup" style="width: 24px"></ion-icon>
             <ion-icon name="trash-outline" @if(!isset($pron_coups['cumul'])) class="disable_icon" @endif style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
             <div>
-                <p style="color: black; margin: 0;">Cote: @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif</p>
-                <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: @if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif</p>
+                <p style="color: black; margin: 0;">Cote: <span id="cote">@if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif</span></p>
+                <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: <span id="pronostics">@if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif</span></p>
             </div>
         </div>
         <div class="in" style="padding: 0">
@@ -146,7 +146,7 @@
                         min-width: 10px;
                         border-radius: 0.25rem;
                         text-align: center;
-                        font-size: 10px;
+                        font-size: inherit;
                         font-weight: bold;
                         line-height: 1;
                         white-space: nowrap;
@@ -177,7 +177,7 @@
                     @foreach($pron_coups['pronostics'] as $index => $pron_coup)
                         <div id="pron_coup{{$index}}" class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
                             <div class="detail">
-                                <div>
+                                <div style="width: 13rem;">
                                     <strong style="color: #11a44c;"> {{ $pron_coup['team_name_home'] }} - {{ $pron_coup['team_name_away'] }} </strong>
                                     <p>{{ $pron_coup['date'] }}</p>
                                     <h5 style="margin: 0;">{{ $pron_coup['pronostic_name'] }}</h5>
@@ -185,10 +185,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="badge-green"> {{ $pron_coup['value_odd'] }} </div>
+                                    <div class="badge-green" style="margin-top: .6rem;"> {{ $pron_coup['value_odd'] }} </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="price text-danger" style="color: #d40000 !important;" data-pron_coup_id="{{$pron_coup['rencontre_id_']}}" id="pron_coup_del{{$index}}"  data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline"> <ion-icon name="close-circle" style="font-size: x-large; padding: 3px 5px !important;"></ion-icon></div>
+                                    <div class="price text-danger" style="color: #d40000 !important;" data-id_coup_pron="pron_coup{{$index}}"  data-pron_coup_id="{{$pron_coup['rencontre_id_']}}" id="pron_coup_del{{$index}}"  data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline"> <ion-icon name="close-circle" style="font-size: xx-large; padding: 3px 5px !important;"></ion-icon></div>
                                 </div>
 
                             </div>
@@ -337,7 +337,7 @@
                                 <input id="pronticketval" required type="number" min="1" class="form-control" placeholder="Saisir le nombre de tickets à utiliser">
                             </div>
                             <small id="error_message" class="text-danger">Veuillez remplir svp</small>
-                            <div>Nombre de points : <span class="price text-danger" id="ipt_info"></span></div>
+                            <div>Nombre de points : <strong class="price" style="color: black;" id="ipt_info"></strong></div>
                         </div>
 
                         <div class="form-group basic">
@@ -531,7 +531,7 @@
 
 
 <!-- DialogIconedSuccess -->
-<div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
+<div class="modal fade dialogbox" id="DialogIconedSuccess" tabindex="-1"
      role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -542,11 +542,6 @@
                 <h5 class="modal-title">Success</h5>
             </div>
             <div class="modal-body" id="coup_success">
-            </div>
-            <div class="modal-footer">
-                <div class="btn-inline">
-                    <button type="button" id="fermer" data-bs-dismiss="modal" class="btn btn-success btn-block">Fermer</button>
-                </div>
             </div>
         </div>
     </div>
@@ -911,6 +906,9 @@
 
     $('[id^="pron_coup_del"]').click(function (e) {
        var renc_id = $(this).data('pron_coup_id');
+       var pron_coup_del = $(this).data('id_coup_pron');
+        var pron_coup_del_id = '#'+pron_coup_del;
+        console.log(pron_coup_del_id)
         var token = "{{$token}}";
 
         var p = new Object();
@@ -918,7 +916,7 @@
         p['token'] = token;
 
         $("#pron_coup_sup").click(function (e) {
-
+            $("#loader").show();
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -941,6 +939,15 @@
                         o["message"] = message;
                         var url = "{{ route('sup_pronos') }}";
 
+                        $('#coup_success').empty();
+                        $('#coup_success').append(data['message']);
+                        $("#loader").hide();
+                        $('#DialogIconedSuccess').modal('show');
+
+                        $(`${pron_coup_del_id}`).css("display", "none");
+                        $("#loader").hide();
+                        console.log(`${pron_coup_del_id}`)
+
                         $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -952,10 +959,12 @@
                             url: url,
                             data: o,
                             success: function(data) {
-                                $('#coup_success').empty();
-                                $('#coup_success').append(data['message']);
-                                $("#loader").hide();
-                                $('#DialogIconedSuccess').modal('show');
+                                $('#cote').empty();
+                                $('#cote').append(data.cote);
+
+                                $('#pronostics').empty();
+                                $('#pronostics').append(data.pronostics);
+                               console.log(data)
                             },
                             statusCode: {
                                 500: function() {
@@ -984,6 +993,8 @@
         });
 
         console.log(renc_id)
+        e.stopImmediatePropagation();
+        e.preventDefault();
 
     });
 

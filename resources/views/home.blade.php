@@ -575,6 +575,33 @@
         $("#loader").show();
     });
 
+
+    // Our simple App
+    const App = async (onstart, onload) => {
+        onstart();
+
+        // Loading...
+
+        // The application is now loaded
+        onload();
+    }
+
+    let isSlow;
+    let loaded;
+
+    App(
+        () => {
+            isSlow = setTimeout(() => {
+                console.log("Thing are getting slow...");
+            }, 3000); // 10 seconds
+        },
+        () => {
+            clearTimeout(isSlow);
+            loaded = true;
+            console.log("Loaded.");
+        });
+
+
 </script>
 
 
