@@ -118,7 +118,7 @@
                 <div><a href="app-forgot-password.html" class="text-muted">Forgot Password?</a></div>
             </div>
             <div class="form-button-group  transparent" style="bottom: auto">
-                <button type="submit" class="btn btn-primary btn-block btn-lg">Log in</button>
+                <button type="submit" onclick="$('#loader').show()" class="btn btn-primary btn-block btn-lg">Log in</button>
             </div>
 
         </form>

@@ -39,8 +39,38 @@
 </div>
 <!-- * Dialog Iconed Inline -->
 
+
+<!-- Dialog Logout confirmation -->
+<div class="modal fade dialogbox" id="DialogConfirmLogOut" data-bs-backdrop="static" tabindex="-1"
+     role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">CONFIRMATION</h5>
+            </div>
+            <div class="modal-body">
+                Etes vous sûr de vouloir vous déconnecter?
+            </div>
+            <div class="modal-footer">
+                <div class="btn-inline">
+                    <a href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        ANNULER
+                    </a>
+                    <a id="conf_log_out" href="#" class="btn btn-text-primary" data-bs-dismiss="modal">
+                        <ion-icon name="checkmark-outline"></ion-icon>
+                        VALIDER
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Logout confirmation -->
+
+
 <!-- DialogIconedSuccess -->
-<div class="modal fade dialogbox" id="DialogIconedSuccess" data-bs-backdrop="static" tabindex="-1"
+<div class="modal fade dialogbox" id="DialogIconedSuccess" tabindex="-1"
      role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -51,11 +81,6 @@
                 <h5 class="modal-title">Success</h5>
             </div>
             <div class="modal-body" id="coup_success">
-            </div>
-            <div class="modal-footer">
-                <div class="btn-inline">
-                    <button type="button" id="fermer" data-bs-dismiss="modal" class="btn btn-success btn-block">Fermer</button>
-                </div>
             </div>
         </div>
     </div>
@@ -362,12 +387,12 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('logout') }}" class="item">
+                        <a href="#" onclick="closeSideModal()" data-bs-toggle="modal" data-bs-target="#DialogConfirmLogOut" class="item">
                             <div class="icon-box bg-primary">
                                 <ion-icon name="log-out-outline"></ion-icon>
                             </div>
                             <div class="in">
-                                Log out
+                                Déconnexion
                             </div>
                         </a>
                     </li>
@@ -683,9 +708,14 @@
     });
 
     $('#code_coupon_val').click(function(e) {
+        // console.log($('#code_coupon').val())
+        $("#gen_coup").modal('hide');
+        $("#loader").show();
         var token = "{{$token}}";
+        var code = $('#code_coupon').val();
         var s = new Object();
         s['token'] = token;
+        s['code'] = code;
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -705,6 +735,7 @@
                 o["new_token"] = new_token;
                 o["status"] = status;
                 o["message"] = message;
+                o["data_reg"] = data.pronostic_content;
                 var url = "{{ route('code_coupon') }}";
 
                 $.ajax({
@@ -713,16 +744,18 @@
                     data: o,
                     success: function(data) {
                         //console.log(data)
-                        $("#gen_coup").modal('hide');
                         if (data['status'] === "failed"){
+                            $('#coup_error').empty();
                             $('#coup_error').append(data['message']);
                             $("#loader").hide();
                             $('#DialogIconedDanger').modal('show');
                         }else {
-                            $('#coup_success').append(data['message']);
+                            $('#coup_success').empty();
+                            $('#coup_success').append("coupon chargé avec succes");
                             $("#loader").hide();
                             $('#DialogIconedSuccess').modal('show');
                         }
+                        location.reload();
                     },
                     statusCode: {
                         500: function() {
@@ -747,6 +780,7 @@
             },
             statusCode: {
                 500: function() {
+                    $('#coup_error').empty();
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
@@ -904,5 +938,14 @@
 
     }
     );
+
+    $('#conf_log_out').click(function(e) {
+        $("#loader").show();
+        window.location = "{{ route('logout') }}";
+    });
+
+    function closeSideModal() {
+        $('#sidebarPanel').modal('hide');
+    }
 
 </script>

@@ -51,6 +51,8 @@ class LoginController extends Controller
 
            $rep2 = json_decode($response2->body(), true);
 
+           //dd($token);
+
            session()->forget([
                'list_match',
                'token'

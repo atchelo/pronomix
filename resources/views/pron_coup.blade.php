@@ -105,7 +105,7 @@
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="" class="headerButton" onclick="">
+            <a href="javascript:void(0);" onclick="test()">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
@@ -120,62 +120,49 @@
         }
     </style>
     <!-- * App Header -->
-    <div id="toast-1" class="toast-box toast-top" style="top: 67px; justify-content: space-around; background: white; position: absolute">
-        <div class="in">
-            <ion-icon name="document-outline" data-bs-toggle="modal" data-bs-target="#gen_coup" style="width: 24px"></ion-icon>
-            <ion-icon name="trash-outline" @if(!isset($pron_coups['cumul'])) class="disable_icon" @endif style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
-            <div>
-                <p style="color: black; margin: 0;">Cote: <span id="cote">@if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif</span></p>
-                <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: <span id="pronostics">@if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif</span></p>
-            </div>
-        </div>
-        <div class="in" style="padding: 0">
-            <button type="button"  data-bs-toggle="modal" data-bs-target="#actionSheetInset2"  class="btn btn-secondary" style="border-radius: inherit; background: #11a44c !important; border:#11a44c !important; color: white  !important;"><ion-icon name="save-outline" style="width: 20px; color: white !important;"></ion-icon>Valider Coupon</button>
-        </div>
-    </div>
+
     <!-- App Capsule -->
+    <style>
+        .badge-green{
+            display: inline-block;
+            padding: 3px 5px !important;
+            min-width: 10px;
+            border-radius: 0.25rem;
+            text-align: center;
+            font-size: inherit;
+            font-weight: bold;
+            line-height: 1;
+            white-space: nowrap;
+            vertical-align: baseline;
+            color: #fff;
+            background-color: #006951;
+        }
+
+
+        .badge-red {
+            display: inline-block;
+            padding: 3px 5px;
+            min-width: 10px;
+            border-radius: 0.25rem;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            line-height: 1;
+            white-space: nowrap;
+            vertical-align: baseline;
+            color: #fff;
+            background-color: #d40000;
+        }
+
+    </style>
     <div id="appCapsule" style="padding: 0">
-        <div class="section mt-2" style="margin-top: 5rem !important; padding: 0 .1rem">
+        <div class="section mt-1 mb-2" style="margin-bottom: 4rem !important; padding: 0 .1rem">
 
-            <div class="transactions">
-
-                <style>
-                    .badge-green{
-                        display: inline-block;
-                        padding: 3px 5px !important;
-                        min-width: 10px;
-                        border-radius: 0.25rem;
-                        text-align: center;
-                        font-size: inherit;
-                        font-weight: bold;
-                        line-height: 1;
-                        white-space: nowrap;
-                        vertical-align: baseline;
-                        color: #fff;
-                        background-color: #006951;
-                    }
-
-
-                    .badge-red {
-                        display: inline-block;
-                        padding: 3px 5px;
-                        min-width: 10px;
-                        border-radius: 0.25rem;
-                        text-align: center;
-                        font-size: 15px;
-                        font-weight: bold;
-                        line-height: 1;
-                        white-space: nowrap;
-                        vertical-align: baseline;
-                        color: #fff;
-                        background-color: #d40000;
-                    }
-
-                </style>
+            <div id="transactions" class="transactions">
 
                 @if(isset($pron_coups['pronostics']))
                     @foreach($pron_coups['pronostics'] as $index => $pron_coup)
-                        <div id="pron_coup{{$index}}" class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
+                        <div id="pron_coup{{$index}}" data-matchid="{{$pron_coup['rencontre_id_']}}" class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
                             <div class="detail">
                                 <div style="width: 13rem;">
                                     <strong style="color: #11a44c;"> {{ $pron_coup['team_name_home'] }} - {{ $pron_coup['team_name_away'] }} </strong>
@@ -214,6 +201,19 @@
 
     </div>
     <!-- * App Capsule -->
+    <div id="toast-1" class="toast-box toast-bottom" style="justify-content: space-around; background: white;">
+        <div class="in">
+            <ion-icon name="document-outline" data-bs-toggle="modal" data-bs-target="#gen_coup" style="width: 24px"></ion-icon>
+            <ion-icon id="trash" name="trash-outline" @if(!isset($pron_coups['cumul'])) class="disable_icon" @endif style="width: 24px" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
+            <div>
+                <p style="color: black; margin: 0;">Cote: <span id="cote">@if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif</span></p>
+                <p style="font-size: 11px;margin: 0;color: #958d9e;font-weight: 500;">pronostics: <span id="pronostics">@if(isset($pron_coups['pronostics'])) {{ count($pron_coups['pronostics']) }}@else 0 @endif</span></p>
+            </div>
+        </div>
+        <div class="in" style="padding: 0">
+            <button type="button"  data-bs-toggle="modal" data-bs-target="#actionSheetInset2"  class="btn btn-secondary" style="border-radius: inherit; background: #11a44c !important; border:#11a44c !important; color: white  !important;"><ion-icon name="save-outline" style="width: 20px; color: white !important;"></ion-icon>Valider Coupon</button>
+        </div>
+    </div>
 </div>
 
 
@@ -424,13 +424,13 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
-                    <a id="pron_coup_sup" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
-                        <ion-icon name="close-outline"></ion-icon>
-                        SUPPRIMER
-                    </a>
                     <a href="#" class="btn btn-text-primary" data-bs-dismiss="modal">
                         <ion-icon name="checkmark-outline"></ion-icon>
                         ANNULER
+                    </a>
+                    <a id="pron_coup_sup" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                        <ion-icon name="close-outline"></ion-icon>
+                        SUPPRIMER
                     </a>
                 </div>
             </div>
@@ -453,7 +453,7 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
-                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                    <a id="pron_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
                         <ion-icon name="close-outline"></ion-icon>
                         VIDER
                     </a>
@@ -484,7 +484,7 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
-                    <a href="#" class="btn" id="code_coup_ferme" data-bs-dismiss="modal">Fermer</a>
+                    <a href="#" class="btn" data-bs-dismiss="modal">Fermer</a>
                 </div>
             </div>
         </div>
@@ -499,7 +499,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header" style="display: flex; justify-content: center">
-                <h1 id="code" style="text-align: center"></h1>
+                <input type="hidden" value="" id="myCopy">
+                <h1 id="code" style="text-align: center"></h1> <span data-bs-toggle="tooltip" data-bs-placement="top" title="copié" id="copier" onclick="copier()" style="margin-left: 5px;color: #1DCC70;"><ion-icon name="copy-outline"></ion-icon></span>
             </div>
             <div class="modal-body" id="coup_successValCode" style="margin-bottom: 15px">
             </div>
@@ -521,7 +522,7 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
-                    <button type="button" id="coup_pron" class="btn btn-success btn-block">Fermer</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-success btn-block">Fermer</button>
                 </div>
             </div>
         </div>
@@ -574,16 +575,40 @@
 <!-- Base Js File -->
 <script src="assets/js/base.js"></script>
 
+{{----<script type=text/javascript>
+    Print.postMessage(Hello World being called from Javascript code);
+</script>-----}}
+
 <script>
     window.addEventListener("load", function() {
         toastbox('toast-1');
         $('#error_message').hide();
     });
+    function copier() {
+        var copyText = document.getElementById("myCopy");
 
-    $('#fermer').click(function(e) {
-        $("#loader").show();
-        window.location = "{{ route('coup_pron') }}";
-    });
+        /* Select the text field */
+        copyText.select();
+       // copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(copyText.value);
+
+        /* Alert the copied text */
+        //alert("Copied the text: " + copyText.value);
+
+    }
+
+    function test() {
+        $('#transactions').empty();
+        $('#transactions').append(`<div class="item" style="padding: 25px 24px; opacity: 1; position: relative; overflow: hidden;">
+                                <div class="detail">
+                                    Aucun pronostic dans votre coupon
+                                </div>
+                            </div>`);
+    }
+
+
 
     $('#pronticketval').on('keyup', function (e) {
         var coupval = @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif;
@@ -735,9 +760,14 @@
     });
 
     $('#code_coupon_val').click(function(e) {
+       // console.log($('#code_coupon').val())
+        $("#gen_coup").modal('hide');
+        $("#loader").show();
         var token = "{{$token}}";
+        var code = $('#code_coupon').val();
         var s = new Object();
         s['token'] = token;
+        s['code'] = code;
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -757,6 +787,7 @@
                 o["new_token"] = new_token;
                 o["status"] = status;
                 o["message"] = message;
+                o["data_reg"] = data.pronostic_content;
                 var url = "{{ route('code_coupon') }}";
 
                 $.ajax({
@@ -765,7 +796,6 @@
                     data: o,
                     success: function(data) {
                         //console.log(data)
-                        $("#gen_coup").modal('hide');
                         if (data['status'] === "failed"){
                             $('#coup_error').empty();
                             $('#coup_error').append(data['message']);
@@ -773,10 +803,11 @@
                             $('#DialogIconedDanger').modal('show');
                         }else {
                             $('#coup_success').empty();
-                            $('#coup_success').append(data['message']);
-                            $("#loader").hide();
-                            $('#DialogIconedSuccess').modal('show');
+                            $('#coup_success').append("coupon chargé avec succes");
+                            //$("#loader").hide();
+                            //$('#DialogIconedSuccess').modal('show');
                         }
+                        location.reload();
                     },
                     statusCode: {
                         500: function() {
@@ -864,6 +895,9 @@
                                 $('#coup_successValCode').append(data['message']);
                                 $('#code').empty();
                                 $('#code').append(data['code']);
+
+                                $('#myCopy').val(data['code']);
+
                                 $('#link_code_coupon').val(data['link']);
                                 $("#loader").hide();
                                 $('#DialogIconedSuccessValCode').modal('show');
@@ -998,9 +1032,9 @@
 
     });
 
-    $('#pron_coup_del_all').click(function (e) {
+    $('#pron_del_all').click(function (e) {
         var token = "{{$token}}";
-
+        $("#loader").show();
         var p = new Object();
         p['token'] = token;
 
@@ -1015,6 +1049,22 @@
             data: p,
             success: function(data) {
                 if (data.status === "success"){
+                    $('#transactions').empty();
+
+                    $('#transactions').append(`<div class="item" style="padding: 25px 24px; opacity: 1; position: relative; overflow: hidden;">
+                                <div class="detail">
+                                    Aucun pronostic dans votre coupon
+                                </div>
+                            </div>`);
+
+                    $('#cote').empty();
+                    $('#cote').append(0);
+
+                    $('#pronostics').empty();
+                    $('#pronostics').append(0);
+
+                    $('#trash').addClass('disable_icon');
+
 
                     console.log(data)
                     var new_token = data.new_token;
@@ -1066,15 +1116,57 @@
 
     });
 
-    $('#coup_pron').click(function(e) {
-        $("#loader").show();
-        window.location = "{{ route('coup_pron') }}";
-    });
 
-    $('#code_coup_ferme').click(function(e) {
-        $("#loader").show();
-        window.location = "{{ route('coup_pron') }}";
-    });
+    $('[id^="pron_coup"]').click(
+        function(e) {
+            var match_id = $(this).data('matchid');
+            $("#loader").show();
+            document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
+            console.log(match_id)
+
+            $.ajax({
+                url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
+                method: "GET",
+                success: function (data) {
+                    if (data.success === true){
+                        var detail_match_data = data.data;
+                        var o = new Object();
+                        o["detail_match_data"] = detail_match_data;
+                        var url = "{{ route('detmatch') }}";
+                        //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                window.location = data;
+                            }
+                        });
+
+                    }
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
+                }
+            });
+
+        }
+    );
+
 </script>
 
 </body>

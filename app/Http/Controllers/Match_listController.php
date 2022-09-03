@@ -14,11 +14,15 @@ class Match_listController extends Controller
 
         $token = session('token');
 
+        //dd($token);
+
         $response = Http::get("https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=",
             [
                 'token' => $token,
             ]);
         $rep = json_decode($response->body(), true);
+
+            //dd($rep);
 
 
         if ($rep['success'] === true){
@@ -179,6 +183,7 @@ class Match_listController extends Controller
         ]);
         session([
             'token' => $request['new_token'],
+            'user_pronos_multi' => $request['data_reg'],
         ]);
         $data = [
             "message" => $request["message"],

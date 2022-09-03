@@ -171,7 +171,7 @@
     white-space: nowrap;
     vertical-align: baseline;
     color: #fff;
-    background-color: #ff6a00;">{{ $lot['valeur'] }}pts</span>
+    background-color: #ff6a00;">{{ number_format($lot['valeur'], 2, ',', ' ') }}pts</span>
                             </div>
                             <div class="col-12 mt-1">
                                 <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" onclick="obtenir_q( {{ json_encode($lot['titre']) }}, {{ $lot['restant'] }}, {{ $lot['valeur'] }},  {{ $lot['id'] }})" style="border-radius: 0.37rem">OBTENIR</button>
@@ -208,6 +208,7 @@
             <div class="modal-footer">
                 <div class="btn-inline">
                     <a href="#" class="btn" id="code_coup_ferme" data-bs-dismiss="modal">Fermer</a>
+                    <a href="#" class="btn" id="buy_tickets" data-bs-dismiss="modal">Acheter tickets</a>
                 </div>
             </div>
         </div>
@@ -221,10 +222,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="titre"></h5>
+                <h2 id="titre"></h2>
             </div>
             <div class="modal-body">
-                <p style="margin:0">valeur : <span id="valeur" style="display: inline-block;
+                <p style="margin:0; text-align: start; color: black">valeur : <span id="valeur" style="display: inline-block;
     padding: 3px 5px;
     min-width: 10px;
     border-radius: 0.25rem;
@@ -235,9 +236,9 @@
     white-space: nowrap;
     vertical-align: baseline;
     color: #fff;
-    background-color: #ff6a00;">{{ $lot['valeur'] }}</span></p>
-                <p style="margin:0">Restant : <strong style="color: black" id="restant"></strong></p>
-                Voulez-vous vraiment obtenir cet article?
+    background-color: #ff6a00;">{{ number_format($lot['valeur'], 2, ',', ' ') }}</span></p>
+                <p style="margin:0; text-align: start; color: black">Restant : <strong style="color: black" id="restant"></strong></p>
+                <p style="margin:0; text-align: start;">Voulez-vous vraiment obtenir cet article?</p>
             </div>
             <div class="modal-footer">
                 <div class="btn-inline">
@@ -512,7 +513,7 @@
     function obtenir_q(titreR, restantR, valeurR, idR) {
         var titre = titreR;
         var restant = restantR;
-        var valeur = valeurR;
+        var valeur = valeurR.toLocaleString('fr-FR');
         var id = idR;
 
 
@@ -770,6 +771,11 @@
     $('#coup_pron1').click(function(e) {
         $("#loader").show();
         window.location = "{{ route('coup_pron') }}";
+    });
+
+    $('#buy_tickets').click(function(e) {
+        $("#loader").show();
+        window.location = "{{ route('payment_index') }}";
     });
 
 

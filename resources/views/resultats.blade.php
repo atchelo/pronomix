@@ -201,7 +201,7 @@
                     $date =  Carbon\Carbon::parse($match['date'])->locale('fr');
                 @endphp
 
-                <div class="card-block mb-2" id="detmatch{{$index}}" style="height: 6.5rem; background-color: white" data-matchid="{{$match['id_']}}">
+                <div class="card-block mb-2" {{----id="detmatch{{$index}}"----}} style="height: 6.5rem; background-color: white" {{-----data-matchid="{{$match['id_']}}"-----}}>
                     <div class="section full" style="position: relative; text-align: center">
                         <div class="in" style="padding: 0px">
                             <div class="titleCard__textWrapper" style="justify-content: space-between;color: #1e1e1e; overflow: hidden;

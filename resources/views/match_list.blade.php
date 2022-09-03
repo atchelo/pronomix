@@ -198,7 +198,7 @@
             @foreach($get_match as $index => $match)
 
                 @php
-                //dd($match['odds_response']['values'][0]['odd']);
+                //dd($match['odds_response']);
                    $date =  Carbon\Carbon::parse($match['date'])->locale('fr');
                 @endphp
 
@@ -275,20 +275,22 @@ display: -webkit-box;
                         </div>
                     </div>
                     <div class="row" style="margin-top: 2rem">
-                        @foreach($match['odds_response']['values'] as $index => $item)
-                            @php
-                               $vic = explode(" ", $item['value_name']);
-                            @endphp
-                            <div class="col-4" style="padding: 0">
-                                <div class="coupon" id="coupon" data-rencontre_id="{{$match['id_']}}"  data-couponvalue="{{$item['odd']}}" data-bet_id="{{ $match['odds_response']['id'] }}" data-value= "{{ $item['value'] }}" style="color: black; text-align: center;  font-size: 10px; cursor: pointer">
-                                    @if($item['value'] === 'Home') Victoire @elseif($item['value'] === 'Draw') Match nul @elseif($item['value'] === 'Away') Victoire @endif
+                        @if(isset($match['odds_response']['values']))
+                            @foreach($match['odds_response']['values'] as $index => $item)
+                                @php
+                                    $vic = explode(" ", $item['value_name']);
+                                @endphp
+                                <div class="col-4" style="padding: 0">
+                                    <div class="coupon" id="coupon" data-rencontre_id="{{$match['id_']}}"  data-couponvalue="{{$item['odd']}}" data-bet_id="{{ $match['odds_response']['id'] }}" data-value= "{{ $item['value'] }}" style="color: black; text-align: center;  font-size: 10px; cursor: pointer">
+                                        @if($item['value'] === 'Home') Victoire @elseif($item['value'] === 'Draw') Match nul @elseif($item['value'] === 'Away') Victoire @endif
                                         <span class="short_team_name">
                                             @if($vic[1] !== 'nul') {{ $vic[1] }} @endif
                                         </span>
                                         <span class="badge-green">{{$item['odd']}} </span>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                            @endif
                     </div>
                 </div>
             @endforeach
