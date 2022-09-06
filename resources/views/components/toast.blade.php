@@ -461,12 +461,13 @@
                     mul_pron = 0;
                     $("#sup_pron_coup").addClass('disable_icon')
                 }
-
+                $('#pron_numb').empty();
                 $("#pron_numb").append(mul_pron);
                 toastbox('toast-7');
             },
             statusCode: {
                 500: function() {
+                    $('#coup_error').empty();
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
@@ -526,82 +527,263 @@
 
     });*/
 
-    $('[id^="all_lot"]').click(function() {
-        //var loader =  document.getElementById('loader');
-        //loader.show();
+    window.addEventListener("load", function() {
 
-        $("#loader").show();
+        $('[id^="all_lot"]').click(function() {
+            //var loader =  document.getElementById('loader');
+            //loader.show();
 
-        $.ajax({
-            url: `https://demo.pronomix.net/api/lots/liste/search=all_&type_lot=all_&value_min=none&value_max=none`,
-            method: "GET",
-            success: function (data) {
-                if (data.success === true){
-                    //$("#loader").hide();
-                    console.log(data.response)
-                    var url = "{{ route('store_lots') }}";
-                    var lot_data = data.response;
-                    var o = new Object();
-                    o["lot_data"] = lot_data;
+            $('body').append(`<div id="loader">
+    <div class="spinner-border" role="status"></div>
+</div>`);
 
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
+            $.ajax({
+                url: `https://demo.pronomix.net/api/lots/liste/search=all_&type_lot=all_&value_min=none&value_max=none`,
+                method: "GET",
+                success: function (data) {
+                    if (data.success === true){
+                        //$("#loader").hide();
+                        console.log(data.response)
+                        var url = "{{ route('store_lots') }}";
+                        var lot_data = data.response;
+                        var o = new Object();
+                        o["lot_data"] = lot_data;
 
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                            console.log(data)
-                            window.location = data;
-                        }
-                    });
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
 
-                }
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                console.log(data)
+                                window.location = data;
+                            }
+                        });
+
+                    }
                 },
-                419: function (){
-                    window.location = "{{ route('logout') }}";
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').empty();
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
                 }
-            }
+            });
+
         });
 
-    });
 
+        $('#pron_coup_del_all').click(function (e) {
+            var token = "{{$token}}";
 
-    $('#pron_coup_del_all').click(function (e) {
-        var token = "{{$token}}";
+            var p = new Object();
+            p['token'] = token;
 
-        var p = new Object();
-        p['token'] = token;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: `https://demo.pronomix.net/api/pronostic-combine/delete-coupon`,
+                data: p,
+                success: function(data) {
+                    if (data.status === "success"){
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+                        console.log(data)
+                        var new_token = data.new_token;
+                        var message = data.message;
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["message"] = message;
+                        var url = "{{ route('vid_pronos') }}";
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                $('#coup_success').empty();
+                                $('#coup_success').append(data['message']);
+                                $("#loader").hide();
+                                $('#DialogIconedSuccess').modal('show');
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+
+                    }
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').empty();
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
+                }
+            });
+
         });
-        $.ajax({
-            type: "POST",
-            url: `https://demo.pronomix.net/api/pronostic-combine/delete-coupon`,
-            data: p,
-            success: function(data) {
-                if (data.status === "success"){
 
+
+        $('[id^="coup_pron"]').click(function(e) {
+            $('body').append(`<div id="loader">
+    <div class="spinner-border" role="status"></div>
+</div>`);
+            var p = new Object();
+
+            p['token'] = "{{$token}}";
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                type: "GET",
+                url: `https://demo.pronomix.net/api/coupon-pronostics`,
+                data: p,
+                success: function(data) {
+                    if (data.success === true){
+                        console.log(data)
+                        var new_token = data.new_token;
+                        var data_reg = data.data;
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["data_reg"] = data_reg;
+                        var url = "{{ route('pronos_multi') }}";
+                        //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                window.location = "{{ route('coup_pron') }}";
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+                    }
+
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').empty();
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
+                }
+            });
+
+        });
+
+        $('#code_coupon_val').click(function(e) {
+            // console.log($('#code_coupon').val())
+            $("#gen_coup").modal('hide');
+            $('body').append(`<div id="loader">
+    <div class="spinner-border" role="status"></div>
+</div>`);
+            var token = "{{$token}}";
+            var code = $('#code_coupon').val();
+            var s = new Object();
+            s['token'] = token;
+            s['code'] = code;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: `https://demo.pronomix.net/api/pronostic-combine/load-coupon`,
+                data: s,
+                success: function(data) {
                     console.log(data)
                     var new_token = data.new_token;
                     var message = data.message;
+                    var status = data.status;
                     var o = new Object();
                     o["new_token"] = new_token;
+                    o["status"] = status;
                     o["message"] = message;
-                    var url = "{{ route('vid_pronos') }}";
+                    o["data_reg"] = data.pronostic_content;
+                    var url = "{{ route('code_coupon') }}";
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            //console.log(data)
+                            if (data['status'] === "failed"){
+                                $('#coup_error').empty();
+                                $('#coup_error').append(data['message']);
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }else {
+                                $('#coup_success').empty();
+                                $('#coup_success').append("coupon chargé avec succes");
+                                $("#loader").hide();
+                                $('#DialogIconedSuccess').modal('show');
+                            }
+                            location.reload();
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').empty();
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            },
+                            419: function (){
+                                window.location = "{{ route('logout') }}";
+                            }
+                        }
+                    });
 
                     $.ajaxSetup({
                         headers: {
@@ -609,156 +791,173 @@
                         }
                     });
 
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                            $('#coup_success').append(data['message']);
-                            $("#loader").hide();
-                            $('#DialogIconedSuccess').modal('show');
-                        },
-                        statusCode: {
-                            500: function() {
-                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
-                            }
-                        }
-                    });
 
+
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').empty();
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
                 }
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+            });
+
+        });
+
+        $('#gen_coup_click').click(function (e) {
+
+            $('body').append(`<div id="loader">
+    <div class="spinner-border" role="status"></div>
+</div>`);
+
+            var token = "{{$token}}";
+            var s = new Object();
+            s['token'] = token;
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: `https://demo.pronomix.net/api/pronostic-combine/generate-code`,
+                data: s,
+                success: function(data) {
+                    if (data.status === 'success'){
+                        console.log(data)
+                        var new_token = data.new_token;
+                        var code = data.code;
+                        var link = data.link;
+                        var message = data.message;
+                        var status = data.status;
+                        var o = new Object();
+                        o["new_token"] = new_token;
+                        o["message"] = message;
+                        o["code"] = code;
+                        o["link"] = link;
+                        o["status"] = status;
+                        var url = "{{ route('gen_code_coupon') }}";
+
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: o,
+                            success: function(data) {
+                                $("#gen_coup").modal('hide');
+                                if (data['status'] === 'success'){
+                                    $('#coup_successGenCoup').empty();
+                                    $('#coup_successGenCoup').append(data['message']);
+
+                                    $('#code').empty();
+                                    $('#code').append(data['code']);
+                                    $('#link_code_coupon').val(data['link']);
+                                    $("#loader").hide();
+                                    $('#DialogIconedSuccessGenCoup').modal('show');
+                                }else {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append(data['message']);
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            },
+                            statusCode: {
+                                500: function() {
+                                    $('#coup_error').empty();
+                                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                    $("#loader").hide();
+                                    $('#DialogIconedDanger').modal('show');
+                                }
+                            }
+                        });
+                    }
+                },
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').empty();
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    $('#coup_error').empty();
+                    $('#coup_error').append(thrownError);
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
-                },
-                419: function (){
-                    window.location = "{{ route('logout') }}";
                 }
-            }
+            });
+
         });
 
-    });
-
-
-    $('[id^="coup_pron"]').click(function(e) {
-        $("#loader").show();
-        var p = new Object();
-
-        p['token'] = "{{$token}}";
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
+        $('#fermer').click(function(e) {
+            $('body').append(`<div id="loader">
+    <div class="spinner-border" role="status"></div>
+</div>`);
+            window.location.reload();
         });
-        $.ajax({
-            type: "GET",
-            url: `https://demo.pronomix.net/api/coupon-pronostics`,
-            data: p,
-            success: function(data) {
-                if (data.success === true){
-                    console.log(data)
-                    var new_token = data.new_token;
-                    var data_reg = data.data;
-                    var o = new Object();
-                    o["new_token"] = new_token;
-                    o["data_reg"] = data_reg;
-                    var url = "{{ route('pronos_multi') }}";
-                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                            window.location = "{{ route('coup_pron') }}";
-                        },
-                        statusCode: {
-                            500: function() {
-                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
-                            }
-                        }
-                    });
-                }
-
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                },
-                419: function (){
-                    window.location = "{{ route('logout') }}";
-                }
-            }
+        $('#fermer1').click(function(e) {
+            $('body').append(`<div id="loader">
+    <div class="spinner-border" role="status"></div>
+</div>`);
+            window.location.reload();
         });
 
-    });
 
-    $('#code_coupon_val').click(function(e) {
-        // console.log($('#code_coupon').val())
-        $("#gen_coup").modal('hide');
-        $("#loader").show();
-        var token = "{{$token}}";
-        var code = $('#code_coupon').val();
-        var s = new Object();
-        s['token'] = token;
-        s['code'] = code;
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $.ajax({
-            type: "POST",
-            url: `https://demo.pronomix.net/api/pronostic-combine/load-coupon`,
-            data: s,
-            success: function(data) {
-                console.log(data)
-                var new_token = data.new_token;
-                var message = data.message;
-                var status = data.status;
-                var o = new Object();
-                o["new_token"] = new_token;
-                o["status"] = status;
-                o["message"] = message;
-                o["data_reg"] = data.pronostic_content;
-                var url = "{{ route('code_coupon') }}";
+        $('[id^="detmatch"]').click(
+            function(e) {
+                var match_id = $(this).data('matchid');
+                $('body').append(`<div id="loader">
+    <div class="spinner-border" role="status"></div>
+</div>`);
+                document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
+                console.log(match_id)
 
                 $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: o,
-                    success: function(data) {
-                        //console.log(data)
-                        if (data['status'] === "failed"){
-                            $('#coup_error').empty();
-                            $('#coup_error').append(data['message']);
-                            $("#loader").hide();
-                            $('#DialogIconedDanger').modal('show');
-                        }else {
-                            $('#coup_success').empty();
-                            $('#coup_success').append("coupon chargé avec succes");
-                            $("#loader").hide();
-                            $('#DialogIconedSuccess').modal('show');
+                    url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
+                    method: "GET",
+                    success: function (data) {
+                        if (data.success === true){
+                            var detail_match_data = data.data;
+                            var o = new Object();
+                            o["detail_match_data"] = detail_match_data;
+                            var url = "{{ route('detmatch') }}";
+                            //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                            $.ajaxSetup({
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                }
+                            });
+
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                data: o,
+                                success: function(data) {
+                                    window.location = data;
+                                }
+                            });
+
                         }
-                        location.reload();
                     },
                     statusCode: {
                         500: function() {
+                            $('#coup_error').empty();
                             $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                             $("#loader").hide();
                             $('#DialogIconedDanger').modal('show');
@@ -769,179 +968,14 @@
                     }
                 });
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-
-
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').empty();
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                },
-                419: function (){
-                    window.location = "{{ route('logout') }}";
-                }
             }
+        );
+
+        $('#conf_log_out').click(function(e) {
+            $("#loader").show();
+            window.location = "{{ route('logout') }}";
         });
 
-    });
-
-    $('#gen_coup_click').click(function (e) {
-
-        $("#loader").show();
-
-        var token = "{{$token}}";
-        var s = new Object();
-        s['token'] = token;
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $.ajax({
-            type: "POST",
-            url: `https://demo.pronomix.net/api/pronostic-combine/generate-code`,
-            data: s,
-            success: function(data) {
-                if (data.status === 'success'){
-                    console.log(data)
-                    var new_token = data.new_token;
-                    var code = data.code;
-                    var link = data.link;
-                    var message = data.message;
-                    var status = data.status;
-                    var o = new Object();
-                    o["new_token"] = new_token;
-                    o["message"] = message;
-                    o["code"] = code;
-                    o["link"] = link;
-                    o["status"] = status;
-                    var url = "{{ route('gen_code_coupon') }}";
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                            $("#gen_coup").modal('hide');
-                            if (data['status'] === 'success'){
-                                $('#coup_successGenCoup').append(data['message']);
-                                $('#code').append(data['code']);
-                                $('#link_code_coupon').val(data['link']);
-                                $("#loader").hide();
-                                $('#DialogIconedSuccessGenCoup').modal('show');
-                            }else {
-                                $('#coup_error').append(data['message']);
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
-                            }
-                        },
-                        statusCode: {
-                            500: function() {
-                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                                $("#loader").hide();
-                                $('#DialogIconedDanger').modal('show');
-                            }
-                        }
-                    });
-                }
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                },
-                419: function (){
-                    window.location = "{{ route('logout') }}";
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                $('#coup_error').append(thrownError);
-                $("#loader").hide();
-                $('#DialogIconedDanger').modal('show');
-            }
-        });
-
-    });
-
-    $('#fermer').click(function(e) {
-        $("#loader").show();
-        window.location.reload();
-    });
-    $('#fermer1').click(function(e) {
-        $("#loader").show();
-        window.location.reload();
-    });
-
-
-    $('[id^="detmatch"]').click(
-        function(e) {
-        var match_id = $(this).data('matchid');
-        $("#loader").show();
-        document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
-        console.log(match_id)
-
-       $.ajax({
-            url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
-            method: "GET",
-            success: function (data) {
-                if (data.success === true){
-                    var detail_match_data = data.data;
-                    var o = new Object();
-                    o["detail_match_data"] = detail_match_data;
-                    var url = "{{ route('detmatch') }}";
-                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
-
-                    $.ajaxSetup({
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    });
-
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: o,
-                        success: function(data) {
-                            window.location = data;
-                        }
-                    });
-
-                }
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
-                },
-                419: function (){
-                    window.location = "{{ route('logout') }}";
-                }
-            }
-        });
-
-    }
-    );
-
-    $('#conf_log_out').click(function(e) {
-        $("#loader").show();
-        window.location = "{{ route('logout') }}";
     });
 
     function closeSideModal() {

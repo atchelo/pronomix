@@ -162,7 +162,7 @@
 
                 @if(isset($pron_coups['pronostics']))
                     @foreach($pron_coups['pronostics'] as $index => $pron_coup)
-                        <div id="pron_coup{{$index}}" data-matchid="{{$pron_coup['rencontre_id_']}}" class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
+                        <div @if($pron_coup['bloque'] !== 'true') id="pron_coup{{$index}}"  data-matchid="{{$pron_coup['rencontre_id_']}}" @endif class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
                             <div class="detail">
                                 <div style="width: 13rem;">
                                     <strong style="color: #11a44c;"> {{ $pron_coup['team_name_home'] }} - {{ $pron_coup['team_name_away'] }} </strong>

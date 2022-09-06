@@ -432,22 +432,6 @@
             <!-- * Wallet -->
 
             <div class="section" style="padding: 0; height: 83%">
-                <div class="container" style="    padding: 0;background-color: white;">
-                    <div class="row" >
-                        <div class="col d-flex justify-content-center">
-                            <ion-icon name="analytics-outline" style="font-size: 25px; color: #11a44c"></ion-icon>
-                        </div>
-                        <div class="col d-flex justify-content-center">
-                            <ion-icon name="podium-outline" style="font-size: 25px; color: #11a44c"></ion-icon>
-                        </div>
-                        <div class="col d-flex justify-content-center">
-                            <ion-icon name="notifications-outline" style="font-size: 25px; color: #11a44c"></ion-icon>
-                        </div>
-                        <div class="col d-flex justify-content-center">
-                            <ion-icon name="star-outline" style="font-size: 25px; color: #11a44c"></ion-icon>
-                        </div>
-                    </div>
-                </div>
                 <div class="card" style="border-radius: 0; height: -webkit-fill-available;">
                     <div class="card-body">
                         <div class="carousel-multiple splide">
@@ -1223,7 +1207,7 @@
 
 
 <!-- DialogIconedSuccess -->
-<div class="modal fade dialogbox" id="DialogIconedSuccess1" data-bs-backdrop="static" tabindex="-1"
+<div class="modal fade dialogbox" id="DialogIconedSuccess1" tabindex="-1"
      role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -1234,11 +1218,6 @@
                 <h5 class="modal-title">Success</h5>
             </div>
             <div class="modal-body" id="coup_success1">
-            </div>
-            <div class="modal-footer">
-                <div class="btn-inline">
-                    <a href="{{ route('his_coup') }}" type="button" class="btn btn-success btn-block">Historiques Coupon</a>
-                </div>
             </div>
         </div>
     </div>
@@ -1411,6 +1390,7 @@ console.log('test')
                                 data: o,
                                 success: function(data) {
                                     if (data['status'] === 'success'){
+                                        $('#coup_success1').empty();
                                         $('#coup_success1').append(data['message']);
                                         $('#actionSheetInset2').modal('hide');
                                         $("#loader").hide();
@@ -1419,6 +1399,7 @@ console.log('test')
                                 },
                                 statusCode: {
                                     500: function() {
+                                        $('#coup_error').empty();
                                         $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                                         $("#loader").hide();
                                         $('#DialogIconedDanger').modal('show');
@@ -1428,7 +1409,7 @@ console.log('test')
 
                         }
                         else {
-
+                            $('#coup_error').empty();
                             $('#coup_error').append(data.message);
                             $('#actionSheetInset2').modal('hide');
                             $("#loader").hide();
@@ -1437,6 +1418,7 @@ console.log('test')
                     },
                     statusCode: {
                         500: function() {
+                            $('#coup_error').empty();
                             $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                             $("#loader").hide();
                             $('#DialogIconedDanger').modal('show');
@@ -1503,6 +1485,7 @@ console.log('test')
                             data: o,
                             success: function(data) {
                                 if (data['status'] === 'success'){
+                                    $('#coup_success').empty();
                                     $('#coup_success').append(data['message']);
                                     $("#loader").hide();
                                     $('#DialogIconedSuccess').modal('show');
@@ -1510,6 +1493,7 @@ console.log('test')
                             },
                             statusCode: {
                                 500: function() {
+                                    $('#coup_error').empty();
                                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                                     $("#loader").hide();
                                     $('#DialogIconedDanger').modal('show');
@@ -1519,7 +1503,7 @@ console.log('test')
 
                     }
                     else {
-
+                        $('#coup_error').empty();
                         $('#coup_error').append(data.message);
                         $("#loader").hide();
                         $('#DialogIconedDanger').modal('show');
@@ -1527,6 +1511,7 @@ console.log('test')
                 },
                 statusCode: {
                     500: function() {
+                        $('#coup_error').empty();
                         $('#coup_error').append("Impossible d'enregistrer votre pronostic. Merci de ressayer plutard.");
                         $("#loader").hide();
                         $('#DialogIconedDanger').modal('show');
@@ -1584,6 +1569,7 @@ console.log('test')
                         },
                         statusCode: {
                             500: function() {
+                                $('#coup_error').empty();
                                 $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                                 $("#loader").hide();
                                 $('#DialogIconedDanger').modal('show');
@@ -1595,6 +1581,7 @@ console.log('test')
             },
             statusCode: {
                 500: function() {
+                    $('#coup_error').empty();
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');
@@ -1662,6 +1649,7 @@ console.log('test')
             },
             statusCode: {
                 500: function() {
+                    $('#coup_error').empty();
                     $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
                     $("#loader").hide();
                     $('#DialogIconedDanger').modal('show');

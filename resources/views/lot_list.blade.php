@@ -206,10 +206,13 @@
 
             </div>
             <div class="modal-footer">
-                <div class="btn-inline">
-                    <a href="#" class="btn" id="code_coup_ferme" data-bs-dismiss="modal">Fermer</a>
-                    <a href="#" class="btn" id="buy_tickets" data-bs-dismiss="modal">Acheter tickets</a>
-                </div>
+                {{----<a href="#" class="btn" id="code_coup_ferme" data-bs-dismiss="modal">Fermer</a>
+                    <a href="#" class="btn" id="buy_tickets" data-bs-dismiss="modal">Acheter tickets</a>----}}
+
+                <button id="code_coup_ferme" type="button" data-bs-dismiss="modal" class="btn btn-secondary shadowed"> <ion-icon name="close-outline"></ion-icon> Fermer</button>
+
+                <button id="buy_tickets" type="button" data-bs-dismiss="modal" class="btn btn-primary shadowed"> <ion-icon name="checkmark-outline"></ion-icon> Acheter ticket</button>
+
             </div>
         </div>
     </div>
@@ -241,16 +244,16 @@
                 <p style="margin:0; text-align: start;">Voulez-vous vraiment obtenir cet article?</p>
             </div>
             <div class="modal-footer">
-                <div class="btn-inline">
-                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
-                        <ion-icon name="close-outline"></ion-icon>
-                        ANNULER
-                    </a>
-                    <a href="#" id="obtenir_r" class="btn btn-text-primary">
-                        <ion-icon name="checkmark-outline"></ion-icon>
-                        OBTENIR
-                    </a>
-                </div>
+                <button id="pron_coup_del_all" type="button" data-bs-dismiss="modal" class="btn btn-secondary shadowed"> <ion-icon name="close-outline"></ion-icon> ANNULER</button>
+                {{---<a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                    <ion-icon name="close-outline"></ion-icon>
+                    ANNULER
+                </a>----}}
+                <button id="obtenir_r" type="button" class="btn btn-primary shadowed"> <ion-icon name="checkmark-outline"></ion-icon> OBTENIR</button>
+                {{----<a href="#" id="obtenir_r" class="btn btn-text-primary">
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                    OBTENIR
+                </a>----}}
             </div>
         </div>
     </div>
@@ -270,16 +273,16 @@
                 Vous serez informé si la valeur de l'article est en baisse ou si votre cumul de points s'en rapproche.
             </div>
             <div class="modal-footer">
-                <div class="btn-inline">
-                    <a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
-                        <ion-icon name="close-outline"></ion-icon>
-                        ANNULER
-                    </a>
-                    <a href="#" id="obtenir_r3" class="btn btn-text-primary">
-                        <ion-icon name="checkmark-outline"></ion-icon>
-                        SUIVRE L'ARTICLE
-                    </a>
-                </div>
+                <button id="pron_coup_del_all" type="button" data-bs-dismiss="modal" class="btn btn-secondary shadowed"> <ion-icon name="close-outline"></ion-icon> ANNULER</button>
+                {{-----<a id="pron_coup_del_all" href="#" class="btn btn-text-danger" data-bs-dismiss="modal">
+                    <ion-icon name="close-outline"></ion-icon>
+                    ANNULER
+                </a>----}}
+                {{----<a href="#" id="obtenir_r3" class="btn btn-text-primary">
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                    SUIVRE L'ARTICLE
+                </a>    ----}}
+                <button id="obtenir_r3" type="button" class="btn btn-primary shadowed"> <ion-icon name="checkmark-outline"></ion-icon>SUIVRE</button>
             </div>
         </div>
     </div>

@@ -172,7 +172,7 @@
 
             @if(!isset($data))
                 <div class="row">
-                    <div class="col-6 mb-2" style="padding-right: 2px;height: 295px">
+                    <div class="col-12 mb-2" style="padding: 0 2.5rem;height: 295px;">
                         <div class="card text-center" style="height: -webkit-fill-available">
                             <div class="card-header" style="justify-content: center">
                                 <h1 class="my-0">Perso</h1>
@@ -198,7 +198,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 mb-2" style="padding-left: 2px; height: 295px">
+                    <div class="col-12 mb-2" style="padding: 0 2.5rem; height: 295px">
                         <div class="card text-center" style="height: -webkit-fill-available">
                             <div class="card-header" style="justify-content: center">
                                 <h1 class="my-0">Foot</h1>
@@ -214,7 +214,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 mb-2" style="padding-right: 2px; height: 295px">
+                    <div class="col-12 mb-2" style="padding: 0 2.5rem; height: 295px">
                         <div class="card text-center" style="height: -webkit-fill-available">
                             <div class="card-header" style="justify-content: center">
                                 <h1 class="my-0">Pro</h1>
@@ -230,7 +230,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 mb-2" style="padding-left: 2px; height: 295px">
+                    <div class="col-12 mb-2" style="padding: 0 2.5rem; height: 295px">
                         <div class="card text-center" style="height: -webkit-fill-available">
                             <div class="card-header" style="justify-content: center">
                                 <h1 class="my-0">Gold</h1>
@@ -467,7 +467,7 @@
             </div>
             <div class="modal-footer">
                 <div class="btn-list">
-                    <a href="" id="achat_link" class="btn btn-text-primary btn-block" style="background-color: #11a44c !important;
+                    <a href="" id="achat_link" class="btn btn-text-primary btn-block" onclick="$('#loader').show()" style="background-color: #11a44c !important;
     color: white !important;">Acheter</a>
                     <a href="#" class="btn btn-text-secondary btn-block" data-bs-dismiss="modal">Fermer</a>
                 </div>
