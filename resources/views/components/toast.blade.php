@@ -81,6 +81,9 @@
                 <h5 class="modal-title">Success</h5>
             </div>
             <div class="modal-body" id="coup_success">
+                <p id="message"></p>
+                <p id="det_pron_match" style="margin: 0"></p>
+                <p id="global_cote" style="margin: 0"></p>
             </div>
         </div>
     </div>
@@ -170,7 +173,7 @@
             </div>
             <div class="container" style="margin-bottom: 15px">
                 <div class="row">
-                    <div class="col" style="cursor:pointer; display: flex; justify-content: center" onclick="toastbox('toast-9')">
+                    <div class="col" style="cursor:pointer; display: flex; justify-content: center" onclick="shareLink()">
                         <ion-icon style="width: 1.5em;height: 1.5em; color: #11a44c !important" name="link-outline"></ion-icon><br>
                     </div>
                     <div class="col" style="opacity: 0.3; display: flex; justify-content: center">
@@ -527,6 +530,11 @@
 
     });*/
 
+    function shareLink() {
+       var link = $('#link_code_coupon').val();
+        Share.postMessage(link);
+    }
+
     window.addEventListener("load", function() {
 
         $('[id^="all_lot"]').click(function() {
@@ -811,9 +819,7 @@
 
         $('#gen_coup_click').click(function (e) {
 
-            $('body').append(`<div id="loader">
-    <div class="spinner-border" role="status"></div>
-</div>`);
+            $("#loader").show();
 
             var token = "{{$token}}";
             var s = new Object();

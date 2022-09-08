@@ -197,6 +197,7 @@
             <div class="accordion" id="accordionExample2">
                 @foreach($compets as $index => $compet)
                     <div class="accordion-item" id="compet_det{{$index}}" data-competid="{{$compet['id_']}}">
+                        @if(isset($compet['rencontres'][0]))
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#accordion00{{$index}}">
@@ -208,13 +209,14 @@
                                 </div>
                             </button>
                         </h2>
+                        @endif
                         <div id="accordion00{{$index}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
 
                                 <div class="accordion-body" @if(isset($compet['rencontres'])) style="background-color: currentColor" @endif>
                                     @if(isset($compet['rencontres']))
                                 @foreach($compet['rencontres'] as $index1 => $rencontre)
-                                        <div class="card-block mb-1" id="detmatch{{$index1}}" style="height: 135px; background-color: white" data-matchid="{{$rencontre['id_']}}">
-                                            <div class="section full" style="position: relative; text-align: center">
+                                        <div class="card-block mb-1" style="height: 135px; background-color: white" data-matchid="{{$rencontre['id_']}}">
+                                            <div class="section full" id="detmatch{{$index1}}" data-matchid="{{$rencontre['id_']}}" style="position: relative; text-align: center">
                                                 <div class="in" style="padding: 0px">
                                                     <div class="titleCard__textWrapper" style="justify-content: space-between;color: #1e1e1e; overflow: hidden;
 text-overflow: ellipsis;
@@ -270,18 +272,24 @@ display: -webkit-box;
                                                                 <div class="" style="color: black;text-align: center; font-size: 10px">{{ $rencontre['date'] }}</div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-4" style="padding: 0">
-                                                                <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Victoire <span class="short_team_name">{{ $rencontre['team_name_home'] }}</span> <span class="badge-green"> @if(isset($rencontre['bets_home']['odd'])) {{ $rencontre['bets_home']['odd'] }}  @endif </span></div>
-                                                            </div>
-                                                            <div class="col-4" style="padding: 0 3px">
-                                                                <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Match nul <span class="badge-green"> @if(isset($rencontre['bets_draw'])) {{ $rencontre['bets_draw']['odd'] }} @endif</span></div>
-                                                            </div>
-                                                            <div class="col-4" style="padding: 0">
-                                                                <div class="coupon" style="color: black; text-align: center;  font-size: 10px">Victoire <span class="short_team_name">{{ $rencontre['team_name_away'] }}</span> <span class="badge-green"> @if(isset($rencontre['bets_away'])) {{ $rencontre['bets_away']['odd'] }} @endif</span></div>
-                                                            </div>
-                                                        </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 2rem">
+                                                <div class="col-4" style="padding: 0">
+                                                    @if(isset($rencontre['bets_home']))
+                                                        <div class="coupon" id="coupon" data-rencontre_id="{{$rencontre['id_']}}" data-value_name="{{$rencontre['bets_name']}}"  data-couponvalue="{{$rencontre['bets_home']['odd']}}" data-bet_id="{{ $rencontre['bets_id'] }}" data-value= "{{ $rencontre['bets_home']['value'] }}" style="color: black; text-align: center;  font-size: 10px;  cursor: pointer">Victoire <span class="short_team_name">{{ $rencontre['team_name_home'] }}</span> <span class="badge-green"> @if(isset($rencontre['bets_home']['odd'])) {{ $rencontre['bets_home']['odd'] }}  @endif </span></div>
+                                                    @endif
+                                                </div>
+                                                <div class="col-4" style="padding: 0 3px">
+                                                    @if(isset($rencontre['bets_draw']))
+                                                        <div class="coupon" id="coupon" data-rencontre_id="{{$rencontre['id_']}}" data-value_name="{{$rencontre['bets_name']}}"  data-couponvalue="{{$rencontre['bets_draw']['odd']}}" data-bet_id="{{ $rencontre['bets_id']}}" data-value= "{{ ($rencontre['bets_draw']['value'] == "Match nul") ? "Draw" : "" }}" style="color: black; text-align: center;  font-size: 10px;  cursor: pointer">Match nul <span class="badge-green"> @if(isset($rencontre['bets_draw'])) {{ $rencontre['bets_draw']['odd'] }} @endif</span></div>
+                                                    @endif
+                                                </div>
+                                                <div class="col-4" style="padding: 0">
+                                                    @if(isset($rencontre['bets_away']))
+                                                        <div class="coupon" id="coupon" data-rencontre_id="{{$rencontre['id_']}}" data-value_name="{{$rencontre['bets_name']}}"  data-couponvalue="{{$rencontre['bets_away']['odd']}}" data-bet_id="{{ $rencontre['bets_id'] }}" data-value= "{{ $rencontre['bets_away']['value'] }}" style="color: black; text-align: center;  font-size: 10px;  cursor: pointer">Victoire <span class="short_team_name">{{ $rencontre['team_name_away'] }}</span> <span class="badge-green"> @if(isset($rencontre['bets_away'])) {{ $rencontre['bets_away']['odd'] }} @endif</span></div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -428,7 +436,7 @@ display: -webkit-box;
                     step++;
                     var o = new Object();
                     o['token'] = token;
-                    o['page'] = current_page;
+                        o['page'] = current_page;
                     //$("#bodyID").addClass('block');
                    $.ajax({
                         url: `${next_page}`,
@@ -437,9 +445,9 @@ display: -webkit-box;
                        datatype: "json",
                         method: "GET",
                         success: function (data) {
-                            console.log(data)
                            if (data.success === true){
                                 next_page = data.data.next_page_url;
+                                console.log(next_page)
                                 var url = "{{ route('store_compet') }}";
                                 var ccompet_data = data;
                                 var token = data.new_token;
@@ -448,6 +456,8 @@ display: -webkit-box;
                                 p["token"] = token;
 
                                 var params = JSON.stringify(p);
+
+                                console.log(params)
 
                                var CSRF_TOKEN = document.querySelectorAll('meta[name="csrf-token"]')[0].getAttribute('content');
 
@@ -555,6 +565,206 @@ display: -webkit-box;
         });
 
     }
+
+    function coup_rapid(bet_idP, valueP, rencontreP, value_nameP, couponvalueP) {
+        $("#loader").show();
+        var bet_id = bet_idP;
+        var value = valueP;
+        var rencontre = rencontreP;
+        var value_name = value_nameP;
+        var couponvalue = couponvalueP;
+        var det_coup = value_name + ' - ' + value + ' : ' + couponvalue;
+        var token = "{{ $token }}";
+
+        var o = new Object();
+        o["rencontre_id_"] = rencontre;
+        o["bet_id"] = bet_id;
+        o["value"] = value;
+        o["token"] = token;
+        console.log(o);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: `https://demo.pronomix.net/api/pronostic-combine/add-to-coupon`,
+            data: o,
+            success: function(data) {
+                console.log(data)
+                var global_cote = 'Cote Global: ' + data.data.cumul;
+                console.log(global_cote)
+                if (data.status === 'success'){
+
+                    var new_token = data.new_token;
+                    var message = data.message;
+                    var data_reg = data.data;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["message"] = message;
+                    o["data_reg"] = data_reg;
+                    var url = "{{ route('pronos_multi') }}";
+                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            console.log(data)
+                            if (data['status'] === 'success'){
+                                $('#message').empty();
+                                $('#message').append(data['message']);
+
+                                $('#det_pron_match').empty();
+                                $('#det_pron_match').append(det_coup);
+
+                                $('#global_cote').empty();
+                                $('#global_cote').append(global_cote);
+
+                                $("#loader").hide();
+                                $('#DialogIconedSuccess').modal('show');
+                            }
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        }
+                    });
+
+                }
+                else {
+
+                    $('#coup_error').append(data.message);
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Impossible d'enregistrer votre pronostic. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
+            }
+        });
+    }
+
+    $('[id^="coupon"]').on('click', function (e) {
+        $("#loader").show();
+        var bet_id = $(this).data('bet_id');
+        var value = $(this).data('value');
+        var rencontre = $(this).data('rencontre_id');
+        var value_name = $(this).data('value_name');
+        var couponvalue = $(this).data('couponvalue');
+        var det_coup = value_name + ' - ' + value + ' : ' + couponvalue;
+        var token = "{{ $token }}";
+
+        var o = new Object();
+        o["rencontre_id_"] = rencontre;
+        o["bet_id"] = bet_id;
+        o["value"] = value;
+        o["token"] = token;
+        console.log(o);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: `https://demo.pronomix.net/api/pronostic-combine/add-to-coupon`,
+            data: o,
+            success: function(data) {
+                console.log(data)
+                var global_cote = 'Cote Global: ' + data.data.cumul;
+                console.log(global_cote)
+                if (data.status === 'success'){
+
+                    var new_token = data.new_token;
+                    var message = data.message;
+                    var data_reg = data.data;
+                    var o = new Object();
+                    o["new_token"] = new_token;
+                    o["message"] = message;
+                    o["data_reg"] = data_reg;
+                    var url = "{{ route('pronos_multi') }}";
+                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            console.log(data)
+                            if (data['status'] === 'success'){
+                                $('#message').empty();
+                                $('#message').append(data['message']);
+
+                                $('#det_pron_match').empty();
+                                $('#det_pron_match').append(det_coup);
+
+                                $('#global_cote').empty();
+                                $('#global_cote').append(global_cote);
+
+                                $("#loader").hide();
+                                $('#DialogIconedSuccess').modal('show');
+                            }
+                        },
+                        statusCode: {
+                            500: function() {
+                                $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                                $("#loader").hide();
+                                $('#DialogIconedDanger').modal('show');
+                            }
+                        }
+                    });
+
+                }
+                else {
+
+                    $('#coup_error').append(data.message);
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Impossible d'enregistrer votre pronostic. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
+            }
+        });
+
+        //console.log(coup);
+    });
 </script>
 
 <!-- ========= JS Files =========  -->

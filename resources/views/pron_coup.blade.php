@@ -162,7 +162,7 @@
 
                 @if(isset($pron_coups['pronostics']))
                     @foreach($pron_coups['pronostics'] as $index => $pron_coup)
-                        <div @if($pron_coup['bloque'] !== 'true') id="pron_coup{{$index}}"  data-matchid="{{$pron_coup['rencontre_id_']}}" @endif class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
+                        <div  id="pron_coup{{$index}}" onclick="detmatch({{$pron_coup['rencontre_id_']}})" data-matchid="{{$pron_coup['rencontre_id_']}}" class="item" style="padding: 25px 24px; opacity: {{ ($pron_coup['bloque'] === 'true') ? 0.5 : 1 }}; position: relative; overflow: hidden;">
                             <div class="detail">
                                 <div style="width: 13rem;">
                                     <strong style="color: #11a44c;"> {{ $pron_coup['team_name_home'] }} - {{ $pron_coup['team_name_away'] }} </strong>
@@ -506,7 +506,7 @@
             </div>
             <div class="container" style="margin-bottom: 15px">
                 <div class="row">
-                    <div class="col" style="cursor:pointer; display: flex; justify-content: center" onclick="toastbox('toast-9')">
+                    <div class="col" style="cursor:pointer; display: flex; justify-content: center" onclick="shareLink()">
                         <ion-icon style="width: 1.5em;height: 1.5em; color: #11a44c !important" name="link-outline"></ion-icon><br>
                     </div>
                     <div class="col" style="opacity: 0.3; display: flex; justify-content: center">
@@ -580,6 +580,57 @@
 </script>-----}}
 
 <script>
+
+    function detmatch(id) {
+        var match_id = id;
+        $("#loader").show();
+        document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
+        console.log(match_id)
+
+        $.ajax({
+            url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
+            method: "GET",
+            success: function (data) {
+                if (data.success === true){
+                    var detail_match_data = data.data;
+                    var o = new Object();
+                    o["detail_match_data"] = detail_match_data;
+                    var url = "{{ route('detmatch') }}";
+                    //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
+
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: o,
+                        success: function(data) {
+                            window.location = data;
+                        }
+                    });
+
+                }
+            },
+            statusCode: {
+                500: function() {
+                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                    $("#loader").hide();
+                    $('#DialogIconedDanger').modal('show');
+                },
+                419: function (){
+                    window.location = "{{ route('logout') }}";
+                }
+            }
+        });
+    }
+
+</script>
+
+<script>
     window.addEventListener("load", function() {
         toastbox('toast-1');
         $('#error_message').hide();
@@ -608,7 +659,10 @@
                             </div>`);
     }
 
-
+    function shareLink() {
+        var link = $('#link_code_coupon').val();
+        Share.postMessage(link);
+    }
 
     $('#pronticketval').on('keyup', function (e) {
         var coupval = @if(isset($pron_coups['cumul'])) {{ $pron_coups['cumul'] }}@else 0 @endif;
@@ -1028,7 +1082,7 @@
 
         console.log(renc_id)
         e.stopImmediatePropagation();
-        e.preventDefault();
+        //e.preventDefault();
 
     });
 
@@ -1115,58 +1169,6 @@
         });
 
     });
-
-
-    $('[id^="pron_coup"]').click(
-        function(e) {
-            var match_id = $(this).data('matchid');
-            $("#loader").show();
-            document.querySelector("body").setAttribute("style", "pointer-events: none; background-color: white");
-            console.log(match_id)
-
-            $.ajax({
-                url: `https://demo.pronomix.net/api/detail-match/${match_id}`,
-                method: "GET",
-                success: function (data) {
-                    if (data.success === true){
-                        var detail_match_data = data.data;
-                        var o = new Object();
-                        o["detail_match_data"] = detail_match_data;
-                        var url = "{{ route('detmatch') }}";
-                        //window.location = `${url}?new_token=` + new_token + `&match_data=` + match_data;
-
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
-
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: o,
-                            success: function(data) {
-                                window.location = data;
-                            }
-                        });
-
-                    }
-                },
-                statusCode: {
-                    500: function() {
-                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                        $("#loader").hide();
-                        $('#DialogIconedDanger').modal('show');
-                    },
-                    419: function (){
-                        window.location = "{{ route('logout') }}";
-                    }
-                }
-            });
-
-        }
-    );
-
 </script>
 
 </body>

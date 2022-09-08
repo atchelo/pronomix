@@ -152,11 +152,19 @@ class Match_listController extends Controller
             'user_pronos_multi' => $request['data_reg'],
         ]);
 
+        if (empty($request['data_reg']['pronostics'])){
+            $pron_array = 0;
+        }else{
+            $pron_array = count($request['data_reg']['pronostics']);
+        }
+
+
+
         $data = [
             "status" => 'success',
             "message" => $request['message'],
             "cote" => number_format($request['data_reg']['cumul'],2),
-            "pronostics" => count($request['data_reg']['pronostics'])
+            "pronostics" => $pron_array
         ];
 
         return $data;
