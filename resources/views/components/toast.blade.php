@@ -1,12 +1,20 @@
 <!-- toast bottom iconed -->
-<div id="toast-7" class="toast-box toast-bottom" style="justify-content: center">
-    <div class="in">
-        <ion-icon name="document-outline" style="width: 1.5rem" data-bs-toggle="modal" data-bs-target="#gen_coup"></ion-icon>
-        <ion-icon id="sup_pron_coup" name="trash-outline" style="width: 1.5rem" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
-    </div>
-    <div class="in" style="padding: 0">
-        <button type="button" class="btn btn-secondary" id="coup_pron" style="border-radius: inherit; background: white !important; border:white !important; color: #11a44c !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
-        {{---<ion-icon class="close-button" name="close-circle-outline" style="width: 24px"></ion-icon>---}}
+<div id="toast-7" class="toast-box toast-bottom" style="justify-content: center;border-radius: 100% 100% 0 0;">
+    <div class="container" style="background: #f2f2f2">
+        <div class="row">
+            <div class="col-4">
+                <div class="in">
+                    <ion-icon name="document-outline" style="width: 1.5rem" data-bs-toggle="modal" data-bs-target="#gen_coup"></ion-icon>
+                    <ion-icon id="sup_pron_coup" name="trash-outline" style="width: 1.5rem" data-bs-toggle="modal" data-bs-target="#DialogIconedButtonInline1"></ion-icon>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="in" style="padding: 0">
+                    <button type="button" class="btn btn-secondary" id="coup_pron" style="border-radius: inherit; background: #4ccf7f !important; border:#4ccf7f !important; color: #FFFFFF !important;">PRONOSTIC MULTIPLE(<span id="pron_numb"></span>)</button>
+                    {{---<ion-icon class="close-button" name="close-circle-outline" style="width: 24px"></ion-icon>---}}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!-- * toast bottom iconed -->

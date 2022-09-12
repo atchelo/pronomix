@@ -92,6 +92,22 @@
         body #ptr-light-spinner {
             top: 10px;
         }
+        .appHeader {
+            height: 15vh;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            /*z-index: 999;*/
+            /*color: #27173E;*/
+            /* border-bottom: 1px solid #DCDCE9;*/
+            border-radius: 0 0 100% 100% !important;
+            /*position: absolute !important;*/
+            background: #FFFFFF !important;
+            right: 0vh !important;
+            left: 0vh !important;
+            top: -5vh !important;
+            /*bottom: 0 !important;*/
+        }
     </style>
 
 </head>
@@ -137,7 +153,7 @@
 
 <!-- * loader -->
 
-<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px">
+<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #00373e;border-radius: 30px; margin-top: 30px">
     <!-- App Header -->
     <div class="appHeader" style="border-radius: 30px; margin: 2px; position: absolute">
         <div class="left">
@@ -379,13 +395,13 @@
         @endphp
 
 
-            <h1 class="total" id="nbre_point" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #ff6a00; font-size: 3rem">{{ $numb }}<small style="color: #ff6a00; font-size: .575em;">Pts</small> </h1>
+            <h1 class="total" id="nbre_point" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 8rem; color: #FFFFFF; font-size: 3rem">{{ $numb }}<small style="color: #FFFFFF; font-size: .575em;">Pts</small> </h1>
 
-            <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 2rem; color: #3a87ad">{{ $islogged['balance_tickets'] }}<small style="color: #3a87ad; font-size: .675em;">Tickets</small></h1>
+            <h1 class="total" style="position: absolute;left: 50%;transform: translate(-50%, -50%);top: 10.5rem; font-size: 2rem; color: #ce9d52">{{ $islogged['balance_tickets'] }}<small style="color: #ce9d52; font-size: .675em;">Tickets</small></h1>
 
         <!-- Stats -->
         <div class="section" style="margin-top: 9rem; padding: 0; height: -webkit-fill-available; box-shadow: 0px 5px rgb(17 164 76 / 10%), 0px -10px 12px rgb(17 164 76 / 10%);height: -webkit-fill-available;border-radius: 30px 30px;">
-            <div class="row mt-2" style="height: 100%">
+            <div class="row mt-2">
                 <div class="col-12">
                     <div class="card" style="height: 100%; border-radius: 30px">
                         <div class="card-body">
@@ -393,7 +409,7 @@
                                 <!-- item -->
                                 <a href="{{ route('payment_index') }}" id="linkToPayment" class="item">
                                     <div class="detail">
-                                        <ion-icon name="cash-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
+                                        <img style="margin-right: 16px;width: 65px;padding: 10px;background-color: white;" src="{{ asset('assets/img/icon/credit_card.png') }}" alt="">
                                         <div>
                                             <strong>Recharger le compte</strong>
                                             <p>when you get direct deposit</p>
@@ -404,7 +420,7 @@
                                 <!-- item -->
                                 <a href="{{ route('allmatch') }}" id="linkToAll_match" class="item" {{----id="allmatch"---}}>
                                     <div class="detail">
-                                        <ion-icon name="dice-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
+                                        <img style="margin-right: 16px;width: 65px;padding: 10px;background-color: white;" src="{{ asset('assets/img/icon/dice.png') }}" alt="">
                                         <div>
                                             <strong>Pronostiquer</strong>
                                             <p>when you get direct deposit</p>
@@ -415,7 +431,7 @@
                                 <!-- item -->
                                 <a href="javascript:void(0);" class="item" id="all_lot">
                                     <div class="detail">
-                                        <ion-icon name="gift-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
+                                        <img style="margin-right: 16px;width: 65px;padding: 10px;background-color: white;" src="{{ asset('assets/img/icon/gift.png') }}" alt="">
                                         <div>
                                             <strong>Les lots</strong>
                                             <p>when you get direct deposit</p>
@@ -426,7 +442,7 @@
                                 <!-- item -->
                                 <a href="{{ route('his_coup') }}" id="linkToHist" {{---data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"---}} class="item">
                                     <div class="detail">
-                                        <ion-icon name="file-tray-full-outline" style="margin-right: 16px; font-size: 3rem; color: #11a44c"></ion-icon>
+                                        <img style="margin-right: 16px;width: 65px;padding: 10px;background-color: white;" src="{{ asset('assets/img/icon/history.png') }}" alt="">
                                         <div>
                                             <strong>Historiques Pronostics</strong>
                                             <p>when you get direct deposit</p>

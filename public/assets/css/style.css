@@ -86,7 +86,7 @@ a:hover, a:active, a:focus {
   align-items: center;
   justify-content: center;
   padding: 10px;
-  color: #11a44c;
+  color: #2a6e40;
   position: relative;
 }
 
@@ -103,13 +103,15 @@ a:hover, a:active, a:focus {
 }
 
 .appHeader .left {
-  left: 10px;
-  top: 0;
+  left: 1vh;
+  /*top: 0;*/
+    bottom: 3vh;
 }
 
 .appHeader .right {
-  right: 10px;
-  top: 0;
+  right: 1vh;
+  /*top: 0;*/
+    bottom: 3vh;
 }
 
 .appHeader .pageTitle {
@@ -4602,23 +4604,23 @@ z-index: 20;
 }
 
 .toast-box {
-position: fixed;
-left: 0;
-top: -100%;
-right: 0;
-width: 100%;
-z-index: 600;
-min-height: 52px;
-margin-top: env(safe-area-inset-top);
-transition: 0.2s all;
-background: #11a44c;
-font-size: 13px;
-color: rgba(255, 255, 255, 0.75);
-padding: 10px 16px;
-line-height: 1.4em;
-display: flex;
-align-items: center;
-justify-content: space-between;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: -100%;
+    right: 0;
+    width: 100%;
+    min-height: 0;
+    margin-top: env(safe-area-inset-top);
+    transition: 0.2s all;
+    background: #fff;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.75);
+    padding: 25px 16px 0 16px;
+    line-height: 1.4em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .toast-box .toast-title {
@@ -4638,7 +4640,7 @@ top: 0;
 .toast-box .in {
 display: flex;
 align-items: center;
-justify-content: flex-start;
+justify-content: space-evenly;
 padding-right: 20px;
 }
 
@@ -4648,7 +4650,7 @@ font-size: 26px;
 width: 32px;
 height: 32px;
 margin-right: 8px;
-color: #fff;
+color: #2a6e40;
 }
 
 .toast-box .in .text {
@@ -5236,7 +5238,7 @@ color: #27173E;
 }
 
 .transactions .item {
-background: #ffffff;
+background: #f2f2f2;
 box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.09);
 border-radius: 10px;
 padding: 20px 24px;
