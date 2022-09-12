@@ -43,6 +43,9 @@ Route::get('register', function (){
 
 Route::post('register', [RegisterController::class, 'index']);
 
+Route::get('forgot_pwd', function (){
+    return view('authentication.forgot_password');
+})->name('forgot_pwd');
 
 Route::middleware(['authLog'])->group(function () {
     Route::get('/', function () {

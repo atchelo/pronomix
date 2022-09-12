@@ -19,7 +19,45 @@
     <link rel="manifest" href="__manifest.json">
 </head>
 
-<body>
+<style>
+    .appHeader {
+        height: 15vh;
+        display: flex;
+        /*justify-content: center;*/
+        align-items: center;
+        /*z-index: 999;*/
+        /*color: #27173E;*/
+        /* border-bottom: 1px solid #DCDCE9;*/
+        border-radius: 100% !important;
+        /*position: absolute !important;*/
+        background: #2a6e40 !important;
+        /*bottom: 0 !important;*/
+    }
+
+    #appCapsule {
+        padding-top: 15vh;
+        padding-bottom: 0;
+    }
+    .titre{
+        color: white;
+        z-index: 1;
+        text-align: center;
+        margin-top: 1.5rem;
+        margin-bottom: 0;
+    }
+    .form-group.boxed .form-control {
+        background: #f2f2f2;
+        border: 1px solid #f2f2f2;
+    }
+
+    .btn-primary {
+        background: #2a6e40 !important;
+        border-color: #2a6e40 !important;
+        color: #FFFFFF !important;
+    }
+</style>
+
+<body style="background: white">
 
 <!-- loader -->
 <div id="loader">
@@ -28,14 +66,17 @@
 <!-- * loader -->
 
 <!-- App Header -->
-<div class="appHeader no-border transparent position-absolute">
+<div class="appHeader no-border position-absolute">
     <div class="left">
         <a href="#" class="headerButton goBack">
             <ion-icon name="chevron-back-outline"></ion-icon>
         </a>
     </div>
-    <div class="pageTitle"></div>
-    <div class="right">
+    <div class="container">
+        <div class="row">
+            <h2 class="titre">Connexion</h2>
+            <p style="color: white; z-index: 1; text-align: center;margin: 0;font-size: xx-small;"> <small> connectez-vous et commencez vos pronostiques</small> </p>
+        </div>
     </div>
 </div>
 <!-- * App Header -->
@@ -43,10 +84,11 @@
 <!-- App Capsule -->
 <div id="appCapsule">
 
-    <div class="section mt-2 text-center">
+    {{------<div class="section mt-2 text-center">
         <h1>Log in</h1>
         <h4>Fill the form to log in</h4>
-    </div>
+    </div>------}}
+
     <div class="section mb-5 p-2">
         @php
         $get_error = session()->get('error');
@@ -83,25 +125,23 @@
             </div>
             <button type="button" class="btn btn-sm btn-text-light close-button">OK</button>
         </div>
-        <form action="{{ route('login') }}" method="post">
+        <form action="{{ route('login') }}" method="post" id="formLogin">
             @csrf
             <div class="card">
                 <div class="card-body pb-1">
-                    <div class="form-group basic">
+                    <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <label class="label" for="email1">E-mail</label>
-                            <input type="email" class="form-control" id="email1" placeholder="Your e-mail" name="email" value="{{ old('email') }}" required>
+                            <input type="email" class="form-control" id="email1" placeholder="Addresse e-mail" name="email" value="{{ old('email') }}" required>
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
                         </div>
                     </div>
 
-                    <div class="form-group basic">
+                    <div class="form-group boxed">
                         <div class="input-wrapper">
-                            <label class="label" for="password1">Password</label>
                             <input type="password" class="form-control" name="password" id="password1" autocomplete="off"
-                                   placeholder="Your password" required>
+                                   placeholder="mot de passe" required>
                             <i class="clear-input">
                                 <ion-icon name="close-circle"></ion-icon>
                             </i>
@@ -112,22 +152,36 @@
 
 
             <div class="form-links mt-2">
-                <div>
-                    <a href="{{ route('register') }}">Register Now</a>
-                </div>
-                <div><a href="app-forgot-password.html" class="text-muted">Forgot Password?</a></div>
+                <div style="margin-left: auto"><a href="{{ route('forgot_pwd') }}" style="color: #2a6e40 !important;" class="text-muted"> <img src="{{ asset('assets/img/icon/mdp.png') }}" style="width: 10px"> Mot de passe oublié?</a></div>
             </div>
-            <div class="form-button-group  transparent" style="bottom: auto">
-                <button type="submit" onclick="$('#loader').show()" class="btn btn-primary btn-block btn-lg">Log in</button>
+            <div class="form-button-group  transparent" style="position: relative ;bottom: auto">
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Connexion</button>
+            </div>
+            <div class="form-button-group  transparent" style="position: relative;margin-top: -1.5rem;">
+                <button type="button" onclick="google_login()" style="background-color: #ff7575 !important; border-color: #ff7575 !important;" class="btn btn-primary btn-block btn-lg"><ion-icon style="font-size: inherit" name="logo-google"></ion-icon> Sign in with google</button>
             </div>
 
         </form>
+        <div style="font-size: smaller">
+            Vous n'avez pas de compte?
+            <a onclick="$('#loader').show()" href="{{ route('register') }}">S'inscrire</a>
+        </div>
     </div>
 
 </div>
 <!-- * App Capsule -->
 
 
+<script>
+    function google_login() {
+        window.location.href="https://demo.pronomix.net/login/google";
+    }
+
+    $("#formLogin").submit(function (e) {
+       $('#loader').show();
+    });
+
+</script>
 
 <!-- ========= JS Files =========  -->
 <!-- Bootstrap -->

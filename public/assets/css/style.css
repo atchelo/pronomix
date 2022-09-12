@@ -38,26 +38,16 @@ a:hover, a:active, a:focus {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: env(safe-area-inset-top);
-  left: 0;
-  right: 0;
   z-index: 999;
-  background: #FFFFFF;
   color: #27173E;
   border-bottom: 1px solid #DCDCE9;
-}
-
-.appHeader:before {
-  content: '';
-  height: env(safe-area-inset-top);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 99999;
-  background: #FFF;
+    border-radius: 100% !important;
+    position: absolute !important;
+    background: #2a6e40 !important;
+    right: -200px !important;
+    left: -200px !important;
+    top: -15px !important;
+    bottom: 0 !important;
 }
 
 .appHeader.no-border {
@@ -123,10 +113,18 @@ a:hover, a:active, a:focus {
 }
 
 .appHeader .pageTitle {
+    z-index: 1;
+    color: white;
   font-size: 17px;
   font-weight: 500;
   padding: 0 10px;
 }
+
+
+.pageTitle.child {
+    color: white;
+}
+
 
 .appHeader .pageTitle .logo {
   max-height: 24px;

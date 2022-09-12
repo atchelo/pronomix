@@ -17,7 +17,24 @@
     <link rel="manifest" href="__manifest.json">
 </head>
 
-<body class="bg-white">
+<style>
+    .btn-primary {
+        background: #4ccf7f !important;
+        border-color: #4ccf7f !important;
+        color: #FFFFFF !important;
+        font-weight: bold;
+    }
+
+    .btn-outline-secondary {
+        background: transparent;
+        border-color: #11a44c;
+        color: #11a44c;
+        transition: 0.2s all;
+        font-weight: bold;
+    }
+</style>
+
+<body class="bg-white" style="height: 100vh">
 
 <!-- loader -->
 <div id="loader">
@@ -25,53 +42,24 @@
 </div>
 <!-- * loader -->
 
-<!-- App Header -->
-<div class="appHeader no-border transparent">
-    <div class="left">
-        <a href="#" class="headerButton goBack">
-            <ion-icon name="chevron-back-outline"></ion-icon>
-        </a>
-    </div>
-    <div class="pageTitle">Welcome</div>
-    <div class="right">
-    </div>
-</div>
-<!-- * App Header -->
 
 <!-- App Capsule -->
-<div id="appCapsule">
+<div id="appCapsule" style="background-image: url('{{ asset('assets/img/man.png') }}'); height: 75vh; background-size: contain; background-repeat: no-repeat">
 
     <!-- carousel slider -->
-    <div class="carousel-slider splide">
-        <div class="splide__track">
-            <ul class="splide__list">
-                <li class="splide__slide p-2">
-                    <img src="assets/img/sample/photo/vector1.png" alt="alt" class="imaged w-100 square mb-4">
-                    <h2>Simple to Use</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </li>
-                <li class="splide__slide p-2">
-                    <img src="assets/img/sample/photo/vector2.png" alt="alt" class="imaged w-100 square mb-4">
-                    <h2>Minimalist and Stylish</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </li>
-                <li class="splide__slide p-2">
-                    <img src="assets/img/sample/photo/vector3.png" alt="alt" class="imaged w-100 square mb-4">
-                    <h2>Easy to Use Components</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </li>
-            </ul>
-        </div>
-    </div>
+
     <!-- * carousel slider -->
+
+    <h2 style="text-align: center; margin-top: 25rem">On attend plus que vous</h2>
+    <p class="text-muted" style="text-align: center; margin: 0 3rem;">rejoignez-nous et commencez une nouvelle aventure</p>
 
     <div class="carousel-button-footer">
         <div class="row">
             <div class="col-6">
-                <a href="{{ route('register') }}" class="btn btn-outline-secondary btn-lg btn-block">Register</a>
+                <a href="{{ route('register') }}" class="btn btn-primary btn-lg btn-block">Inscription</a>
             </div>
             <div class="col-6">
-                <a href="{{ route('login') }}" class="btn btn-primary btn-lg btn-block">Login</a>
+                <a href="{{ route('login') }}" class="btn btn-outline-secondary btn-lg btn-block">Connexion</a>
             </div>
         </div>
     </div>
