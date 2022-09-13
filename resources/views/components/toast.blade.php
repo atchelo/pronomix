@@ -260,7 +260,7 @@
                 <!-- profile box -->
                 <div class="profileBox pt-2 pb-2">
                     <div class="image-wrapper">
-                        <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="imaged  w36">
+                        <img src="{{ asset('assets/img/icon/user.png') }}" alt="image" class="imaged  w24">
                     </div>
                     <div class="in">
                         <strong>{{ $islogged['nom'] }} {{ $islogged['prenom'] }}</strong>
@@ -322,8 +322,8 @@
                 <ul class="listview flush transparent no-line image-listview">
                     <li>
                         <a href="{{route('home') }}" class="item">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="home-outline"></ion-icon>
+                            <div class="icon-box bg-primary" style="background-color: #00373e !important;">
+                                <img src="{{ asset('assets/img/icon/home.png') }}" alt="image" class="imaged  w24">
                             </div>
                             <div class="in">
                                 Accueil
@@ -332,8 +332,8 @@
                     </li>
                     <li>
                         <a href="{{ route('allmatch') }}"  class="item" onclick="$('#loader').show()">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="dice-outline"></ion-icon>
+                            <div class="icon-box bg-primary" style="background-color: #018cb7 !important;">
+                                <img src="{{ asset('assets/img/icon/dice2.png') }}" alt="image" class="imaged  w24">
                             </div>
                             <div class="in">
                                 Pronostiques
@@ -343,8 +343,8 @@
                     </li>
                     <li>
                         <a href="{{ route('allcompet') }}" class="item" onclick="$('#loader').show()">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="trophy-outline"></ion-icon>
+                            <div class="icon-box bg-primary" style="background-color: #f9b233 !important;">
+                                <img src="{{ asset('assets/img/icon/trophy.png') }}" alt="image" class="imaged  w24">
                             </div>
                             <div class="in">
                                 Competition
@@ -353,8 +353,8 @@
                     </li>
                     <li>
                         <a href="{{ route('result') }}" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="checkbox-outline"></ion-icon>
+                            <div class="icon-box bg-primary" style="background-color: #fc5c13 !important;">
+                                <img src="{{ asset('assets/img/icon/result.png') }}" alt="image" class="imaged  w24">
                             </div>
                             <div class="in">
                                 Resultats
@@ -363,8 +363,8 @@
                     </li>
                     <li>
                         <a href="javascript:void(0);" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item" data-bs-dismiss="modal">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="ticket-outline"></ion-icon>
+                            <div class="icon-box bg-primary" style="background-color: #ffad57 !important;">
+                                <img src="{{ asset('assets/img/icon/credit_card2.png') }}" alt="image" class="imaged  w24">
                             </div>
                             <div class="in">
                                 Acheter des tiquets
@@ -373,8 +373,8 @@
                     </li>
                     <li>
                         <a href="javascript:void(0);" class="item" id="all_lot2" data-bs-dismiss="modal">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="gift-outline"></ion-icon>
+                            <div class="icon-box bg-primary" style="background-color: #2a6e40 !important;">
+                                <img src="{{ asset('assets/img/icon/gift2.png') }}" alt="image" class="imaged  w24">
                             </div>
                             <div class="in">
                                 Lots
@@ -385,12 +385,12 @@
                 <!-- * menu -->
 
                 <!-- others -->
-                <div class="listview-title mt-1">Others</div>
+                <div class="listview-title mt-1">Autres</div>
                 <ul class="listview flush transparent no-line image-listview">
                     <li>
                         <a href="javascript:void(0);" data-bs-dismiss="modal" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="chatbubble-outline"></ion-icon>
+                            <div class="icon-box bg-primary" style="background-color: #FFFFFF !important;">
+                                <img src="{{ asset('assets/img/icon/call_client2.png') }}" alt="image" class="imaged  w24">
                             </div>
                             <div class="in">
                                 Support
@@ -399,8 +399,8 @@
                     </li>
                     <li>
                         <a href="#" onclick="closeSideModal()" data-bs-toggle="modal" data-bs-target="#DialogConfirmLogOut" class="item">
-                            <div class="icon-box bg-primary">
-                                <ion-icon name="log-out-outline"></ion-icon>
+                            <div class="icon-box bg-primary" style="background-color: #FFFFFF !important;">
+                                <img src="{{ asset('assets/img/icon/logout.png') }}" alt="image" class="imaged  w24">
                             </div>
                             <div class="in">
                                 Déconnexion

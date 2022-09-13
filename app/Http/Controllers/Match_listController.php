@@ -43,7 +43,7 @@ class Match_listController extends Controller
         }
     }
 
-    /*public function storeAll(Request $request){
+    public function storeAll(Request $request){
         session()->forget([
             'list_match',
             'token'
@@ -55,7 +55,7 @@ class Match_listController extends Controller
         ]);
 
         return 'ok';
-    }*/
+    }
 
     public function getDetails(){
 

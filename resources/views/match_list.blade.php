@@ -82,6 +82,7 @@
 
         .coupon{
             border: 1px solid #e4e4e4;
+            border-radius: 10px;
         }
 
     </style>
@@ -92,7 +93,6 @@
                 'refresh': function(ptrLightInstance) {
                     console.log('Updating...');
                     var token = "{{$token}}";
-
                     $.ajax({
                         url: `https://demo.pronomix.net/api/matchs-disponibles/liste/search=&filtre_date=?token=${token}`,
                         method: "GET",
@@ -138,6 +138,7 @@
                     });
                     setTimeout(function() {
                         console.log('Updated!');
+                        $("#loader").show();
                         ptrLightInstance.done();
                     }, 2000);
                 },
@@ -151,10 +152,27 @@
         #appCapsule {
             -webkit-overflow-scrolling: touch;
             overflow-y: scroll;
+            padding: 1vh 0;
         }
 
         body #ptr-light-spinner {
             top: 10px;
+        }
+        .appHeader {
+            height: 15vh;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            /*z-index: 999;*/
+            /*color: #27173E;*/
+            /* border-bottom: 1px solid #DCDCE9;*/
+            border-radius: 0 0 100% 100% !important;
+            /*position: absolute !important;*/
+            background: #FFFFFF !important;
+            right: 0vh !important;
+            left: 0vh !important;
+            top: -5vh !important;
+            /*bottom: 0 !important;*/
         }
     </style>
 
@@ -168,9 +186,9 @@
 </div>
 <!-- * loader -->
 
-<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
+<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #00373e;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
     <!-- App Header -->
-    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky">
+    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky !important;">
         <div class="left">
             <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
                 <ion-icon name="menu-outline"></ion-icon>
@@ -180,7 +198,7 @@
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#ModalBasic" class="headerButton">
+            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="headerButton">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
@@ -191,7 +209,7 @@
     </div>
     <!-- * App Header -->
     <!-- App Capsule -->
-    <div id="appCapsule" style="padding: 0">
+    <div id="appCapsule">
 
         <div class="section mt-2">
 
@@ -281,7 +299,7 @@ display: -webkit-box;
                                 @php
                                         $vic = explode(" ", $item['value_name']);
                                 @endphp
-                                <div class="col-4" style="padding: 0">
+                                <div class="col-4" style="padding: 0 1rem">
                                     <div class="coupon" id="coupon" data-rencontre_id="{{$match['id_']}}" data-value_name="{{$item['value_name']}}"  data-couponvalue="{{$item['odd']}}" data-bet_id="{{ $match['odds_response']['id'] }}" data-value= "{{ $item['value'] }}" style="color: black; text-align: center;  font-size: 10px; cursor: pointer">
                                         @if($item['value'] === 'Home') Victoire @elseif($item['value'] === 'Draw') Match nul @elseif($item['value'] === 'Away') Victoire @endif
                                         <span class="short_team_name_match">
