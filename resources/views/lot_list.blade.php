@@ -89,6 +89,29 @@
             pointer-events:none !important;
         }
 
+        .appHeader {
+            height: 15vh;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            /*z-index: 999;*/
+            /*color: #27173E;*/
+            /* border-bottom: 1px solid #DCDCE9;*/
+            border-radius: 0 0 100% 100% !important;
+            /*position: absolute !important;*/
+            background: #FFFFFF !important;
+            right: 0vh !important;
+            left: 0vh !important;
+            top: -5vh !important;
+            /*bottom: 0 !important;*/
+        }
+
+        .btn-primary {
+            background: #4ccf7f !important;
+            border-color: #4ccf7f !important;
+            color: #FFFFFF !important;
+        }
+
     </style>
 </head>
 
@@ -100,9 +123,10 @@
 </div>
 <!-- * loader -->
 
-<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; position: relative; overflow-y: auto;">
+<div id="flux" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #00373e;border-radius: 30px; margin-top: 30px; position: relative; overflow-y: auto;">
     <!-- App Header -->
-    <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
+    <!-- App Header -->
+    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky !important;">
         <div class="left">
             <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
                 <ion-icon name="menu-outline"></ion-icon>
@@ -112,7 +136,7 @@
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="#item10" class="headerButton">
+            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="headerButton">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
@@ -122,6 +146,7 @@
         </div>
     </div>
     <!-- * App Header -->
+    <!-- * App Header -->
     <!-- App Capsule -->
     <div id="appCapsule" style="padding: 0">
 
@@ -130,7 +155,7 @@
             <div class="transactions">
                 <div id="putlot" class="container">
                     @foreach($get_lot['data'] as $index => $lot)
-                        <div class="row item" style="color: orange; padding: 10px 10px; @if($lot['restant'] === '0') opacity: 0.5 ;pointer-events: none; @endif" id="item{{$index}}">
+                        <div class="row item" style="color: orange; padding: 10px 10px; @if($lot['restant'] === '0') opacity: 0.5 ;pointer-events: none; @endif; background-color: #FFFFFF !important;" id="item{{$index}}">
                             <div class="col-12">
                                 @if($lot['new'] === 'true')
                                     <span class="badge badge-danger" style="display: inline-block;
@@ -159,7 +184,8 @@
                             <div class="col-12">
                                 <p>{!! $lot['description'] !!}</p>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12" style="    display: flex;
+    justify-content: end; margin-bottom: 0.5rem">
                                 <span style="display: inline-block;
     padding: 3px 5px;
     min-width: 10px;
@@ -169,13 +195,15 @@
     font-weight: bold;
     line-height: 1;
     white-space: nowrap;
+    margin-right: 9px;
     vertical-align: baseline;
     color: #fff;
     background-color: #ff6a00;">{{ number_format($lot['valeur'], 2, ',', ' ') }}pts</span>
                             </div>
-                            <div class="col-12 mt-1">
-                                <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" onclick="obtenir_q( {{ json_encode($lot['titre']) }}, {{ $lot['restant'] }}, {{ $lot['valeur'] }},  {{ $lot['id'] }})" style="border-radius: 0.37rem">OBTENIR</button>
-                                <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" onclick="suivre_coli({{ json_encode($lot['titre']) }} ,{{$lot['id']}})" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
+                            <div class="col-12 mt-1" style="display: flex;
+    justify-content: space-between;">
+                                <button type="button" class="btn btn-primary me-1 mb-1" onclick="obtenir_q( {{ json_encode($lot['titre']) }}, {{ $lot['restant'] }}, {{ $lot['valeur'] }},  {{ $lot['id'] }})" style="border-radius: 0.37rem; padding: 3px 2rem;">OBTENIR</button>
+                                <button type="button" class="btn btn-light me-1 mb-1" onclick="suivre_coli({{ json_encode($lot['titre']) }} ,{{$lot['id']}})" style="border-radius: 0.37rem; border-color: #e4e4e4 !important; padding: 3px 2rem;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
                             </div>
                         </div>
                     @endforeach
@@ -418,7 +446,11 @@
 
 <script>
 
-    $(".rating").rate();
+    var options = {
+        step_size: 2,
+    }
+
+    $(".rating").rate(options);
     var rollback = "{{route('rollback')}}";
     var current_page = "{{$get_lot['current_page']}}";
     var total_page = "{{$get_lot['last_page']}}";

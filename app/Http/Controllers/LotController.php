@@ -68,7 +68,8 @@ HTML;
             ]);
 
             $instock = <<<HTML
-opacity: 0.5
+opacity: 0.5;
+    pointer-events: none;
 HTML;
 
 
@@ -80,10 +81,13 @@ HTML;
 '{$lots['titre']}'
 HTML;
                 $json_titre = $test;
+
+                $change_lot_format= number_format($lots['valeur'], 2, ',', ' ');
+
                 //return $json_titre;
                 $html_lot[] = <<<HTML
 
-                <div class="row item" style="color: orange; padding: 10px 10px; {$if($lots['restant'] === '0', $instock, ' ')} " id="item{$index}">
+                <div class="row item" style="color: orange; padding: 10px 10px;background-color: #FFFFFF !important; {$if($lots['restant'] === '0', $instock, ' ')} " id="item{$index}">
                             <div class="col-12">
                                 {$if($lots['new'] === 'true', true, false)}
 
@@ -102,7 +106,8 @@ HTML;
                             <div class="col-12">
                                 <p>{$lots['description']}</p>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12" style="    display: flex;
+    justify-content: end; margin-bottom: 0.5rem">
                                 <span style="display: inline-block;
     padding: 3px 5px;
     min-width: 10px;
@@ -112,13 +117,15 @@ HTML;
     font-weight: bold;
     line-height: 1;
     white-space: nowrap;
+    margin-right: 9px;
     vertical-align: baseline;
     color: #fff;
-    background-color: #ff6a00;">{$lots['valeur']}pts</span>
+    background-color: #ff6a00;">{$change_lot_format}pts</span>
                             </div>
-                            <div class="col-12 mt-1">
-                                <button type="button" class="btn btn-primary btn-sm btn-block me-1 mb-1" onclick="obtenir_q({$json_titre} ,{$lots['restant']}, {$lots['valeur']}, {$lots['id']})"  style="border-radius: 0.37rem">OBTENIR</button>
-                                <button type="button" class="btn btn-light btn-sm btn-block me-1 mb-1" onclick="suivre_coli({$json_titre} ,{$lots['id']})" style="border-radius: 0.37rem; border-color: #e4e4e4 !important;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
+                            <div class="col-12 mt-1" style="display: flex;
+    justify-content: space-between;">
+                                <button type="button" class="btn btn-primary me-1 mb-1" onclick="obtenir_q({$json_titre} ,{$lots['restant']}, {$lots['valeur']}, {$lots['id']})"  style="border-radius: 0.37rem; padding: 3px 2rem;">OBTENIR</button>
+                                <button type="button" class="btn btn-light me-1 mb-1" onclick="suivre_coli({$json_titre} ,{$lots['id']})" style="border-radius: 0.37rem; border-color: #e4e4e4 !important; padding: 3px 2rem;"> <ion-icon name="heart" style="font-size: 15px; color: #969696"></ion-icon> SUIVRE</button>
                             </div>
                         </div>
 
