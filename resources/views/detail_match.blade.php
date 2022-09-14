@@ -66,6 +66,8 @@
 
         .coupon{
             border: 1px solid #e4e4e4;
+            background-color: #4ccf7f !important;
+            color: white !important;
         }
 
         .badge-green{
@@ -86,6 +88,35 @@
         .accordion-body{
             background-color: #EDEDF5;
         }
+        .appHeader {
+            height: 15vh;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            /*z-index: 999;*/
+            /*color: #27173E;*/
+            /* border-bottom: 1px solid #DCDCE9;*/
+            border-radius: 0 0 100% 100% !important;
+            /*position: absolute !important;*/
+            background: #FFFFFF !important;
+            right: 0vh !important;
+            left: 0vh !important;
+            top: -5vh !important;
+            /*bottom: 0 !important;*/
+        }
+
+        .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+            background-color: #4ccf7f !important;
+        }
+
+        .nav-tabs.capsuled{
+            background: transparent;
+        }
+
+        .nav-tabs.capsuled .nav-item .nav-link.active{
+            color: #fff;
+        }
+
 
     </style>
 
@@ -125,9 +156,9 @@
 </div>
 <!-- * loader -->
 
-<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin: 10px; position: relative">
+<div style="height: -webkit-fill-available; padding-bottom: 0; background-color: #00373e;border-radius: 30px; margin: 10px; position: relative">
     <!-- App Header -->
-    <div class="appHeader"  style="border-radius: 30px; margin: auto; position: sticky">
+    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky !important;">
         <div class="left">
             <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
                 <ion-icon name="menu-outline"></ion-icon>
@@ -137,13 +168,12 @@
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="#" class="headerButton" onclick="toastbox('toast-7')">
+            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="headerButton">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
-            <a href="app-odds_pronostic_second_halfodds_pronostic_second_half.html" class="headerButton">
-                <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="imaged w32">
-                <span class="badge badge-danger">6</span>
+            <a href="{{ route('pers_info') }}" class="headerButton" id="linkToPersInfo">
+                <ion-icon class="icon" name="person-outline"></ion-icon>
             </a>
         </div>
     </div>
@@ -370,20 +400,20 @@
 
 
             <!-- Wallet -->
-            <div class="section full gradientSection" style="background: radial-gradient(85% 125% at top, #11a44c, #11a44c 75%, #eee 80%, #fff 15%); height: 15vh">
+            <div class="section full gradientSection" style="background: #f2f2f2;height: 15vh;margin: 0.5vh; border-radius: 10px">
                 <div class="in" style="padding: 0px 16px 40px 16px;">
                     <h5 class="title mb-1" style="padding-top: 5px; opacity: 1">@if(isset($get_detmatch['sport_icon'])) {!! $get_detmatch['sport_icon'] !!} @endif  {{ $get_detmatch['league_name'] }}
                         ~ <span style="font-weight: normal;">{{ $get_detmatch['league_round'] }}</h5>
-                    <div class="container mt-2" style="background-color: rgba(255, 255, 255, 0.2); justify-content: space-between;height: 40px;border-radius: 30px;">
+                    <div class="container mt-2" style="background-color: #fff;justify-content: space-between;height: 40px;border-radius: 30px;">
                         <div class="row">
                             <div class="col-1" style="padding: 0">
                                 <img src="{{ $get_detmatch['team_logo_home'] }}" alt="logo" class="logo" style="width: 40px;border-radius: 50%;height: 40px;box-shadow: 3px 0px 20px rgb(0 0 0 / 60%);position: absolute;left: 5px;background-color: white;">
                             </div>
                             <div class="col-4">
-                                <div class="team_name" style="color: white; font-weight: bold; margin-top: 5px; text-align: initial">{{ $get_detmatch['team_name_home'] }}</div>
+                                <div class="team_name" style="color: black; font-weight: bold; margin-top: 5px; text-align: initial">{{ $get_detmatch['team_name_home'] }}</div>
                             </div>
                             <div class="col-2">
-                                <div class="card" style="position: absolute;top: 49%;left: 50%;transform: translate(-50%, -50%);">
+                                <div class="card" style="position: absolute;top: 49%;left: 50%;transform: translate(-50%, -50%); background-color: #4ccf7f !important">
                                     <div class="card-body" style="padding: 5px 10px">
                                         <div class="container" style="margin: 0; padding: 0px 5px 0px">
                                             <div class="row" style="margin-top: 6px">
@@ -397,13 +427,13 @@
                                 </div>
                             </div>
                             <div class="col-4">
-                                <div class="team_name" style="color: white; font-weight: bold; margin-top: 5px;">{{ $get_detmatch['team_name_away'] }}</div>
+                                <div class="team_name" style="color: black; font-weight: bold; margin-top: 5px;">{{ $get_detmatch['team_name_away'] }}</div>
                             </div>
                             <div class="col-1" style="padding:0">
                                 <img src="{{ $get_detmatch['team_logo_away'] }}" alt="logo" class="logo" style="width: 40px;border-radius: 50%;height: 40px;box-shadow: 3px 0px 20px rgb(0 0 0 / 60%);position: absolute;right: 5px;background-color: white;">
                             </div>
                         </div>
-                        <h6 style="margin-top: 1rem; color: white">{{ $get_detmatch['date'] }}</h6>
+                        <h6 style="margin-top: 1rem; color: black">{{ $get_detmatch['date'] }}</h6>
                     </div>
                     <!----<div class="wallet-inline-button mt-2" style="background-color: rgba(255, 255, 255, 0.6); justify-content: space-between;height: 35px;border-radius: 30px;">
                         <a href="#" class="item" data-bs-toggle="modal" data-bs-target="#depositActionSheet">
@@ -432,30 +462,47 @@
             <!-- * Wallet -->
 
             <div class="section" style="padding: 0; height: 83%">
-                <div class="card" style="border-radius: 0; height: -webkit-fill-available;">
+                <div class="card" style="border-radius: 0; height: -webkit-fill-available; background-color: #00373e">
                     <div class="card-body">
-                        <div class="carousel-multiple splide">
+                        <ul class="nav nav-tabs capsuled" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#odds_pronostic_match" role="tab">
+                                    Temps réglementaire
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#odds_pronostic_first_half" role="tab">
+                                    1 Mi-temps
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#odds_pronostic_second_half" role="tab">
+                                    2 Mi-temps
+                                </a>
+                            </li>
+                        </ul>
+                        {{----<div class="carousel-multiple splide">
                             <div class="splide__track">
                                 <ul class="nav splide__list">
 
                                     <li class="nav-item splide__slide">
-                                        <a href="#odds_pronostic_match" type="button" data-bs-toggle="tab" class="nav-link btn btn-outline-success btn-sm btn-block me-1 mb-1" style="border: none">Temps réglementaire</a>
+                                        <a href="#odds_pronostic_match" type="button" data-bs-toggle="tab" role="tab" class="nav-link active" style="border: none">Temps réglementaire</a>
                                     </li>
 
                                     <li class="nav-item splide__slide">
-                                        <a href="#odds_pronostic_first_half" type="button" data-bs-toggle="tab" class="nav-link btn btn-outline-success btn-sm btn-block me-1 mb-1" style="border: none">1 Mi-temps</a>
+                                        <a href="#odds_pronostic_first_half" type="button" data-bs-toggle="tab" role="tab" class="nav-link" style="border: none">1 Mi-temps</a>
                                     </li>
 
                                     <li class="nav-item splide__slide">
-                                        <a href="#odds_pronostic_second_half" type="button" data-bs-toggle="tab" class="nav-link btn btn-outline-success btn-sm btn-block me-1 mb-1" style="border: none">2 Mi-temps</a>
+                                        <a href="#odds_pronostic_second_half" type="button" data-bs-toggle="tab" role="tab" class="nav-link" style="border: none">2 Mi-temps</a>
                                     </li>
 
                                 </ul>
                             </div>
-                        </div>
+                        </div>----}}
                         <div class="tab-content mt-1" style="height: 93%">
                             <div class="tab-pane fade show active" id="odds_pronostic_match" role="tabpanel" style="height: 100%">
-                                <div class="accordion" style="height: 350px;overflow: auto">
+                                <div class="accordion" style="height: 350px;overflow: auto; border-radius: 10px;">
                                     @if(isset($get_detmatch['odds_pronostic_match']))
                                         @foreach($get_detmatch['odds_pronostic_match'] as $index => $pron_match)
                                             <div class="accordion-item">

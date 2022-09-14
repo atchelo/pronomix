@@ -112,6 +112,23 @@
             border: 1px solid #e4e4e4;
         }
 
+        .appHeader {
+            height: 15vh;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            /*z-index: 999;*/
+            /*color: #27173E;*/
+            /* border-bottom: 1px solid #DCDCE9;*/
+            border-radius: 0 0 100% 100% !important;
+            /*position: absolute !important;*/
+            background: #FFFFFF !important;
+            right: 0vh !important;
+            left: 0vh !important;
+            top: -5vh !important;
+            /*bottom: 0 !important;*/
+        }
+
     </style>
 </head>
 
@@ -123,19 +140,19 @@
 </div>
 <!-- * loader -->
 
-<div id="scroller" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
+<div id="scroller" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #00373e;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
     <!-- App Header -->
-    <div class="appHeader" style="border-radius: 30px; margin: auto; position: sticky">
+    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky !important;">
         <div class="left">
-            <a href="{{ route('home') }}" class="headerButton">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="" class="headerButton" onclick="">
+            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="headerButton">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
@@ -144,6 +161,7 @@
             </a>
         </div>
     </div>
+    <!-- * App Header -->
 
     <div class="extraHeader">
         <form class="search-form" style="display: flex; justify-content: space-around">
@@ -378,7 +396,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-body" style="margin-top: 11rem; background-color: #EDEDF5;" id="match_hist">
+            <div class="modal-body" style="margin-top: 11rem; background-color: #00373e; margin-bottom: 5vh;" id="match_hist">
 
             </div>
         </div>
@@ -935,88 +953,91 @@
 
     var token1 = "{{ $token }}";
 
+    var checkOne = 0;
     function showdetails(ref) {
         console.log(ref)
-        $('#loader').show();
-        var o = new Object();
-        o['token'] = token1;
-        $.ajax({
-            url: `https://demo.pronomix.net/api/detail-pronostics/reference_coupon=${ref}`,
-            data: o,
-            method: "GET",
-            success: function (data) {
-                console.log(data)
-                var res = data.pronostics;
-                var reference_coupon = res.reference_coupon;
-                var type = res.type;
-                var odd_cumul = res.cote_globale;
-                var gain_potentiel = res.gain_potentiel;
-                var mise_tickets = res.mise_tickets;
-                var date_created = res.date_created;
-                var pronostic_win = res.pronostic_win;
+        if (checkOne === 0){
+            checkOne = 1;
+            $('#loader').show();
+            var o = new Object();
+            o['token'] = token1;
+            $.ajax({
+                url: `https://demo.pronomix.net/api/detail-pronostics/reference_coupon=${ref}`,
+                data: o,
+                method: "GET",
+                success: function (data) {
+                    console.log(data)
+                    var res = data.pronostics;
+                    var reference_coupon = res.reference_coupon;
+                    var type = res.type;
+                    var odd_cumul = res.cote_globale;
+                    var gain_potentiel = res.gain_potentiel;
+                    var mise_tickets = res.mise_tickets;
+                    var date_created = res.date_created;
+                    var pronostic_win = res.pronostic_win;
 
-                var pronostics = res.pronostic_content.pronostics;
+                    var pronostics = res.pronostic_content.pronostics;
 
-                console.log(pronostics)
-
-
-                if(pronostic_win === 'lost'){
-                    $('#status').append("<div class='badge-red'> Perdu </div>");
-                }if (pronostic_win === 'win'){
-                    $('#status').append("<div class='badge-green'> Gagné </div>");
-                }
-                if(pronostic_win === null){
-                    $('#status').append("non disponible");
-                }
-
-                $('#reference_coupon').empty();
-                $('#reference_coupon').append(reference_coupon);
+                    console.log(pronostics)
 
 
-                $('#type').empty();
-                $('#type').append(type);
-
-                $('#mise_tickets').empty();
-                $('#mise_tickets').append(mise_tickets);
-
-                $('#date_created').empty();
-                $('#date_created').append(date_created);
-
-
-                $('#odd_cumul').empty();
-                $('#odd_cumul').append(odd_cumul);
-
-                $('#gain_potentiel').empty();
-                $('#gain_potentiel').append(gain_potentiel);
-
-
-
-                pronostics.forEach(showall);
-                function showall(item) {
-                    var res = '';
-                    var score = '';
-                    var winhome = '';
-                    var winaway = '';
-                    if(item.score_fulltime_home > item.score_fulltime_away){
-                        winhome = "#51b115";
+                    if(pronostic_win === 'lost'){
+                        $('#status').append("<div class='badge-red'> Perdu </div>");
+                    }if (pronostic_win === 'win'){
+                        $('#status').append("<div class='badge-green'> Gagné </div>");
+                    }
+                    if(pronostic_win === null){
+                        $('#status').append("non disponible");
                     }
 
-                    if(item.score_fulltime_away  > item.score_fulltime_home){
-                        winaway = "#51b115";
-                    }
+                    $('#reference_coupon').empty();
+                    $('#reference_coupon').append(reference_coupon);
 
-                    function checknull(el){
-                        if(el !== null){
-                            return el
-                        }else {
-                            return '';
+
+                    $('#type').empty();
+                    $('#type').append(type);
+
+                    $('#mise_tickets').empty();
+                    $('#mise_tickets').append(mise_tickets);
+
+                    $('#date_created').empty();
+                    $('#date_created').append(date_created);
+
+
+                    $('#odd_cumul').empty();
+                    $('#odd_cumul').append(odd_cumul);
+
+                    $('#gain_potentiel').empty();
+                    $('#gain_potentiel').append(gain_potentiel);
+
+
+
+                    pronostics.forEach(showall);
+                    function showall(item) {
+                        var res = '';
+                        var score = '';
+                        var winhome = '';
+                        var winaway = '';
+                        if(item.score_fulltime_home > item.score_fulltime_away){
+                            winhome = "#51b115";
                         }
-                    }
 
-                    if(item.pronostic_win === 'lost'){
+                        if(item.score_fulltime_away  > item.score_fulltime_home){
+                            winaway = "#51b115";
+                        }
 
-                        res = `<div class='badge-red'> Perdu </div>`;
-                        score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
+                        function checknull(el){
+                            if(el !== null){
+                                return el
+                            }else {
+                                return '';
+                            }
+                        }
+
+                        if(item.pronostic_win === 'lost'){
+
+                            res = `<div class='badge-red'> Perdu </div>`;
+                            score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
                                             <div class="card-body" style="padding: 0">
                                                 <div class="container" style="padding: 0px 5px 0px">
 
@@ -1031,10 +1052,10 @@
                                             </div>
 <div class="card-footer" style="padding: 0;font-size: x-small;height: 1rem; width: max-content">(${checknull(item.score_halftime_home)} - ${checknull(item.score_halftime_away)}, ${checknull(item.score_secondtime_home)} - ${checknull(item.score_secondtime_away)})</div>
                                         </div>`;
-                    }else if(item.pronostic_win === 'win'){
-                        res = `<div class='badge-green'> Gagné </div>`;
+                        }else if(item.pronostic_win === 'win'){
+                            res = `<div class='badge-green'> Gagné </div>`;
 
-                        score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
+                            score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
                                             <div class="card-body" style="padding: 0">
                                                 <div class="container" style="padding: 0px 5px 0px">
 
@@ -1049,10 +1070,10 @@
                                             </div>
 <div class="card-footer" style="padding: 0;font-size: x-small;height: 1rem; width: max-content">(${checknull(item.score_halftime_home)} - ${checknull(item.score_halftime_away)}, ${checknull(item.score_secondtime_home)} - ${checknull(item.score_secondtime_away)})</div>
                                         </div>`;
-                    }
-                    else if(item.pronostic_win === 'canceled'){
-                        res = `<div class='badge-red'> reporte </div>`;
-                        score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
+                        }
+                        else if(item.pronostic_win === 'canceled'){
+                            res = `<div class='badge-red'> reporte </div>`;
+                            score=`<div class="card" style="padding: 7px 0 7px 0; background-color: transparent">
                                             <div class="card-body" style="padding: 0">
                                                 <div class="container" style="padding: 0px 5px 0px">
 
@@ -1065,10 +1086,10 @@
 
                                             </div>
                                         </div>`;
-                    }
-                    else{
-                        res = 'indisponible';
-                        score = `<div class='card' style='padding: 7px 0 7px 0; background-color: transparent'>
+                        }
+                        else{
+                            res = 'indisponible';
+                            score = `<div class='card' style='padding: 7px 0 7px 0; background-color: transparent'>
                             <div class='card-body' style='padding: 0'>
                                 <div class='container' style='padding: 0px 5px 0px'>
 
@@ -1080,9 +1101,9 @@
                                 </div>
                             </div>
                         </div>`;
-                    }
-                    $('#match_hist').append(
-                        `<div class='card-block mb-2' id='detmatch0' style='height: 9rem; background-color: #fff;' data-matchid='897533'>
+                        }
+                        $('#match_hist').append(
+                            `<div class='card-block mb-2' id='detmatch0' style='height: 9rem; background-color: #fff;' data-matchid='897533'>
                 <div class='section full' style='position: relative; text-align: center'>
                 <div class='in' style='padding: 0px'>
                 <div class='titleCard__textWrapper' style='justify-content: space-between;color: #1e1e1e; overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 1;-webkit-box-orient: vertical;'>
@@ -1137,29 +1158,31 @@
         </div>
         </div>
         </div>`
-                    );
-                }
+                        );
+                    }
 
-                //console.log(pronostics)
+                    //console.log(pronostics)
 
-                $('#loader').hide();
-                $('#ModalBasic').modal('show');
+                    $('#loader').hide();
+                    $('#ModalBasic').modal('show');
 
-            },
-            statusCode: {
-                500: function() {
-                    $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
-                    $("#loader").hide();
-                    $('#DialogIconedDanger').modal('show');
                 },
-                419: function (){
-                    window.location = "{{ route('logout') }}";
+                statusCode: {
+                    500: function() {
+                        $('#coup_error').append("Une erreur est survemue. Merci de ressayer plutard.");
+                        $("#loader").hide();
+                        $('#DialogIconedDanger').modal('show');
+                    },
+                    419: function (){
+                        window.location = "{{ route('logout') }}";
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     $('#close_his').click(function () {
+        checkOne = 0;
         $('#status').empty();
         $('#match_hist').empty();
     });
