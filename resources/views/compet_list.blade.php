@@ -84,6 +84,23 @@
             border: 1px solid #e4e4e4;
         }
 
+        .appHeader {
+            height: 15vh;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            /*z-index: 999;*/
+            /*color: #27173E;*/
+            /* border-bottom: 1px solid #DCDCE9;*/
+            border-radius: 0 0 100% 100% !important;
+            /*position: absolute !important;*/
+            background: #FFFFFF !important;
+            right: 0vh !important;
+            left: 0vh !important;
+            top: -5vh !important;
+            /*bottom: 0 !important;*/
+        }
+
     </style>
 
     <script>
@@ -167,9 +184,9 @@
 </div>
 <!-- * loader -->
 
-<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
+<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #00373e;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
     <!-- App Header -->
-    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky">
+    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky !important;">
         <div class="left">
             <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
                 <ion-icon name="menu-outline"></ion-icon>
@@ -179,7 +196,7 @@
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="app-notifications.html" class="headerButton">
+            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="headerButton">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
@@ -189,6 +206,7 @@
         </div>
     </div>
     <!-- * App Header -->
+
     <!-- App Capsule -->
     <div id="appCapsule" style="padding: 0">
 
@@ -276,17 +294,17 @@ display: -webkit-box;
                                                 </div>
                                             </div>
                                             <div class="row" style="margin-top: 2rem">
-                                                <div class="col-4" style="padding: 0">
+                                                <div class="col-4" style="padding: 0 1rem">
                                                     @if(isset($rencontre['bets_home']))
                                                         <div class="coupon" id="coupon" data-rencontre_id="{{$rencontre['id_']}}" data-value_name="{{$rencontre['bets_name']}}"  data-couponvalue="{{$rencontre['bets_home']['odd']}}" data-bet_id="{{ $rencontre['bets_id'] }}" data-value= "{{ $rencontre['bets_home']['value'] }}" style="color: black; text-align: center;  font-size: 10px;  cursor: pointer">Victoire <span class="short_team_name">{{ $rencontre['team_name_home'] }}</span> <span class="badge-green"> @if(isset($rencontre['bets_home']['odd'])) {{ $rencontre['bets_home']['odd'] }}  @endif </span></div>
                                                     @endif
                                                 </div>
-                                                <div class="col-4" style="padding: 0 3px">
+                                                <div class="col-4" style="padding: 0 1rem">
                                                     @if(isset($rencontre['bets_draw']))
                                                         <div class="coupon" id="coupon" data-rencontre_id="{{$rencontre['id_']}}" data-value_name="{{$rencontre['bets_name']}}"  data-couponvalue="{{$rencontre['bets_draw']['odd']}}" data-bet_id="{{ $rencontre['bets_id']}}" data-value= "{{ ($rencontre['bets_draw']['value'] == "Match nul") ? "Draw" : "" }}" style="color: black; text-align: center;  font-size: 10px;  cursor: pointer">Match nul <span class="badge-green"> @if(isset($rencontre['bets_draw'])) {{ $rencontre['bets_draw']['odd'] }} @endif</span></div>
                                                     @endif
                                                 </div>
-                                                <div class="col-4" style="padding: 0">
+                                                <div class="col-4" style="padding: 0 1rem">
                                                     @if(isset($rencontre['bets_away']))
                                                         <div class="coupon" id="coupon" data-rencontre_id="{{$rencontre['id_']}}" data-value_name="{{$rencontre['bets_name']}}"  data-couponvalue="{{$rencontre['bets_away']['odd']}}" data-bet_id="{{ $rencontre['bets_id'] }}" data-value= "{{ $rencontre['bets_away']['value'] }}" style="color: black; text-align: center;  font-size: 10px;  cursor: pointer">Victoire <span class="short_team_name">{{ $rencontre['team_name_away'] }}</span> <span class="badge-green"> @if(isset($rencontre['bets_away'])) {{ $rencontre['bets_away']['odd'] }} @endif</span></div>
                                                     @endif

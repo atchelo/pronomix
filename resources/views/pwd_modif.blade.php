@@ -86,6 +86,23 @@
             border: 1px solid #e4e4e4;
         }
 
+        .appHeader {
+            height: 15vh;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            /*z-index: 999;*/
+            /*color: #27173E;*/
+            /* border-bottom: 1px solid #DCDCE9;*/
+            border-radius: 0 0 100% 100% !important;
+            /*position: absolute !important;*/
+            background: #FFFFFF !important;
+            right: 0vh !important;
+            left: 0vh !important;
+            top: -5vh !important;
+            /*bottom: 0 !important;*/
+        }
+
     </style>
     <style type="text/css">
         #appCapsule {
@@ -108,19 +125,217 @@
 </div>
 <!-- * loader -->
 
+<!-- App Sidebar -->
+<div class="modal fade panelbox panelbox-left" id="sidebarPanel" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <!-- profile box -->
+                <div class="profileBox pt-2 pb-2">
+                    <div class="image-wrapper">
+                        <img src="{{ asset('assets/img/icon/user.png') }}" alt="image" class="imaged  w24">
+                    </div>
+                    <div class="in">
+                        <strong>{{ $islogged['nom'] }} {{ $islogged['prenom'] }}</strong>
+                        <div class="text-muted">{{ $islogged['reference'] }}</div>
+                    </div>
+                    <a href="#" class="btn btn-link btn-icon sidebar-close" data-bs-dismiss="modal">
+                        <ion-icoFn name="close-outline"></ion-icoFn>
+                    </a>
+                </div>
+                <!-- * profile box -->
+                <!-- balance -->
+                {{-----<div class="sidebar-balance">
+                    <div class="listview-title">Points</div>
+                    <div class="in">
+                        <h1 class="amount">{{ $islogged['balance_points'] }}</h1>
+                    </div>
+                </div>-----}}
+                <!-- * balance -->
+
+                <!-- action group -->
+                {{----<div class="action-group">
+                    <a href="index.html" class="action-button">
+                        <div class="in">
+                            <div class="iconbox">
+                                <ion-icon name="add-outline"></ion-icon>
+                            </div>
+                            Deposit
+                        </div>
+                    </a>
+                    <a href="index.html" class="action-button">
+                        <div class="in">
+                            <div class="iconbox">
+                                <ion-icon name="arrow-down-outline"></ion-icon>
+                            </div>
+                            Withdraw
+                        </div>
+                    </a>
+                    <a href="index.html" class="action-button">
+                        <div class="in">
+                            <div class="iconbox">
+                                <ion-icon name="arrow-forward-outline"></ion-icon>
+                            </div>
+                            Send
+                        </div>
+                    </a>
+                    <a href="app-cards.html" class="action-button">
+                        <div class="in">
+                            <div class="iconbox">
+                                <ion-icon name="card-outline"></ion-icon>
+                            </div>
+                            My Cards
+                        </div>
+                    </a>
+                </div>-----}}
+                <!-- * action group -->
+
+                <!-- menu -->
+                <div class="listview-title mt-1">Menu</div>
+                <ul class="listview flush transparent no-line image-listview">
+                    <li>
+                        <a href="{{route('home') }}" class="item">
+                            <div class="icon-box bg-primary" style="background-color: #00373e !important;">
+                                <img src="{{ asset('assets/img/icon/home.png') }}" alt="image" class="imaged  w24">
+                            </div>
+                            <div class="in">
+                                Accueil
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('allmatch') }}"  class="item" onclick="$('#loader').show()">
+                            <div class="icon-box bg-primary" style="background-color: #018cb7 !important;">
+                                <img src="{{ asset('assets/img/icon/dice2.png') }}" alt="image" class="imaged  w24">
+                            </div>
+                            <div class="in">
+                                Pronostiques
+                                {{----<span class="badge badge-primary">10</span>---}}
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('allcompet') }}" class="item" onclick="$('#loader').show()">
+                            <div class="icon-box bg-primary" style="background-color: #f9b233 !important;">
+                                <img src="{{ asset('assets/img/icon/trophy.png') }}" alt="image" class="imaged  w24">
+                            </div>
+                            <div class="in">
+                                Competition
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('result') }}" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
+                            <div class="icon-box bg-primary" style="background-color: #fc5c13 !important;">
+                                <img src="{{ asset('assets/img/icon/result.png') }}" alt="image" class="imaged  w24">
+                            </div>
+                            <div class="in">
+                                Resultats
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item" data-bs-dismiss="modal">
+                            <div class="icon-box bg-primary" style="background-color: #ffad57 !important;">
+                                <img src="{{ asset('assets/img/icon/credit_card2.png') }}" alt="image" class="imaged  w24">
+                            </div>
+                            <div class="in">
+                                Acheter des tiquets
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" class="item" id="all_lot2" data-bs-dismiss="modal">
+                            <div class="icon-box bg-primary" style="background-color: #2a6e40 !important;">
+                                <img src="{{ asset('assets/img/icon/gift2.png') }}" alt="image" class="imaged  w24">
+                            </div>
+                            <div class="in">
+                                Lots
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!-- * menu -->
+
+                <!-- others -->
+                <div class="listview-title mt-1">Autres</div>
+                <ul class="listview flush transparent no-line image-listview">
+                    <li>
+                        <a href="javascript:void(0);" data-bs-dismiss="modal" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
+                            <div class="icon-box bg-primary" style="background-color: #FFFFFF !important;">
+                                <img src="{{ asset('assets/img/icon/call_client2.png') }}" alt="image" class="imaged  w24">
+                            </div>
+                            <div class="in">
+                                Support
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="closeSideModal()" data-bs-toggle="modal" data-bs-target="#DialogConfirmLogOut" class="item">
+                            <div class="icon-box bg-primary" style="background-color: #FFFFFF !important;">
+                                <img src="{{ asset('assets/img/icon/logout.png') }}" alt="image" class="imaged  w24">
+                            </div>
+                            <div class="in">
+                                Déconnexion
+                            </div>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <!-- * others -->
+
+                <!-- send money -->
+                {{----<div class="listview-title mt-1">Send Money</div>
+                <ul class="listview image-listview flush transparent no-line">
+                    <li>
+                        <a href="#" class="item">
+                            <img src="assets/img/sample/avatar/avatar2.jpg" alt="image" class="image">
+                            <div class="in">
+                                <div>Artem Sazonov</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="item">
+                            <img src="assets/img/sample/avatar/avatar4.jpg" alt="image" class="image">
+                            <div class="in">
+                                <div>Sophie Asveld</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="item">
+                            <img src="assets/img/sample/avatar/avatar3.jpg" alt="image" class="image">
+                            <div class="in">
+                                <div>Kobus van de Vegte</div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>-----}}
+                <!-- * send money -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * App Sidebar -->
+
+
+
 <div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
     <!-- App Header -->
-    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky">
+    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky !important;">
         <div class="left">
-            <a href="{{ route('home') }}" class="headerButton">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="app-notifications.html" class="headerButton">
+            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="headerButton">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>

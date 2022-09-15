@@ -252,6 +252,56 @@
 <!-- * DialogIconedDanger -->
 
 
+<!-- Dialog Basic -->
+<div class="modal fade dialogbox" id="ContactService" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Contacter le service client</h5>
+            </div>
+            <div class="modal-body">
+                <div class="section mt-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="p-1">
+                                <div class="text-center">
+                                    <h2 class="text-primary">Addresse E-Mail</h2>
+                                    <p class="card-text">
+                                        reclamation@pronomix.net<br>
+                                        parteneriat@pronomix.net
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section mt-2 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="p-1">
+                                <div class="text-center">
+                                    <h2 class="text-primary mb-2">Reseaux Sociaux</h2>
+
+                                    <a href="#" class="btn btn-facebook btn-icon me-05">
+                                        <ion-icon name="logo-facebook"></ion-icon>
+                                    </a>
+
+                                    <a href="#" class="btn btn-twitter btn-icon me-05">
+                                        <ion-icon name="logo-twitter"></ion-icon>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- * Dialog Basic -->
+
 <!-- App Sidebar -->
 <div class="modal fade panelbox panelbox-left" id="sidebarPanel" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -321,7 +371,7 @@
                 <div class="listview-title mt-1">Menu</div>
                 <ul class="listview flush transparent no-line image-listview">
                     <li>
-                        <a href="{{route('home') }}" class="item">
+                        <a href="{{route('home') }}" onclick="$('#loader').show()" class="item">
                             <div class="icon-box bg-primary" style="background-color: #00373e !important;">
                                 <img src="{{ asset('assets/img/icon/home.png') }}" alt="image" class="imaged  w24">
                             </div>
@@ -352,7 +402,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('result') }}" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
+                        <a href="{{ route('result') }}" onclick="$('#loader').show()" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
                             <div class="icon-box bg-primary" style="background-color: #fc5c13 !important;">
                                 <img src="{{ asset('assets/img/icon/result.png') }}" alt="image" class="imaged  w24">
                             </div>
@@ -362,7 +412,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item" data-bs-dismiss="modal">
+                        <a href="{{ route('payment_index') }}" onclick="$('#loader').show()" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
                             <div class="icon-box bg-primary" style="background-color: #ffad57 !important;">
                                 <img src="{{ asset('assets/img/icon/credit_card2.png') }}" alt="image" class="imaged  w24">
                             </div>
@@ -372,7 +422,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" class="item" id="all_lot2" data-bs-dismiss="modal">
+                        <a href="javascript:void(0);" onclick="$('#loader').show()" class="item" id="all_lot2" data-bs-dismiss="modal">
                             <div class="icon-box bg-primary" style="background-color: #2a6e40 !important;">
                                 <img src="{{ asset('assets/img/icon/gift2.png') }}" alt="image" class="imaged  w24">
                             </div>
@@ -388,7 +438,7 @@
                 <div class="listview-title mt-1">Autres</div>
                 <ul class="listview flush transparent no-line image-listview">
                     <li>
-                        <a href="javascript:void(0);" data-bs-dismiss="modal" {{-----data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon"----}} class="item">
+                        <a href="javascript:void(0);" onclick="closeSideModal()" data-bs-toggle="modal" data-bs-target="#ContactService" class="item">
                             <div class="icon-box bg-primary" style="background-color: #FFFFFF !important;">
                                 <img src="{{ asset('assets/img/icon/call_client2.png') }}" alt="image" class="imaged  w24">
                             </div>

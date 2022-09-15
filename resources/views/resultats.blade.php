@@ -84,6 +84,23 @@
             border: 1px solid #e4e4e4;
         }
 
+        .appHeader {
+            height: 15vh;
+            display: flex;
+            /*justify-content: center;*/
+            align-items: center;
+            /*z-index: 999;*/
+            /*color: #27173E;*/
+            /* border-bottom: 1px solid #DCDCE9;*/
+            border-radius: 0 0 100% 100% !important;
+            /*position: absolute !important;*/
+            background: #FFFFFF !important;
+            right: 0vh !important;
+            left: 0vh !important;
+            top: -5vh !important;
+            /*bottom: 0 !important;*/
+        }
+
     </style>
 
     <script>
@@ -167,19 +184,19 @@
 </div>
 <!-- * loader -->
 
-<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #EDEDF5;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
+<div id="aft_body" style="height: -webkit-fill-available; padding-bottom: 0; background-color: #00373e;border-radius: 30px; margin-top: 30px; overflow-y: auto; position: relative">
     <!-- App Header -->
-    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky">
+    <div class="appHeader" style="border-radius: 30px; margin: 2px; position: sticky !important;">
         <div class="left">
-            <a href="{{ route('home') }}" class="headerButton">
-                <ion-icon name="chevron-back-outline"></ion-icon>
+            <a href="#" class="headerButton" data-bs-toggle="modal" data-bs-target="#sidebarPanel">
+                <ion-icon name="menu-outline"></ion-icon>
             </a>
         </div>
         <div class="pageTitle" style="background-color: #11a44c;border-radius: 10px;">
             <!---<img src="assets/img/logo_final_w.png" alt="logo" class="logo">--->
         </div>
         <div class="right">
-            <a href="app-notifications.html" class="headerButton">
+            <a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#DialogIconedDangerSoon" class="headerButton">
                 <ion-icon class="icon" name="notifications-outline"></ion-icon>
                 <span class="badge badge-danger">4</span>
             </a>
@@ -306,7 +323,7 @@ display: -webkit-box;
     <!-- * App Capsule -->
 </div>
 
-
+@include('components.toast')
 
 <!-- Add Card Action Sheet -->
 <div class="modal fade action-sheet" id="addCardActionSheet" tabindex="-1" role="dialog">

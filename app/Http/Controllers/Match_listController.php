@@ -135,9 +135,10 @@ class Match_listController extends Controller
             'list_lot',
         ]);
         $pron_coups = session('user_pronos_multi');
+        $islogged = session('current_user');
         $token = session('token');
         //dd($pron_coups);
-        return view('pron_coup', compact('pron_coups', 'token'));
+        return view('pron_coup', compact('pron_coups', 'token','islogged'));
     }
 
     public function sup_coup_pron(Request $request){
@@ -367,6 +368,7 @@ HTML;
                 'token' => $token,
             ]);
         $rep = json_decode($response->body(), true);
+        $islogged = session('current_user');
         if (isset($rep['data'][0])){
             if ($rep['success'] === true){
                 session([
@@ -376,7 +378,7 @@ HTML;
                 $resus = session('result_pron');
 
 
-                return view('resultats', compact('resus', 'token'));
+                return view('resultats', compact('resus', 'token', 'islogged'));
 
             }
         }
